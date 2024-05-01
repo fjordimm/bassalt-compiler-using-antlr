@@ -1,7 +1,7 @@
 grammar Bassalt;
 
 program
-	: 'program' '{' unit unit unit '}'
+	: Kprogram statementList
 	;
 
 statementList
@@ -14,7 +14,11 @@ statement
 	;
 
 statementNoSemi
-	: Kprint ConstantDecInt ;
+	: statementPrint
+	;
+
+statementPrint
+	: Kprint ConstantDecInt
 	;
 
 

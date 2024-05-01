@@ -15,17 +15,22 @@ namespace BassaltCompiler
 
 		public override object VisitProgram([NotNull] BassaltParser.ProgramContext context)
 		{
+			outFile.WriteLine("#include <stdio.h>");
 			outFile.WriteLine("int main(void) {");
+
 			base.VisitProgram(context);
-			outFile.WriteLine("return 0; }");
+
+			outFile.WriteLine("return 0;");
+			outFile.WriteLine("}");
 
 			return null;
 		}
 
-		public override object VisitUnit([NotNull] BassaltParser.UnitContext context)
+		public override object VisitStatementPrint([NotNull] BassaltParser.StatementPrintContext context)
 		{
-			outFile.WriteLine($"  unito({context.GetText()})");
-			base.VisitUnit(context);
+			outFile.WriteLine($"printf(\"%d\\n\", {context.ConstantDecInt().GetText()});");
+
+			base.VisitStatementPrint(context);
 
 			return null;
 		}
