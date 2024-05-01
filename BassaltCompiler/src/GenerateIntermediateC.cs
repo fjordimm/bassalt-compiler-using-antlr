@@ -17,14 +17,14 @@ namespace BassaltCompiler
 		{
 			outFile.WriteLine("int main(void) {");
 			base.VisitProgram(context);
-			outFile.WriteLine("}");
+			outFile.WriteLine("return 0; }");
 
 			return null;
 		}
 
 		public override object VisitUnit([NotNull] BassaltParser.UnitContext context)
 		{
-			outFile.WriteLine("  unito");
+			outFile.WriteLine($"  unito({context.GetText()})");
 			base.VisitUnit(context);
 
 			return null;
