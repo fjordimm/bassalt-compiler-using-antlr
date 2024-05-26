@@ -1,3 +1,4 @@
+
 grammar Bassalt;
 
 program

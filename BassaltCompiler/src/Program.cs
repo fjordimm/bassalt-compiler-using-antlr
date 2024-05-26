@@ -8,13 +8,13 @@ namespace BassaltCompiler
 {
 	class Program
 	{
-		const string inFilePath = @"..\TestIO\in\in.bslt";
-		const string outFilePath = @"..\TestIO\out\out.c";
+		const string inFilePath = @"../TestIO/in/in.bslt";
+		const string outFilePath = @"../TestIO/out/out.c";
 		
 		static void Main(string[] args)
 		{
 			using TextReader inFile = File.OpenText(inFilePath);
-			using TextWriter outFile = new StreamWriter(outFilePath);
+			using TextWriter outFile = new StreamWriter(File.Open(outFilePath, FileMode.Create));
 
 			AntlrInputStream input = new AntlrInputStream(inFile);
 			BassaltLexer lexer = new BassaltLexer(input);
