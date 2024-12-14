@@ -2,3 +2,5 @@ BassaltCompiler/obj
 BassaltCompiler/bin
 BassaltCompiler/antlr_out
 TestIO
+.vscode
+bassalt-compiler-using-antlr.sln
