@@ -1,5 +1,7 @@
 
-.PHONY: all clean antlr compiler out run
+MAKEFLAGS += --no-print-directory
+
+.PHONY: all clean antlr compiler out comp_out run_out
 
 all:
 	make antlr
@@ -7,15 +9,19 @@ all:
 	make out
 
 antlr:
-	@antlr4 -Dlanguage=CSharp -visitor ./antlr_grammar/Bassalt.g4 -o ./BassaltCompiler/antlr_out
+	@antlr4 -Dlanguage=CSharp -visitor ./antlr_grammar/Bassalt.g4 -o ./BassaltCompiler/src/antlr_out
 
 compiler:
 	@cd ./BassaltCompiler; dotnet run; cd ..
 
 out:
+	make comp_out
+	make run_out
+
+comp_out:
 	@cd ./TestIO/out; clang out.c -o out; cd ../..
 
-run:
+run_out:
 	@cd ./TestIO/out; ./out; cd ../..
 
 clean:

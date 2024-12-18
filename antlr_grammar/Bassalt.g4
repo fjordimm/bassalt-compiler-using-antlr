@@ -21,7 +21,7 @@ statementNoSemi
 	;
 
 statementPrint
-	: Kprint LiteralDecInt
+	: Kprint literal
 	;
 
 // Literals
@@ -60,7 +60,13 @@ literalString
 
 ///// Tokens /////
 
+// Keywords
+
+Kprint : 'print' ;
+
 Identifier : [a-zA-Z_][a-zA-Z_0-9]* ;
+
+// Punctuation and Operators
 
 LeftParen : '(' ;
 RightParen : ')' ;
@@ -74,10 +80,6 @@ RightBrace : '}' ;
 Blign : '=2' ;
 Assign : '=' ;
 Semi : ';' ;
-
-// Keywords
-
-Kprint : 'print' ;
 
 // Literals
 

@@ -21,13 +21,13 @@ namespace BassaltCompiler
 			CommonTokenStream tokens = new CommonTokenStream(lexer);
 			BassaltParser parser = new BassaltParser(tokens);
 
-			PrintAllTokens(lexer, tokens, parser);
-			System.Environment.Exit(0);
+			// PrintAllTokens(lexer, tokens, parser);
+			// System.Environment.Exit(0);
 			
-			// IParseTree tree = parser.program();
+			IParseTree tree = parser.program();
 
-			// GenerateIntermediateC generator = new GenerateIntermediateC(outFile);
-			// generator.Visit(tree);
+			GenerateIntermediateC generator = new GenerateIntermediateC(outFile);
+			generator.Visit(tree);
 		}
 
 		private static void PrintAllTokens(BassaltLexer lexer, CommonTokenStream tokens, BassaltParser parser)
