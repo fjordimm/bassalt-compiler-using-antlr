@@ -20,11 +20,14 @@ namespace BassaltCompiler
 			BassaltLexer lexer = new BassaltLexer(input);
 			CommonTokenStream tokens = new CommonTokenStream(lexer);
 			BassaltParser parser = new BassaltParser(tokens);
-			
-			IParseTree tree = parser.program();
 
-			GenerateIntermediateC generator = new GenerateIntermediateC(outFile);
-			generator.Visit(tree);
+			Console.WriteLine(parser.root());
+			System.Environment.Exit(0);
+			
+			// IParseTree tree = parser.program();
+
+			// GenerateIntermediateC generator = new GenerateIntermediateC(outFile);
+			// generator.Visit(tree);
 		}
 	}
 }
