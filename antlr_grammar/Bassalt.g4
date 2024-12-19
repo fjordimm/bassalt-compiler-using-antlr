@@ -48,8 +48,7 @@ literalInteger
 	;
 
 literalFractional
-	: LiteralDecInt
-	| LiteralPlainFrac
+	: LiteralPlainFrac
 	| LiteralScientificFrac
 	;
 
@@ -90,7 +89,7 @@ LiteralBool
 	;
 
 LiteralDecInt
-	: '-' LiteralDecIntP
+	: [-+] LiteralDecIntP
 	| LiteralDecIntP
 	;
 
@@ -101,7 +100,7 @@ LiteralDecIntP
 	;
 
 LiteralHexInt
-	: '-' LiteralHexIntP
+	: [-+] LiteralHexIntP
 	| LiteralHexIntP
 	;
 
@@ -111,7 +110,7 @@ LiteralHexIntP
 	;
 
 LiteralOctalInt
-	: '-' LiteralOctalIntP
+	: [-+] LiteralOctalIntP
 	| LiteralOctalIntP
 	;
 
@@ -121,7 +120,7 @@ LiteralOctalIntP
 	;
 
 LiteralBinaryInt
-	: '-' LiteralBinaryIntP
+	: [-+] LiteralBinaryIntP
 	| LiteralBinaryIntP
 	;
 
@@ -131,7 +130,7 @@ LiteralBinaryIntP
 	;
 
 LiteralPlainFrac
-	: '-' LiteralPlainFracP
+	: [-+] LiteralPlainFracP
 	| LiteralPlainFracP
 	;
 
@@ -142,7 +141,7 @@ LiteralPlainFracP
 	;
 
 LiteralScientificFrac
-	: '-' LiteralScientificFracP
+	: [-+] LiteralScientificFracP
 	| LiteralScientificFracP
 	;
 

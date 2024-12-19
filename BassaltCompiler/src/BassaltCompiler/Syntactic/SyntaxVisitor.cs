@@ -1,6 +1,7 @@
 
 using System;
 using Antlr4.Runtime.Misc;
+using Antlr4.Runtime.Tree;
 using BassaltCompiler.Syntactic.Nodes;
 
 namespace BassaltCompiler.Syntactic
@@ -56,9 +57,36 @@ namespace BassaltCompiler.Syntactic
 			Literal ret = null;
 
 			if (literalBoolean is not null)
-			{ ret = new Literal(LiteralType.Boolean, literalBoolean.LiteralBool().GetText()); }
+			{
+				ret = new Literal(LiteralType.Boolean, literalBoolean.LiteralBool().GetText());
+			}
 			else if (literalInteger is not null)
-			{ ret = new Literal(LiteralType.Integer, "uh"); }
+			{
+				ITerminalNode decInt = literalInteger.LiteralDecInt();
+				ITerminalNode hexInt = literalInteger.LiteralHexInt();
+				ITerminalNode octalInt = literalInteger.LiteralOctalInt();
+				ITerminalNode binaryInt = literalInteger.LiteralBinaryInt();
+				ITerminalNode charr = literalInteger.LiteralChar();
+				ITerminalNode rgba = literalInteger.LiteralRgba();
+				ITerminalNode datetime = literalInteger.LiteralDatetime();
+
+				Literal retP = null;
+
+				if (decInt is not null)
+				{
+					
+				}
+
+				// ret = new Literal(LiteralType.Integer, "uh");
+			}
+			else if (literalFractional is not null)
+			{
+				// TODO
+			}
+			else if (literalString is not null)
+			{
+				// TODO
+			}
 
 			base.VisitLiteral(context);
 
