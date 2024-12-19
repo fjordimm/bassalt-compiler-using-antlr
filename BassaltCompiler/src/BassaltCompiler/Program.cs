@@ -14,8 +14,7 @@ namespace BassaltCompiler
 		
 		static void Main(string[] args)
 		{
-			Reparsing.ReparseDecInt("43_c8");
-			System.Environment.Exit(1);
+			// System.Environment.Exit(1);
 
 			using TextReader inFile = File.OpenText(inFilePath);
 			using TextWriter outFile = new StreamWriter(File.Open(outFilePath, FileMode.Create));

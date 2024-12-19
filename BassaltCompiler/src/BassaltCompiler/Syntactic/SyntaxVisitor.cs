@@ -70,14 +70,14 @@ namespace BassaltCompiler.Syntactic
 				ITerminalNode rgba = literalInteger.LiteralRgba();
 				ITerminalNode datetime = literalInteger.LiteralDatetime();
 
-				Literal retP = null;
-
 				if (decInt is not null)
-				{
-					
-				}
-
-				// ret = new Literal(LiteralType.Integer, "uh");
+				{ ret = Reparsing.ReparseDecInt(decInt.GetText()); }
+				else if (hexInt is not null)
+				{ ret = Reparsing.ReparseHexInt(hexInt.GetText()); }
+				else if (octalInt is not null)
+				{ ret = Reparsing.ReparseOctalInt(octalInt.GetText()); }
+				else if (binaryInt is not null)
+				{ ret = Reparsing.ReparseBinaryInt(binaryInt.GetText()); }
 			}
 			else if (literalFractional is not null)
 			{
@@ -87,6 +87,8 @@ namespace BassaltCompiler.Syntactic
 			{
 				// TODO
 			}
+
+			Console.WriteLine(ret);
 
 			base.VisitLiteral(context);
 

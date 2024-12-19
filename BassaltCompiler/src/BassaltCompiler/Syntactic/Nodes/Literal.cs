@@ -1,4 +1,5 @@
 
+using System;
 using System.Collections.Generic;
 
 namespace BassaltCompiler.Syntactic.Nodes
@@ -52,12 +53,20 @@ namespace BassaltCompiler.Syntactic.Nodes
 
 			if (suffixStr is not null)
 			{
-				Suffix = suffixDict[suffixStr.ToLower()];
+				if (suffixDict.TryGetValue(suffixStr.ToLower(), out LiteralSuffix tryGetVal))
+				{ Suffix = tryGetVal; }
+				else
+				{ throw new ArgumentException("suffixStr was not valid."); }
 			}
 			else
 			{
 				Suffix = suffix;
 			}
+		}
+
+		public override string ToString()
+		{
+			return $"({Type}, {(IsNegative ? "-" : "+")}, {Val}, {Suffix})";
 		}
 	}
 }
