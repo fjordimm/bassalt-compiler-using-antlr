@@ -27,13 +27,13 @@ statementPrint
 // Literals
 
 literal
-	: literalBool
+	: literalBoolean
 	| literalInteger
 	| literalFractional
 	| literalString
 	;
 
-literalBool
+literalBoolean
 	: LiteralBool
 	;
 
