@@ -1,32 +1,54 @@
 
 using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.IO;
 using Antlr4.Runtime;
 using Antlr4.Runtime.Tree;
+using BassaltCompiler.ErrorHandling;
 using BassaltCompiler.Syntactic;
 
 namespace BassaltCompiler
 {
 	static class Compiler
 	{
-		public static void Compile(TextReader inFile, TextWriter outFile)
+		public static void Compile(IEnumerable<(string, TextReader)> inFiles, TextWriter outFile, TextWriter errorOut)
+		{
+			foreach ((string filename, TextReader reader) in inFiles)
+			{
+				Compile(filename, reader, outFile, errorOut);
+			}
+		}
+		
+		private static bool Compile(string inFilename, TextReader inFile, TextWriter outFile, TextWriter errorOut)
 		{
 			AntlrInputStream input = new AntlrInputStream(inFile);
 			BassaltLexer lexer = new BassaltLexer(input);
 			CommonTokenStream tokens = new CommonTokenStream(lexer);
 			BassaltParser parser = new BassaltParser(tokens);
 
+			parser.RemoveErrorListeners();
+			BassaltSyntaxErrorListener bassaltSyntaxErrorListener = new BassaltSyntaxErrorListener();
+			parser.AddErrorListener(bassaltSyntaxErrorListener);
+
 			// PrintAllTokens(lexer, tokens, parser);
 			// System.Environment.Exit(0);
 			
 			IParseTree parseTree = parser.program();
+			SyntaxVisitor syntaxVisitor = new SyntaxVisitor();
+			syntaxVisitor.Visit(parseTree);
+			if (bassaltSyntaxErrorListener.Errors.Count > 0)
+			{
+				bassaltSyntaxErrorListener.PrintErrors(inFilename, errorOut);
+				return false;
+			}
 
-			SyntaxVisitor visitor = new SyntaxVisitor();
-			visitor.Visit(parseTree);
-			SyntaxTree syntaxTree = visitor.GetSyntaxTree();
+			SyntaxTree syntaxTree = syntaxVisitor.GetSyntaxTree();
 
 			// GenerateIntermediateC generator = new GenerateIntermediateC(outFile);
 			// generator.Visit(tree);
+
+			return true;
 		}
 
 		private static void PrintAllTokens(BassaltLexer lexer, CommonTokenStream tokens, BassaltParser parser)

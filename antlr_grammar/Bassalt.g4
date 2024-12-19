@@ -50,6 +50,7 @@ literalInteger
 literalFractional
 	: LiteralPlainFrac
 	| LiteralScientificFrac
+	| LiteralScientificWholeNum
 	;
 
 literalString
@@ -82,87 +83,41 @@ Semi : ';' ;
 
 // Literals
 
-LiteralSuffix : 'c8' | 'c' | 'c32' | 'sb' | 's' | 'i' | 'l' | 'b' | 'us' | 'ui' | 'ul' | 'f' | 'd' | 'ii' | 'uii' | 'iii' | 'uiii' | 'r' | 't' ;
-
 LiteralBool
-	: ConstantBool
+	: 'true' | 'false'
 	;
 
 LiteralDecInt
-	: [-+] LiteralDecIntP
-	| LiteralDecIntP
-	;
-
-LiteralDecIntP
-	: ConstantPlainInt '_' LiteralSuffix
-	| ConstantPlainInt LiteralSuffix
-	| ConstantPlainInt
+	: [-+]? [0-9]+ ('_'? ('c8' | 'c' | 'c32' | 'sb' | 's' | 'i' | 'l' | 'b' | 'us' | 'ui' | 'ul' | 'f' | 'd' | 'ii' | 'uii' | 'iii' | 'uiii' | 'r' | 't'))?
 	;
 
 LiteralHexInt
-	: [-+] LiteralHexIntP
-	| LiteralHexIntP
-	;
-
-LiteralHexIntP
-	: '0' [xX] ConstantExtendedInt '_' LiteralSuffix
-	| '0' [xX] ConstantExtendedInt
+	: [-+]? '0' [xX] [0-9a-fA-F]+ ('_' ('c8' | 'c' | 'c32' | 'sb' | 's' | 'i' | 'l' | 'b' | 'us' | 'ui' | 'ul' | 'f' | 'd' | 'ii' | 'uii' | 'iii' | 'uiii' | 'r' | 't'))?
 	;
 
 LiteralOctalInt
-	: [-+] LiteralOctalIntP
-	| LiteralOctalIntP
-	;
-
-LiteralOctalIntP
-	: '0' [oO] ConstantExtendedInt '_' LiteralSuffix
-	| '0' [oO] ConstantExtendedInt
+	: [-+]? '0' [oO] [0-7]+ ('_'? ('c8' | 'c' | 'c32' | 'sb' | 's' | 'i' | 'l' | 'b' | 'us' | 'ui' | 'ul' | 'f' | 'd' | 'ii' | 'uii' | 'iii' | 'uiii' | 'r' | 't'))?
 	;
 
 LiteralBinaryInt
-	: [-+] LiteralBinaryIntP
-	| LiteralBinaryIntP
-	;
-
-LiteralBinaryIntP
-	: '0' [bB] ConstantExtendedInt '_' LiteralSuffix
-	| '0' [bB] ConstantExtendedInt
+	: [-+]? '0' [bB] [0-1]+ ('_'? ('c8' | 'c' | 'c32' | 'sb' | 's' | 'i' | 'l' | 'b' | 'us' | 'ui' | 'ul' | 'f' | 'd' | 'ii' | 'uii' | 'iii' | 'uiii' | 'r' | 't'))?
 	;
 
 LiteralPlainFrac
-	: [-+] LiteralPlainFracP
-	| LiteralPlainFracP
-	;
-
-LiteralPlainFracP
-	: ConstantPlainInt '.' ConstantPlainInt '_' LiteralSuffix
-	| ConstantPlainInt '.' ConstantPlainInt LiteralSuffix
-	| ConstantPlainInt '.' ConstantPlainInt
+	: [-+]? [0-9]+ '.' [0-9]+ ('_'? ('c8' | 'c' | 'c32' | 'sb' | 's' | 'i' | 'l' | 'b' | 'us' | 'ui' | 'ul' | 'f' | 'd' | 'ii' | 'uii' | 'iii' | 'uiii' | 'r' | 't'))?
 	;
 
 LiteralScientificFrac
-	: [-+] LiteralScientificFracP
-	| LiteralScientificFracP
+	: [-+]? [0-9]+ '.' [0-9]+ [eE] [-+]? [0-9]+ ('_'? ('c8' | 'c' | 'c32' | 'sb' | 's' | 'i' | 'l' | 'b' | 'us' | 'ui' | 'ul' | 'f' | 'd' | 'ii' | 'uii' | 'iii' | 'uiii' | 'r' | 't'))?
 	;
 
-LiteralScientificFracP
-	: LiteralScientificFracPP '_' LiteralSuffix
-	| LiteralScientificFracPP LiteralSuffix
-	| LiteralScientificFracPP
-	;
-
-LiteralScientificFracPP
-	: ConstantPlainInt '.' ConstantPlainInt [eE] [-+]? ConstantPlainInt
-	| ConstantPlainInt [eE] [-+]? ConstantPlainInt
+LiteralScientificWholeNum
+	: [-+]? [0-9]+ [eE] [-+]? [0-9]+ ('_'? ('c8' | 'c' | 'c32' | 'sb' | 's' | 'i' | 'l' | 'b' | 'us' | 'ui' | 'ul' | 'f' | 'd' | 'ii' | 'uii' | 'iii' | 'uiii' | 'r' | 't'))?
 	;
 
 LiteralChar : 'char________' ;
 LiteralRgba : 'rgba_________' ;
 LiteralDatetime : 'datetime____________' ;
-
-ConstantBool : 'true' | 'false' ;
-ConstantPlainInt : [0-9]+ ;
-ConstantExtendedInt : [0-9a-fA-F]+ ;
 
 
 // To be ignored

@@ -16,10 +16,12 @@ namespace BassaltCompiler
 		{
 			// System.Environment.Exit(1);
 
-			using TextReader inFile = File.OpenText(inFilePath);
+			(string, TextReader)[] inFiles = new (string, TextReader)[]
+			{ (inFilePath, File.OpenText(inFilePath)) };
+			
 			using TextWriter outFile = new StreamWriter(File.Open(outFilePath, FileMode.Create));
 
-			Compiler.Compile(inFile, outFile);
+			Compiler.Compile(inFiles, outFile, Console.Out);
 		}
 	}
 }
