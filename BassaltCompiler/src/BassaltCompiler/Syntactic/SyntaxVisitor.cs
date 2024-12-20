@@ -58,17 +58,11 @@ namespace BassaltCompiler.Syntactic
 
 		public override object VisitStatementPrint([NotNull] BassaltParser.StatementPrintContext context)
 		{
-			// Console.WriteLine($"ahhhhhh ::: {context.literal().literalInteger().GetText()}");
-			// outFile.WriteLine($"printf(\"%d\\n\", {context.ConstantDecInt().GetText()});");
-
-			List<object> thing = base.VisitStatementPrint(context) as List<object>;
-			Console.WriteLine($"thing: {thing}");
-			foreach (var a in thing)
-			{
-				Console.WriteLine($"  {a}");
-			}
-
-			// this.AggregateResult
+			List<object> childrenNodes = base.VisitStatementPrint(context) as List<object>;
+			
+			Console.WriteLine("children...");
+			foreach (object child in childrenNodes)
+			{ Console.WriteLine($"  {child}"); }
 
 			return null;
 		}
@@ -93,8 +87,6 @@ namespace BassaltCompiler.Syntactic
 				ITerminalNode octalInt = literalInteger.LiteralOctalInt();
 				ITerminalNode binaryInt = literalInteger.LiteralBinaryInt();
 				ITerminalNode charr = literalInteger.LiteralChar();
-				ITerminalNode rgba = literalInteger.LiteralRgba();
-				ITerminalNode datetime = literalInteger.LiteralDatetime();
 
 				if (decInt is not null)
 				{ ret = Reparsing.ReparseDecInt(decInt.GetText()); }
@@ -106,10 +98,6 @@ namespace BassaltCompiler.Syntactic
 				{ ret = Reparsing.ReparseBinaryInt(binaryInt.GetText()); }
 				else if (charr is not null)
 				{ /* TODO */ System.Environment.Exit(1); }
-				else if (rgba is not null)
-				{ /* TODO */ }
-				else if (datetime is not null)
-				{ /* TODO */ }
 			}
 			else if (literalFractional is not null)
 			{

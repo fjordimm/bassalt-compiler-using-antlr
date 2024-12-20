@@ -8,12 +8,12 @@ program
 	;
 
 statementList
-	: LeftBrace statement* RightBrace
+	: '{' statement* '}'
 	| statement
 	;
 
 statement
-	: statementNoSemi Semi
+	: statementNoSemi ';'
 	;
 
 statementNoSemi
@@ -21,7 +21,7 @@ statementNoSemi
 	;
 
 statementPrint
-	: Kprint literal literal
+	: Kprint literal
 	;
 
 // Literals
@@ -43,8 +43,6 @@ literalInteger
 	| LiteralOctalInt
 	| LiteralBinaryInt
 	| LiteralChar
-	| LiteralRgba
-	| LiteralDatetime
 	;
 
 literalFractional
@@ -65,20 +63,6 @@ literalString
 Kprint : 'print' ;
 
 Identifier : [a-zA-Z_][a-zA-Z_0-9]* ;
-
-// Punctuation and Operators
-
-LeftParen : '(' ;
-RightParen : ')' ;
-
-LeftBracket : '[' ;
-RightBracket : ']' ;
-
-LeftBrace : '{' ;
-RightBrace : '}' ;
-
-Assign : '=' ;
-Semi : ';' ;
 
 // Literals
 
@@ -115,16 +99,23 @@ LiteralScientificWholeNum
 	;
 
 LiteralChar
-	: '\'' ~['\\] '\''
-	| '\'' '\\' . '\''
+	: '\'' (~['\\] | '\\' .)+ '\''
 	;
-
-LiteralRgba : 'rgba_________' ;
-LiteralDatetime : 'datetime____________' ;
-
 
 // Other
 
-Whitespace : [ \t\r\n]+ -> skip ;
+Whitespace
+	: [ \t\r\n]+ -> skip
+	;
 
-Invalid : . ;
+BlockComment
+	: '/*' .*? '*/' -> skip
+	;
+
+LineComment
+	: '//' ~[\r\n]* -> skip
+	;
+
+Invalid
+	: .
+	;
