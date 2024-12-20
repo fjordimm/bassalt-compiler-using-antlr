@@ -77,7 +77,6 @@ RightBracket : ']' ;
 LeftBrace : '{' ;
 RightBrace : '}' ;
 
-Blign : '=2' ;
 Assign : '=' ;
 Semi : ';' ;
 
@@ -115,11 +114,17 @@ LiteralScientificWholeNum
 	: [-+]? [0-9]+ [eE] [-+]? [0-9]+ ('_'? ('c8' | 'c' | 'c32' | 'sb' | 's' | 'i' | 'l' | 'b' | 'us' | 'ui' | 'ul' | 'f' | 'd' | 'ii' | 'uii' | 'iii' | 'uiii' | 'r' | 't'))?
 	;
 
-LiteralChar : 'char________' ;
+LiteralChar
+	: '\'' ~['\\] '\''
+	| '\'' '\\' . '\''
+	;
+
 LiteralRgba : 'rgba_________' ;
 LiteralDatetime : 'datetime____________' ;
 
 
-// To be ignored
+// Other
 
 Whitespace : [ \t\r\n]+ -> skip ;
+
+Invalid : . ;

@@ -98,5 +98,65 @@ namespace BassaltCompiler.Syntactic
 
 			return new Literal(LiteralType.Integer, value, isNegative: isNegative, suffixStr: suffixStr);
 		}
+
+		public static Literal ReparsePlainFrac(string input)
+		{
+			bool isNegative = false;
+			string value = null;
+			string suffixStr = null;
+
+			Regex regex = new Regex(@"([-+]?)([0-9]+\.[0-9]+)(?:_?([a-zA-Z0-9]))?");
+			Match match = regex.Match(input);
+			if (!match.Success)
+			{ throw new ArgumentException("Input must be valid."); }
+			else
+			{
+				isNegative = match.Groups[1].Value == "-";
+				value = match.Groups[2].Value;
+				suffixStr = match.Groups[3].Value;
+			}
+
+			return new Literal(LiteralType.Fractional, value, isNegative: isNegative, suffixStr: suffixStr);
+		}
+
+		public static Literal ReparseScientificFrac(string input)
+		{
+			bool isNegative = false;
+			string value = null;
+			string suffixStr = null;
+
+			Regex regex = new Regex(@"([-+]?)([0-9]+\.[0-9]+[eE][-+]?[0-9]+)(?:_?([a-zA-Z0-9]))?");
+			Match match = regex.Match(input);
+			if (!match.Success)
+			{ throw new ArgumentException("Input must be valid."); }
+			else
+			{
+				isNegative = match.Groups[1].Value == "-";
+				value = match.Groups[2].Value;
+				suffixStr = match.Groups[3].Value;
+			}
+
+			return new Literal(LiteralType.Fractional, value, isNegative: isNegative, suffixStr: suffixStr);
+		}
+
+		public static Literal ReparseScientificWholeNum(string input)
+		{
+			bool isNegative = false;
+			string value = null;
+			string suffixStr = null;
+
+			Regex regex = new Regex(@"([-+]?)([0-9]+[eE][-+]?[0-9]+)(?:_?([a-zA-Z0-9]))?");
+			Match match = regex.Match(input);
+			if (!match.Success)
+			{ throw new ArgumentException("Input must be valid."); }
+			else
+			{
+				isNegative = match.Groups[1].Value == "-";
+				value = match.Groups[2].Value;
+				suffixStr = match.Groups[3].Value;
+			}
+
+			return new Literal(LiteralType.Fractional, value, isNegative: isNegative, suffixStr: suffixStr);
+		}
 	}
 }

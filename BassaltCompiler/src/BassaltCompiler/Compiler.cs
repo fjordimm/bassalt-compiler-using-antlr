@@ -27,8 +27,10 @@ namespace BassaltCompiler
 			CommonTokenStream tokens = new CommonTokenStream(lexer);
 			BassaltParser parser = new BassaltParser(tokens);
 
+			// lexer.RemoveErrorListeners();
 			parser.RemoveErrorListeners();
 			BassaltSyntaxErrorListener bassaltSyntaxErrorListener = new BassaltSyntaxErrorListener();
+			// lexer.AddErrorListener(bassaltSyntaxErrorListener);
 			parser.AddErrorListener(bassaltSyntaxErrorListener);
 
 			// PrintAllTokens(lexer, tokens, parser);
@@ -44,9 +46,6 @@ namespace BassaltCompiler
 			}
 
 			SyntaxTree syntaxTree = syntaxVisitor.GetSyntaxTree();
-
-			// GenerateIntermediateC generator = new GenerateIntermediateC(outFile);
-			// generator.Visit(tree);
 
 			return true;
 		}
