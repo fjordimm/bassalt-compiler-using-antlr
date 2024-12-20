@@ -66,7 +66,7 @@ namespace BassaltCompiler.Syntactic.Nodes
 
 		public override string ToString()
 		{
-			return $"({Type}, {(IsNegative ? "-" : "+")}, {Val}, {Suffix})";
+			return $"Literal({Type}, {(IsNegative ? "-" : "+")}, {Val}, {Suffix})";
 		}
 	}
 }

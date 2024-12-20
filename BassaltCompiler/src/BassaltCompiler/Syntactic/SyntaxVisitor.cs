@@ -44,6 +44,11 @@ namespace BassaltCompiler.Syntactic
 			}
 		}
 
+		public override string VisitTerminal(ITerminalNode node)
+		{
+			return $"Terminal({node.GetText()})";
+		}
+
 		public override object VisitProgram([NotNull] BassaltParser.ProgramContext context)
 		{
 			// outFile.WriteLine("#include <stdio.h>");
@@ -121,15 +126,10 @@ namespace BassaltCompiler.Syntactic
 				{ ret = Reparsing.ReparseString(str.GetText(), bassaltSyntaxErrorHandler, context.Start.Line, context.Start.Column); }
 			}
 
-			// Console.WriteLine(ret);
-
 			base.VisitLiteral(context);
 
 			if (ret is null)
-			{
-				// errorHandler.Add(context.Start.Line, context.Start.Column, "");
-				// return null;
-			}
+			{ throw new ArgumentException("This should not happen."); }
 
 			return ret;
 		}
