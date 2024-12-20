@@ -146,7 +146,7 @@ namespace BassaltCompiler.Syntactic
 			}
 		}
 
-		[GeneratedRegex(@"'((?:[^'\\]|\\.)+)'(?:_?([a-zA-Z0-9]))?")]
+		[GeneratedRegex(@"'((?:[^'\\]|\\.)*)'(?:_?([a-zA-Z0-9]))?")]
 		private static partial Regex CharRegex();
 
 		[GeneratedRegex(@"\\u([0-9a-fA-F]{4})")]

@@ -99,7 +99,7 @@ LiteralScientificWholeNum
 	;
 
 LiteralChar
-	: '\'' (~['\\] | '\\' .)+ '\''
+	: '\'' (~['\\] | '\\' .)* '\''
 	;
 
 // Other
