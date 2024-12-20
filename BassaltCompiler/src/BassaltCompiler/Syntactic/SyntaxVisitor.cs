@@ -46,7 +46,7 @@ namespace BassaltCompiler.Syntactic
 
 		public override string VisitTerminal(ITerminalNode node)
 		{
-			return $"Terminal({node.GetText()})";
+			return $"Terminal{{{node.GetText()}}}";
 		}
 
 		public override object VisitProgram([NotNull] BassaltParser.ProgramContext context)

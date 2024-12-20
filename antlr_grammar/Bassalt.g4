@@ -21,7 +21,7 @@ statementNoSemi
 	;
 
 statementPrint
-	: Kprint literal
+	: KPrint literal
 	;
 
 // Literals
@@ -60,9 +60,139 @@ literalString
 
 // Keywords
 
-Kprint : 'print' ;
+KPrint: 'print' ; // temporary
 
-Identifier : [a-zA-Z_][a-zA-Z_0-9]* ;
+KIf: 'if' ;
+KElse: 'else' ;
+KLoop: 'loop' ;
+KWhile: 'while' ;
+KDo: 'do' ;
+KFor: 'for' ;
+KBreak: 'break' ;
+KContinue: 'continue' ;
+KIn: 'in' ;
+KSwitch: 'switch' ;
+KCase: 'case' ;
+KReturn: 'return' ;
+
+KUsing: 'using' ;
+KAssert: 'assert' ;
+KThrow: 'throw' ;
+KSizeof: 'sizeof' ;
+KTypeof: 'typeof' ;
+KNew: 'new' ;
+KRnew: 'rnew' ;
+KSnew: 'snew' ;
+KRrealloc: 'rrealloc' ;
+KRfree: 'rfree' ;
+KCede: 'cede' ;
+KBitcast: 'bitcast' ;
+
+KNamespace: 'namespace' ;
+KModule: 'module' ;
+KInterface: 'interface' ;
+KClass: 'class' ;
+KStruct: 'struct' ;
+KEnum: 'enum' ;
+KFace: 'face' ;
+KSingleton: 'singleton' ;
+
+KPublic: 'public' ;
+KPrivate: 'private' ;
+KProtected: 'protected' ;
+KPassable: 'passable' ;
+KVirtual: 'virtual' ;
+KImplement: 'implement' ;
+KOverride: 'override' ;
+KOperator: 'operator' ;
+KUnsafe: 'unsafe' ;
+KExtern: 'extern' ;
+KConst: 'const' ;
+KInline: 'inline' ;
+KOwner: 'owner' ;
+KNamed: 'named' ;
+KRef: 'ref' ;
+KInref: 'inref' ;
+KOutref: 'outref' ;
+
+KThis: 'this' ;
+KBase: 'base' ;
+KStdout: 'stdout' ;
+KStdin: 'stdin' ;
+KStderr: 'stderr' ;
+KPlaceholder: 'placeholder' ;
+
+KTrue: 'true' ;
+KFalse: 'false' ;
+KNull: 'null' ;
+
+KVoid: 'void' ;
+KFunc: 'func' ;
+KSptr: 'sptr' ;
+KWsptr: 'wsptr' ;
+
+KBool: 'bool' ;
+KChar: 'char' ;
+KChar8: 'char8' ;
+KChar16: 'char16' ;
+KSbyte: 'sbyte' ;
+KByte: 'byte' ;
+KShort: 'short' ;
+KUshort: 'ushort' ;
+KInt: 'int' ;
+KUint: 'uint' ;
+KLong: 'long' ;
+KUlong: 'ulong' ;
+KFloat: 'float' ;
+KDouble: 'double' ;
+
+KString: 'string' ;
+KInt128: 'int128' ;
+KUint128: 'uint128' ;
+KInt256: 'int256' ;
+KUint256: 'uint256' ;
+KFloat128: 'float128' ;
+KFloat256: 'float256' ;
+
+Identifier: [a-zA-Z_][a-zA-Z_0-9]* ;
+
+// Operators
+
+// Problems with operator ambiguity:
+///// &= vs & =
+// maybe &= = vs & ==
+// != vs ! =
+///// >= vs a<a> =
+
+// LParen: '(' ;
+// RParen: ')' ;
+// LBracket: '[' ;
+// RBracket: ']' ;
+// LBrace: '{' ;
+// RBrace: '}' ;
+
+// Plus: '+' ;
+// Minus: '-' ;
+// Star: '*' ;
+// Div: '/' ;
+// Percent: '%' ;
+// Caret: '^' ;
+// And: '&' ;
+// Or: '|' ;
+// Tilde: '~' ;
+// Bang: '!' ;
+// Assign: '=' ;
+// Less: '<' ;
+// Greater: '>' ;
+
+// PlusAssign: '+=' ;
+// MinusAssign: '-=' ;
+// StarAssign: '*=' ;
+// DivAssign: '/=' ;
+// PercentAssign: '%=' ;
+// CaretAssign: '^=' ;
+// AndAssign: '&=' ;
+// OrAssign: '|=' ;
 
 // Literals
 
