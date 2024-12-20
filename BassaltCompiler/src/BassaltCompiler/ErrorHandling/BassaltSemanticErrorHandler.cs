@@ -17,6 +17,11 @@ namespace BassaltCompiler.ErrorHandling
 			_semanticErrors = new List<BassaltSemanticError>();
 		}
 
+		public void Add(int line, int charPosition, string message)
+		{
+			_semanticErrors.Add(new BassaltSemanticError(line, charPosition, message));
+		}
+
 		public void PrintErrors(string filename, TextWriter errorOut)
 		{
 			errorOut.WriteLine($"===== BASSALT SEMANTIC ERRORS ===== in '{filename}'");

@@ -21,7 +21,7 @@ statementNoSemi
 	;
 
 statementPrint
-	: Kprint literal
+	: Kprint literal literal
 	;
 
 // Literals

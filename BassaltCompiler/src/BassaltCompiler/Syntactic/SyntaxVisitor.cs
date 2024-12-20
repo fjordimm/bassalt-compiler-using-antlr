@@ -1,7 +1,11 @@
 
 using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.Reflection;
 using Antlr4.Runtime.Misc;
 using Antlr4.Runtime.Tree;
+using BassaltCompiler.ErrorHandling;
 using BassaltCompiler.Syntactic.Nodes;
 
 namespace BassaltCompiler.Syntactic
@@ -10,9 +14,12 @@ namespace BassaltCompiler.Syntactic
 	{
 		private readonly SyntaxTree syntaxTree;
 
+		private readonly BassaltSemanticErrorHandler errorHandler;
+
 		public SyntaxVisitor()
 		{
 			syntaxTree = new SyntaxTree();
+			errorHandler = new BassaltSemanticErrorHandler();
 		}
 
 		public SyntaxTree GetSyntaxTree()
@@ -20,11 +27,21 @@ namespace BassaltCompiler.Syntactic
 			return syntaxTree;
 		}
 
-		// public override object VisitInvalid([NotNull] BassaltParser.InvalidContext context)
-		// {
-		// 	Console.WriteLine("AAAAHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHh");
-		// 	return base.VisitInvalid(context);
-		// }
+		protected override List<object> AggregateResult(object aggregate, object nextResult)
+		{
+			if (aggregate is null)
+			{
+				return new List<object>{ nextResult };
+			}
+			else
+			{
+				List<object> aggregateR = aggregate as List<object>;
+				Debug.Assert(aggregateR is not null);
+
+				aggregateR.Add(nextResult);
+				return aggregateR;
+			}
+		}
 
 		public override object VisitProgram([NotNull] BassaltParser.ProgramContext context)
 		{
@@ -41,14 +58,17 @@ namespace BassaltCompiler.Syntactic
 
 		public override object VisitStatementPrint([NotNull] BassaltParser.StatementPrintContext context)
 		{
-			
-
-
-
-			Console.WriteLine($"ahhhhhh ::: {context.literal().literalInteger().GetText()}");
+			// Console.WriteLine($"ahhhhhh ::: {context.literal().literalInteger().GetText()}");
 			// outFile.WriteLine($"printf(\"%d\\n\", {context.ConstantDecInt().GetText()});");
 
-			base.VisitStatementPrint(context);
+			List<object> thing = base.VisitStatementPrint(context) as List<object>;
+			Console.WriteLine($"thing: {thing}");
+			foreach (var a in thing)
+			{
+				Console.WriteLine($"  {a}");
+			}
+
+			// this.AggregateResult
 
 			return null;
 		}
@@ -109,9 +129,15 @@ namespace BassaltCompiler.Syntactic
 				// TODO
 			}
 
-			Console.WriteLine(ret);
+			// Console.WriteLine(ret);
 
 			base.VisitLiteral(context);
+
+			if (ret is null)
+			{
+				// errorHandler.Add(context.Start.Line, context.Start.Column, "");
+				// return null;
+			}
 
 			return ret;
 		}
