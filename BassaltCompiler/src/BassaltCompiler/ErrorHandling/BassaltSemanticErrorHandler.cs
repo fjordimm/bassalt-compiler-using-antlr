@@ -24,10 +24,10 @@ namespace BassaltCompiler.ErrorHandling
 
 		public void PrintErrors(string filename, TextWriter errorOut)
 		{
-			errorOut.WriteLine($"===== BASSALT SEMANTIC ERRORS ===== in '{filename}'");
+			errorOut.WriteLine($"===== BASSALT SEMANTIC ERRORS ===== in '{filename}':");
 			foreach (BassaltSemanticError semanticError in _semanticErrors)
 			{
-				errorOut.WriteLine($"  ({semanticError.Line}, {semanticError.CharPosition}): {semanticError.Message}.");
+				errorOut.WriteLine($"  ({semanticError.Line}, {semanticError.CharPosition}): {semanticError.Message}");
 			}
 		}
 	}

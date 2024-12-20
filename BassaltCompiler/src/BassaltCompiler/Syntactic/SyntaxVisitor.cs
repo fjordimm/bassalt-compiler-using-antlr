@@ -13,13 +13,14 @@ namespace BassaltCompiler.Syntactic
 	class SyntaxVisitor : BassaltBaseVisitor<object>
 	{
 		private readonly SyntaxTree syntaxTree;
+		private readonly BassaltSyntaxErrorHandler bassaltSyntaxErrorHandler;
+		private readonly BassaltSemanticErrorHandler bassaltSemanticErrorHandler;
 
-		private readonly BassaltSemanticErrorHandler errorHandler;
-
-		public SyntaxVisitor()
+		public SyntaxVisitor(BassaltSyntaxErrorHandler syntaxErrorHandler, BassaltSemanticErrorHandler semanticErrorHandler)
 		{
 			syntaxTree = new SyntaxTree();
-			errorHandler = new BassaltSemanticErrorHandler();
+			bassaltSyntaxErrorHandler = syntaxErrorHandler;
+			bassaltSemanticErrorHandler = semanticErrorHandler;
 		}
 
 		public SyntaxTree GetSyntaxTree()
@@ -89,15 +90,15 @@ namespace BassaltCompiler.Syntactic
 				ITerminalNode charr = literalInteger.LiteralChar();
 
 				if (decInt is not null)
-				{ ret = Reparsing.ReparseDecInt(decInt.GetText()); }
+				{ ret = Reparsing.ReparseDecInt(decInt.GetText(), bassaltSyntaxErrorHandler, context.Start.Line, context.Start.Column); }
 				else if (hexInt is not null)
-				{ ret = Reparsing.ReparseHexInt(hexInt.GetText()); }
+				{ ret = Reparsing.ReparseHexInt(hexInt.GetText(), bassaltSyntaxErrorHandler, context.Start.Line, context.Start.Column); }
 				else if (octalInt is not null)
-				{ ret = Reparsing.ReparseOctalInt(octalInt.GetText()); }
+				{ ret = Reparsing.ReparseOctalInt(octalInt.GetText(), bassaltSyntaxErrorHandler, context.Start.Line, context.Start.Column); }
 				else if (binaryInt is not null)
-				{ ret = Reparsing.ReparseBinaryInt(binaryInt.GetText()); }
+				{ ret = Reparsing.ReparseBinaryInt(binaryInt.GetText(), bassaltSyntaxErrorHandler, context.Start.Line, context.Start.Column); }
 				else if (charr is not null)
-				{ /* TODO */ System.Environment.Exit(1); }
+				{ ret = Reparsing.ReparseChar(charr.GetText(), bassaltSyntaxErrorHandler, context.Start.Line, context.Start.Column); }
 			}
 			else if (literalFractional is not null)
 			{
@@ -106,11 +107,11 @@ namespace BassaltCompiler.Syntactic
 				ITerminalNode scientificWholeNum = literalFractional.LiteralScientificWholeNum();
 
 				if (plainFrac is not null)
-				{ ret = Reparsing.ReparsePlainFrac(plainFrac.GetText()); }
+				{ ret = Reparsing.ReparsePlainFrac(plainFrac.GetText(), bassaltSyntaxErrorHandler, context.Start.Line, context.Start.Column); }
 				else if (scientificFrac is not null)
-				{ ret = Reparsing.ReparseScientificFrac(scientificFrac.GetText()); }
+				{ ret = Reparsing.ReparseScientificFrac(scientificFrac.GetText(), bassaltSyntaxErrorHandler, context.Start.Line, context.Start.Column); }
 				else if (scientificWholeNum is not null)
-				{ ret = Reparsing.ReparseScientificWholeNum(scientificWholeNum.GetText()); }
+				{ ret = Reparsing.ReparseScientificWholeNum(scientificWholeNum.GetText(), bassaltSyntaxErrorHandler, context.Start.Line, context.Start.Column); }
 			}
 			else if (literalString is not null)
 			{

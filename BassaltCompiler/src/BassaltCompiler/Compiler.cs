@@ -22,26 +22,22 @@ namespace BassaltCompiler
 		
 		private static bool Compile(string inFilename, TextReader inFile, TextWriter outFile, TextWriter errorOut)
 		{
+			BassaltSyntaxErrorHandler bassaltSyntaxErrorHandler = new BassaltSyntaxErrorHandler();
+			BassaltSemanticErrorHandler bassaltSemanticErrorHandler = new BassaltSemanticErrorHandler();
+
 			AntlrInputStream input = new AntlrInputStream(inFile);
 			BassaltLexer lexer = new BassaltLexer(input);
 			CommonTokenStream tokens = new CommonTokenStream(lexer);
 			BassaltParser parser = new BassaltParser(tokens);
-
-			// lexer.RemoveErrorListeners();
 			parser.RemoveErrorListeners();
-			BassaltSyntaxErrorListener bassaltSyntaxErrorListener = new BassaltSyntaxErrorListener();
-			// lexer.AddErrorListener(bassaltSyntaxErrorListener);
-			parser.AddErrorListener(bassaltSyntaxErrorListener);
-
-			// PrintAllTokens(lexer, tokens, parser);
-			// System.Environment.Exit(0);
+			parser.AddErrorListener(new BassaltSyntaxErrorListener(bassaltSyntaxErrorHandler));
 			
+			SyntaxVisitor syntaxVisitor = new SyntaxVisitor(bassaltSyntaxErrorHandler, bassaltSemanticErrorHandler);
 			IParseTree parseTree = parser.program();
-			SyntaxVisitor syntaxVisitor = new SyntaxVisitor();
 			syntaxVisitor.Visit(parseTree);
-			if (bassaltSyntaxErrorListener.Errors.Count > 0)
+			if (bassaltSyntaxErrorHandler.Errors.Count > 0)
 			{
-				bassaltSyntaxErrorListener.PrintErrors(inFilename, errorOut);
+				bassaltSyntaxErrorHandler.PrintErrors(inFilename, errorOut);
 				return false;
 			}
 
