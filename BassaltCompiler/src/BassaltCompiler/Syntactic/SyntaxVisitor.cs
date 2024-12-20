@@ -79,15 +79,15 @@ namespace BassaltCompiler.Syntactic
 
 			if (literalBoolean is not null)
 			{
-				ret = new Literal(LiteralType.Boolean, literalBoolean.LiteralBool().GetText());
+				ret = new Literal(LiteralType.Boolean, literalBoolean.BoolLiteral().GetText());
 			}
 			else if (literalInteger is not null)
 			{
-				ITerminalNode decInt = literalInteger.LiteralDecInt();
-				ITerminalNode hexInt = literalInteger.LiteralHexInt();
-				ITerminalNode octalInt = literalInteger.LiteralOctalInt();
-				ITerminalNode binaryInt = literalInteger.LiteralBinaryInt();
-				ITerminalNode charr = literalInteger.LiteralChar();
+				ITerminalNode decInt = literalInteger.DecIntLiteral();
+				ITerminalNode hexInt = literalInteger.HexIntLiteral();
+				ITerminalNode octalInt = literalInteger.OctalIntLiteral();
+				ITerminalNode binaryInt = literalInteger.BinaryIntLiteral();
+				ITerminalNode charr = literalInteger.CharLiteral();
 
 				if (decInt is not null)
 				{ ret = Reparsing.ReparseDecInt(decInt.GetText(), bassaltSyntaxErrorHandler, context.Start.Line, context.Start.Column); }
@@ -102,9 +102,9 @@ namespace BassaltCompiler.Syntactic
 			}
 			else if (literalFractional is not null)
 			{
-				ITerminalNode plainFrac = literalFractional.LiteralPlainFrac();
-				ITerminalNode scientificFrac = literalFractional.LiteralScientificFrac();
-				ITerminalNode scientificWholeNum = literalFractional.LiteralScientificWholeNum();
+				ITerminalNode plainFrac = literalFractional.PlainFracLiteral();
+				ITerminalNode scientificFrac = literalFractional.ScientificFracLiteral();
+				ITerminalNode scientificWholeNum = literalFractional.ScientificWholeNumLiteral();
 
 				if (plainFrac is not null)
 				{ ret = Reparsing.ReparsePlainFrac(plainFrac.GetText(), bassaltSyntaxErrorHandler, context.Start.Line, context.Start.Column); }
@@ -115,7 +115,10 @@ namespace BassaltCompiler.Syntactic
 			}
 			else if (literalString is not null)
 			{
-				// TODO
+				ITerminalNode str = literalString.StringLiteral();
+
+				if (str is not null)
+				{ ret = Reparsing.ReparseString(str.GetText(), bassaltSyntaxErrorHandler, context.Start.Line, context.Start.Column); }
 			}
 
 			// Console.WriteLine(ret);

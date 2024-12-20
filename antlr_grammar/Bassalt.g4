@@ -34,25 +34,25 @@ literal
 	;
 
 literalBoolean
-	: LiteralBool
+	: BoolLiteral
 	;
 
 literalInteger
-	: LiteralDecInt
-	| LiteralHexInt
-	| LiteralOctalInt
-	| LiteralBinaryInt
-	| LiteralChar
+	: DecIntLiteral
+	| HexIntLiteral
+	| OctalIntLiteral
+	| BinaryIntLiteral
+	| CharLiteral
 	;
 
 literalFractional
-	: LiteralPlainFrac
-	| LiteralScientificFrac
-	| LiteralScientificWholeNum
+	: PlainFracLiteral
+	| ScientificFracLiteral
+	| ScientificWholeNumLiteral
 	;
 
 literalString
-	: 'string____________'
+	: StringLiteral
 	;
 
 
@@ -66,40 +66,44 @@ Identifier : [a-zA-Z_][a-zA-Z_0-9]* ;
 
 // Literals
 
-LiteralBool
+BoolLiteral
 	: 'true' | 'false'
 	;
 
-LiteralDecInt
+DecIntLiteral
 	: [-+]? [0-9]+ ('_'? ('c8' | 'c' | 'c32' | 'sb' | 's' | 'i' | 'l' | 'b' | 'us' | 'ui' | 'ul' | 'f' | 'd' | 'ii' | 'uii' | 'iii' | 'uiii' | 'r' | 't'))?
 	;
 
-LiteralHexInt
+HexIntLiteral
 	: [-+]? '0' [xX] [0-9a-fA-F]+ ('_' ('c8' | 'c' | 'c32' | 'sb' | 's' | 'i' | 'l' | 'b' | 'us' | 'ui' | 'ul' | 'f' | 'd' | 'ii' | 'uii' | 'iii' | 'uiii' | 'r' | 't'))?
 	;
 
-LiteralOctalInt
+OctalIntLiteral
 	: [-+]? '0' [oO] [0-7]+ ('_'? ('c8' | 'c' | 'c32' | 'sb' | 's' | 'i' | 'l' | 'b' | 'us' | 'ui' | 'ul' | 'f' | 'd' | 'ii' | 'uii' | 'iii' | 'uiii' | 'r' | 't'))?
 	;
 
-LiteralBinaryInt
+BinaryIntLiteral
 	: [-+]? '0' [bB] [0-1]+ ('_'? ('c8' | 'c' | 'c32' | 'sb' | 's' | 'i' | 'l' | 'b' | 'us' | 'ui' | 'ul' | 'f' | 'd' | 'ii' | 'uii' | 'iii' | 'uiii' | 'r' | 't'))?
 	;
 
-LiteralPlainFrac
+PlainFracLiteral
 	: [-+]? [0-9]+ '.' [0-9]+ ('_'? ('c8' | 'c' | 'c32' | 'sb' | 's' | 'i' | 'l' | 'b' | 'us' | 'ui' | 'ul' | 'f' | 'd' | 'ii' | 'uii' | 'iii' | 'uiii' | 'r' | 't'))?
 	;
 
-LiteralScientificFrac
+ScientificFracLiteral
 	: [-+]? [0-9]+ '.' [0-9]+ [eE] [-+]? [0-9]+ ('_'? ('c8' | 'c' | 'c32' | 'sb' | 's' | 'i' | 'l' | 'b' | 'us' | 'ui' | 'ul' | 'f' | 'd' | 'ii' | 'uii' | 'iii' | 'uiii' | 'r' | 't'))?
 	;
 
-LiteralScientificWholeNum
+ScientificWholeNumLiteral
 	: [-+]? [0-9]+ [eE] [-+]? [0-9]+ ('_'? ('c8' | 'c' | 'c32' | 'sb' | 's' | 'i' | 'l' | 'b' | 'us' | 'ui' | 'ul' | 'f' | 'd' | 'ii' | 'uii' | 'iii' | 'uiii' | 'r' | 't'))?
 	;
 
-LiteralChar
+CharLiteral
 	: '\'' (~['\\] | '\\' .)* '\''
+	;
+
+StringLiteral
+	: '"' (~["\\] | '\\' .)* '"'
 	;
 
 // Other

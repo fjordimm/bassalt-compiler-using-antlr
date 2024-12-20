@@ -222,5 +222,21 @@ namespace BassaltCompiler.Syntactic
 				return new Literal(LiteralType.Integer, value, suffixStr: suffixStr);
 			}
 		}
+
+		[GeneratedRegex(@"""((?:[^""\\]|\\.)*)""")]
+		private static partial Regex StringRegex();
+
+		public static Literal ReparseString(string input, BassaltSyntaxErrorHandler errorHandler, int errorLine, int errorCharPos)
+		{
+			Match match = StringRegex().Match(input);
+			if (!match.Success)
+			{ throw new ArgumentException("Input must be valid."); }
+			else
+			{
+				string value = match.Groups[1].Value;
+				
+				return new Literal(LiteralType.String, value);
+			}
+		}
 	}
 }
