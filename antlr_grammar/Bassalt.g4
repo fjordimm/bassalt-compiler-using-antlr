@@ -34,7 +34,7 @@ literal
 	;
 
 literalBoolean
-	: BoolLiteral
+	: KTrue | KFalse
 	;
 
 literalInteger
@@ -154,6 +154,8 @@ KUint256: 'uint256' ;
 KFloat128: 'float128' ;
 KFloat256: 'float256' ;
 
+// Identifiers
+
 Identifier: [a-zA-Z_][a-zA-Z_0-9]* ;
 
 // Operators
@@ -195,10 +197,6 @@ Identifier: [a-zA-Z_][a-zA-Z_0-9]* ;
 // OrAssign: '|=' ;
 
 // Literals
-
-BoolLiteral
-	: 'true' | 'false'
-	;
 
 DecIntLiteral
 	: [-+]? [0-9]+ ('_'? ('c8' | 'c' | 'c32' | 'sb' | 's' | 'i' | 'l' | 'b' | 'us' | 'ui' | 'ul' | 'f' | 'd' | 'ii' | 'uii' | 'iii' | 'uiii' | 'r' | 't'))?

@@ -84,7 +84,7 @@ namespace BassaltCompiler.Syntactic
 
 			if (literalBoolean is not null)
 			{
-				ret = new Literal(LiteralType.Boolean, literalBoolean.BoolLiteral().GetText());
+				ret = new Literal(LiteralType.Boolean, literalBoolean.GetText());
 			}
 			else if (literalInteger is not null)
 			{
