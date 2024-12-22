@@ -3,6 +3,8 @@ grammar Bassalt;
 
 ///// Rules /////
 
+// Main
+
 program
 	: statementList
 	;
@@ -22,6 +24,145 @@ statementNoSemi
 
 statementPrint
 	: KPrint literal
+	;
+
+// TODO
+argumentList
+	: Identifier
+	;
+
+// TODO
+typename
+	: Identifier
+	;
+
+// Expressions
+
+exprList
+	: expr? (',' expr)*
+	;
+
+expr
+	: Identifier
+	| literal
+	| '(' expr ')'
+	;
+
+exprLambda
+	: '(' argumentList ')' '->' '{' statementList '}'
+	| exprConditional
+	;
+
+exprConditional
+	: exprOr '?' expr ':' exprConditional
+	| exprOr
+	;
+
+exprOr
+	: exprOr '||' exprAnd
+	| exprAnd
+	;
+
+exprAnd
+	: exprAnd '&&' exprBitOr
+	| exprBitOr
+	;
+
+exprBitOr
+	: exprBitOr '|' exprBitXor
+	| exprBitXor
+	;
+
+exprBitXor
+	: exprBitXor '^' exprBitAnd
+	| exprBitAnd
+	;
+
+exprBitAnd
+	: exprBitAnd '&' exprEquality
+	| exprEquality
+	;
+
+exprEquality
+	: exprEquality '==' exprComparison
+	| exprEquality '!=' exprComparison
+	| exprComparison
+	;
+
+exprComparison
+	: exprComparison '<' exprBitshift
+	| exprComparison '>' exprBitshift
+	| exprComparison '<=' exprBitshift
+	| exprComparison '>=' exprBitshift
+	| exprBitshift
+	;
+
+exprBitshift
+	: exprBitshift '<<' exprSum
+	| exprBitshift '>>' exprSum
+	| exprBitshift '<<<' exprSum
+	| exprBitshift '>>>' exprSum
+	| exprSum
+	;
+
+exprSum
+	: exprSum '+' exprProduct
+	| exprSum '-' exprProduct
+	| exprProduct
+	;
+
+exprProduct
+	: exprProduct '*' exprUnaryPrefix
+	| exprProduct '/' exprUnaryPrefix
+	| exprProduct '%' exprUnaryPrefix
+	| exprUnaryPrefix
+	;
+
+exprUnaryPrefix
+	: '+' exprUnaryPrefix
+	| '-' exprUnaryPrefix
+	| '!' exprUnaryPrefix
+	| '~' exprUnaryPrefix
+	| '%' exprUnaryPrefix
+	| '%' '<' typename '>' exprUnaryPrefix
+	| KRfree exprUnaryPrefix
+	| KCede exprUnaryPrefix
+	| KRef exprUnaryPrefix
+	| KInref exprUnaryPrefix
+	| KOutref exprUnaryPrefix
+	| exprUnarySuffix
+	;
+
+exprUnarySuffix
+	: exprUnarySuffix '++'
+	| exprUnarySuffix '--'
+	| exprUnarySuffix '(' exprList ')'
+	| exprUnarySuffix '[' exprList ']'
+	| exprUnarySuffix '@'
+	| exprUnarySuffix '&'
+	| exprUnarySuffix '!'
+	| exprNew
+	;
+
+exprNew
+	: KNew typename '{' expr '}'
+	| KNew typename '(' expr ')'
+	| KRnew typename '{' expr '}'
+	| KRnew typename '(' expr ')'
+	| KSnew typename '{' expr '}'
+	| KSnew typename '(' expr ')'
+	| exprDotAndVia
+	;
+
+exprDotAndVia
+	: exprDotAndVia '.' exprNamespaceRes
+	| exprDotAndVia '~' exprNamespaceRes
+	| exprNamespaceRes
+	;
+
+exprNamespaceRes
+	: exprNamespaceRes '::' expr
+	| expr
 	;
 
 // Literals
@@ -74,10 +215,10 @@ KIn: 'in' ;
 KSwitch: 'switch' ;
 KCase: 'case' ;
 KReturn: 'return' ;
-
 KUsing: 'using' ;
 KAssert: 'assert' ;
 KThrow: 'throw' ;
+
 KSizeof: 'sizeof' ;
 KTypeof: 'typeof' ;
 KNew: 'new' ;
@@ -87,6 +228,9 @@ KRrealloc: 'rrealloc' ;
 KRfree: 'rfree' ;
 KCede: 'cede' ;
 KBitcast: 'bitcast' ;
+KRef: 'ref' ;
+KInref: 'inref' ;
+KOutref: 'outref' ;
 
 KNamespace: 'namespace' ;
 KModule: 'module' ;
@@ -111,9 +255,6 @@ KConst: 'const' ;
 KInline: 'inline' ;
 KOwner: 'owner' ;
 KNamed: 'named' ;
-KRef: 'ref' ;
-KInref: 'inref' ;
-KOutref: 'outref' ;
 
 KThis: 'this' ;
 KBase: 'base' ;
