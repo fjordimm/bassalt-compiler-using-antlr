@@ -35,42 +35,40 @@ namespace BassaltCompiler.Syntactic
 		{
 			if (aggregate is null)
 			{
-				// Console.WriteLine($"heoheoeh: {nextResult}");
-				// System.Environment.Exit(1);
-
-				// IDebugStringable nextResultS = nextResult as IDebugStringable;
-				// System.Diagnostics.Debug.Assert(nextResultS is not null);
-
-				// AggregateObj ret = new AggregateObj();
-				// ret.Items.Add(nextResultS);
-				// return ret;
-
 				return nextResult;
-			}
-
-			AggregateObj aggregateR = aggregate as AggregateObj;
-
-			if (aggregateR is not null)
-			{
-				IDebugStringable nextResultS = nextResult as IDebugStringable;
-				System.Diagnostics.Debug.Assert(nextResultS is not null);
-
-				aggregateR.Items.Add(nextResultS);
-				return aggregateR;
 			}
 			else
 			{
-				IDebugStringable aggregateS = aggregate as IDebugStringable;
-				System.Diagnostics.Debug.Assert(aggregateS is not null);
+				AggregateObj aggregateR = aggregate as AggregateObj;
 
-				IDebugStringable nextResultS = nextResult as IDebugStringable;
-				System.Diagnostics.Debug.Assert(nextResultS is not null);
+				if (aggregateR is not null)
+				{
+					if (nextResult is null)
+					{ return null; }
 
-				AggregateObj ret = new AggregateObj();
-				ret.Items.Add(aggregateS);
-				ret.Items.Add(nextResultS);
+					IDebugStringable nextResultS = nextResult as IDebugStringable;
+					System.Diagnostics.Debug.Assert(nextResultS is not null);
 
-				return ret;
+					aggregateR.Items.Add(nextResultS);
+					return aggregateR;
+				}
+				else
+				{
+					if (nextResult is null)
+					{ return null; }
+
+					IDebugStringable aggregateS = aggregate as IDebugStringable;
+					System.Diagnostics.Debug.Assert(aggregateS is not null);
+
+					IDebugStringable nextResultS = nextResult as IDebugStringable;
+					System.Diagnostics.Debug.Assert(nextResultS is not null);
+
+					AggregateObj ret = new AggregateObj();
+					ret.Items.Add(aggregateS);
+					ret.Items.Add(nextResultS);
+
+					return ret;
+				}
 			}
 		}
 
@@ -131,14 +129,6 @@ namespace BassaltCompiler.Syntactic
 				Console.WriteLine(child.ToString(2));
 			}
 
-			// AggregateObj the = childrenNodes[1] as List<object>;
-
-			// Console.WriteLine("the...");
-			// foreach (object item in the)
-			// {
-			// 	Console.WriteLine($"  {the}");
-			// }
-
 			return null;
 		}
 
@@ -166,9 +156,6 @@ namespace BassaltCompiler.Syntactic
 
 		public override Literal VisitLiteral_integer([NotNull] BassaltParser.Literal_integerContext context)
 		{
-			// Console.WriteLine($"howdy: {base.VisitLiteral_integer(context)}");
-			// System.Environment.Exit(1);
-
 			Literal ret = base.VisitLiteral_integer(context) as Literal;
 			System.Diagnostics.Debug.Assert(ret is not null);
 
@@ -209,66 +196,5 @@ namespace BassaltCompiler.Syntactic
 			base.VisitLiteralInteger_char(context);
 			return ret;
 		}
-
-		// public override Literal VisitLiteral([NotNull] BassaltParser.LiteralContext context)
-		// {
-		// 	BassaltParser.LiteralBooleanContext literalBoolean = context.literalBoolean();
-		// 	BassaltParser.LiteralIntegerContext literalInteger = context.literalInteger();
-		// 	BassaltParser.LiteralFractionalContext literalFractional = context.literalFractional();
-		// 	BassaltParser.LiteralStringContext literalString = context.literalString();
-
-		// 	Literal ret = null;
-
-		// 	if (literalBoolean is not null)
-		// 	{
-		// 		ret = new Literal(LiteralType.Boolean, literalBoolean.GetText());
-		// 	}
-		// 	else if (literalInteger is not null)
-		// 	{
-		// 		ITerminalNode decInt = literalInteger.DecIntLiteral();
-		// 		ITerminalNode hexInt = literalInteger.HexIntLiteral();
-		// 		ITerminalNode octalInt = literalInteger.OctalIntLiteral();
-		// 		ITerminalNode binaryInt = literalInteger.BinaryIntLiteral();
-		// 		ITerminalNode charr = literalInteger.CharLiteral();
-
-		// 		if (decInt is not null)
-		// 		{ ret = Reparsing.ReparseDecInt(decInt.GetText(), bassaltSyntaxErrorHandler, context.Start.Line, context.Start.Column); }
-		// 		else if (hexInt is not null)
-		// 		{ ret = Reparsing.ReparseHexInt(hexInt.GetText(), bassaltSyntaxErrorHandler, context.Start.Line, context.Start.Column); }
-		// 		else if (octalInt is not null)
-		// 		{ ret = Reparsing.ReparseOctalInt(octalInt.GetText(), bassaltSyntaxErrorHandler, context.Start.Line, context.Start.Column); }
-		// 		else if (binaryInt is not null)
-		// 		{ ret = Reparsing.ReparseBinaryInt(binaryInt.GetText(), bassaltSyntaxErrorHandler, context.Start.Line, context.Start.Column); }
-		// 		else if (charr is not null)
-		// 		{ ret = Reparsing.ReparseChar(charr.GetText(), bassaltSyntaxErrorHandler, context.Start.Line, context.Start.Column); }
-		// 	}
-		// 	else if (literalFractional is not null)
-		// 	{
-		// 		ITerminalNode plainFrac = literalFractional.PlainFracLiteral();
-		// 		ITerminalNode scientificFrac = literalFractional.ScientificFracLiteral();
-		// 		ITerminalNode scientificWholeNum = literalFractional.ScientificWholeNumLiteral();
-
-		// 		if (plainFrac is not null)
-		// 		{ ret = Reparsing.ReparsePlainFrac(plainFrac.GetText(), bassaltSyntaxErrorHandler, context.Start.Line, context.Start.Column); }
-		// 		else if (scientificFrac is not null)
-		// 		{ ret = Reparsing.ReparseScientificFrac(scientificFrac.GetText(), bassaltSyntaxErrorHandler, context.Start.Line, context.Start.Column); }
-		// 		else if (scientificWholeNum is not null)
-		// 		{ ret = Reparsing.ReparseScientificWholeNum(scientificWholeNum.GetText(), bassaltSyntaxErrorHandler, context.Start.Line, context.Start.Column); }
-		// 	}
-		// 	else if (literalString is not null)
-		// 	{
-		// 		ITerminalNode str = literalString.StringLiteral();
-
-		// 		if (str is not null)
-		// 		{ ret = Reparsing.ReparseString(str.GetText(), bassaltSyntaxErrorHandler, context.Start.Line, context.Start.Column); }
-		// 	}
-
-		// 	base.VisitLiteral(context);
-
-		// 	if (ret is null)
-		// 	{ throw new ArgumentException("This should not happen."); }
-
-		// 	return ret;
-		// }
 	}
 }
