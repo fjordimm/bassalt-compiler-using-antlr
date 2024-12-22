@@ -23,7 +23,7 @@ statementNoSemi
 	;
 
 statementPrint
-	: KPrint literal
+	: KPrint expr
 	;
 
 // TODO
@@ -43,9 +43,7 @@ exprList
 	;
 
 expr
-	: Identifier
-	| literal
-	| '(' expr ')'
+	: exprLambda
 	;
 
 exprLambda
@@ -161,8 +159,14 @@ exprDotAndVia
 	;
 
 exprNamespaceRes
-	: exprNamespaceRes '::' expr
-	| expr
+	: exprNamespaceRes '::' exprBase
+	| exprBase
+	;
+
+exprBase
+	: Identifier
+	| literal
+	| '(' expr ')'
 	;
 
 // Literals
@@ -246,6 +250,7 @@ KPrivate: 'private' ;
 KProtected: 'protected' ;
 KPassable: 'passable' ;
 KVirtual: 'virtual' ;
+KAbstract: 'abstract' ;
 KImplement: 'implement' ;
 KOverride: 'override' ;
 KOperator: 'operator' ;
