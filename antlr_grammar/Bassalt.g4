@@ -164,9 +164,9 @@ exprNamespaceRes
 	;
 
 exprBase
-	: Identifier
-	| literal
-	| '(' expr ')'
+	: Identifier			#exprBase_identifier
+	| literal				#exprBase_literal
+	| '(' expr ')'			#exprBase_parenthesis
 	;
 
 // Literals

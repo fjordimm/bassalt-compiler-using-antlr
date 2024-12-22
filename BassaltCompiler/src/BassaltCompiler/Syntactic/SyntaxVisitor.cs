@@ -83,6 +83,18 @@ namespace BassaltCompiler.Syntactic
 			return base.VisitExprLambda(context);
 		}
 
+		public override object VisitExprBase_identifier([NotNull] BassaltParser.ExprBase_identifierContext context)
+		{
+			return base.VisitExprBase_identifier(context);
+		}
+
+		// public override object ([NotNull] BassaltParser.ExprBaseContext context)
+		// {
+		// 	// Console.WriteLine(context.);
+
+		// 	return base.VisitExprBase(context);
+		// }
+
 		public override Literal VisitLiteral([NotNull] BassaltParser.LiteralContext context)
 		{
 			BassaltParser.LiteralBooleanContext literalBoolean = context.literalBoolean();

@@ -1,6 +1,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace BassaltCompiler.Syntactic.Nodes
 {
@@ -66,7 +67,12 @@ namespace BassaltCompiler.Syntactic.Nodes
 
 		public override string ToString()
 		{
-			return $"Literal({Type}, {(IsNegative ? "-" : "+")}, {Val}, {Suffix})";
+			return ToString(0);
+		}
+
+		public string ToString(int indent)
+		{
+			return string.Concat(Enumerable.Repeat(" ", indent)) + $"Literal({Type}, {(IsNegative ? "-" : "+")}, {Val}, {Suffix})";
 		}
 	}
 }

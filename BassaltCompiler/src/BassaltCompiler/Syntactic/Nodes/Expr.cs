@@ -24,21 +24,4 @@ namespace BassaltCompiler.Syntactic.Nodes
 
 		protected abstract string ToString1(int indent);
 	}
-
-	// class ExprIdentifier : Expr
-	// {
-	// 	public string Identifier { get; }
-
-	// 	public ExprIdentifier(string identifier)
-	// 	{
-	// 		Identifier = identifier;
-	// 	}
-
-	// 	protected override string ToString1(int indent)
-	// 	{
-	// 		return $"Identifier({Identifier})";
-	// 	}
-	// }
-
-	// class Expr
 }
