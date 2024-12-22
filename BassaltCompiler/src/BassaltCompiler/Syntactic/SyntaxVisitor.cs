@@ -2,9 +2,12 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 using System.Reflection;
+using System.Text;
 using Antlr4.Runtime.Misc;
 using Antlr4.Runtime.Tree;
+using BassaltCompiler.Debug;
 using BassaltCompiler.ErrorHandling;
 using BassaltCompiler.Syntactic.Nodes;
 
@@ -28,25 +31,80 @@ namespace BassaltCompiler.Syntactic
 			return syntaxTree;
 		}
 
-		protected override List<object> AggregateResult(object aggregate, object nextResult)
+		protected override object AggregateResult(object aggregate, object nextResult)
 		{
 			if (aggregate is null)
 			{
-				return new List<object>{ nextResult };
+				// Console.WriteLine($"heoheoeh: {nextResult}");
+				// System.Environment.Exit(1);
+
+				// IDebugStringable nextResultS = nextResult as IDebugStringable;
+				// System.Diagnostics.Debug.Assert(nextResultS is not null);
+
+				// AggregateObj ret = new AggregateObj();
+				// ret.Items.Add(nextResultS);
+				// return ret;
+
+				return nextResult;
+			}
+
+			AggregateObj aggregateR = aggregate as AggregateObj;
+
+			if (aggregateR is not null)
+			{
+				IDebugStringable nextResultS = nextResult as IDebugStringable;
+				System.Diagnostics.Debug.Assert(nextResultS is not null);
+
+				aggregateR.Items.Add(nextResultS);
+				return aggregateR;
 			}
 			else
 			{
-				List<object> aggregateR = aggregate as List<object>;
-				Debug.Assert(aggregateR is not null);
+				IDebugStringable aggregateS = aggregate as IDebugStringable;
+				System.Diagnostics.Debug.Assert(aggregateS is not null);
 
-				aggregateR.Add(nextResult);
-				return aggregateR;
+				IDebugStringable nextResultS = nextResult as IDebugStringable;
+				System.Diagnostics.Debug.Assert(nextResultS is not null);
+
+				AggregateObj ret = new AggregateObj();
+				ret.Items.Add(aggregateS);
+				ret.Items.Add(nextResultS);
+
+				return ret;
 			}
 		}
 
-		public override string VisitTerminal(ITerminalNode node)
+		protected class AggregateObj : IDebugStringable
 		{
-			return $"Terminal{{{node.GetText()}}}";
+			public List<IDebugStringable> Items { get; }
+
+			public AggregateObj()
+			{
+				Items = new List<IDebugStringable>();
+			}
+
+			public override string ToString()
+			{
+				return ToString(0);
+			}
+
+			public string ToString(int indent)
+			{
+				StringBuilder ret = new StringBuilder();
+
+				ret.Append(string.Concat(Enumerable.Repeat(" ", indent)) + "Aggregate");
+				foreach (IDebugStringable item in Items)
+				{
+					ret.Append("\n" + item.ToString(indent+2));
+				}
+
+				return ret.ToString();
+			}
+		}
+
+		public override Terminal VisitTerminal(ITerminalNode node)
+		{
+			return new Terminal(node.GetText());
 		}
 
 		public override object VisitProgram([NotNull] BassaltParser.ProgramContext context)
@@ -64,11 +122,22 @@ namespace BassaltCompiler.Syntactic
 
 		public override object VisitStatementPrint([NotNull] BassaltParser.StatementPrintContext context)
 		{
-			List<object> childrenNodes = base.VisitStatementPrint(context) as List<object>;
+			AggregateObj childrenNodes = base.VisitStatementPrint(context) as AggregateObj;
+			System.Diagnostics.Debug.Assert(childrenNodes is not null);
 			
 			Console.WriteLine("children...");
-			foreach (object child in childrenNodes)
-			{ Console.WriteLine($"  {child}"); }
+			foreach (IDebugStringable child in childrenNodes.Items)
+			{
+				Console.WriteLine(child.ToString(2));
+			}
+
+			// AggregateObj the = childrenNodes[1] as List<object>;
+
+			// Console.WriteLine("the...");
+			// foreach (object item in the)
+			// {
+			// 	Console.WriteLine($"  {the}");
+			// }
 
 			return null;
 		}
@@ -97,10 +166,11 @@ namespace BassaltCompiler.Syntactic
 
 		public override Literal VisitLiteral_integer([NotNull] BassaltParser.Literal_integerContext context)
 		{
-			Literal ret = (base.VisitLiteral_integer(context) as List<object>)[0] as Literal;
+			// Console.WriteLine($"howdy: {base.VisitLiteral_integer(context)}");
+			// System.Environment.Exit(1);
 
-			if (ret is null)
-			{ throw new ArgumentException("This should not happen."); }
+			Literal ret = base.VisitLiteral_integer(context) as Literal;
+			System.Diagnostics.Debug.Assert(ret is not null);
 
 			return ret;
 		}

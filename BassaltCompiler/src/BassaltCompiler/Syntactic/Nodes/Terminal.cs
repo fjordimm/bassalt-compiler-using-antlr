@@ -4,13 +4,13 @@ using BassaltCompiler.Debug;
 
 namespace BassaltCompiler.Syntactic.Nodes
 {
-	class Identifier : IDebugStringable
+	class Terminal : IDebugStringable
 	{
-		public string Name { get; }
+		public string Text { get; }
 
-		public Identifier(string name)
+		public Terminal(string text)
 		{
-			Name = name;
+			Text = text;
 		}
 
 		public override string ToString()
@@ -20,7 +20,7 @@ namespace BassaltCompiler.Syntactic.Nodes
 
 		public string ToString(int indent)
 		{
-			return string.Concat(Enumerable.Repeat(" ", indent)) + $"Identifier(\"{Name}\")";
+			return string.Concat(Enumerable.Repeat(" ", indent)) + $"Terminal('{Text}')";
 		}
 	}
 }

@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using BassaltCompiler.Debug;
 
 namespace BassaltCompiler.Syntactic.Nodes
 {
@@ -15,7 +16,7 @@ namespace BassaltCompiler.Syntactic.Nodes
 		None, C8, C, C32, SB, S, I, L, B, US, UI, UL, F, D, II, UII, III, UIII, R, T
 	}
 
-	class Literal
+	class Literal : IDebugStringable
 	{
 		private static readonly Dictionary<string, LiteralSuffix> suffixDict = new Dictionary<string, LiteralSuffix>
 		{
@@ -72,7 +73,7 @@ namespace BassaltCompiler.Syntactic.Nodes
 
 		public string ToString(int indent)
 		{
-			return string.Concat(Enumerable.Repeat(" ", indent)) + $"Literal({Type}, {(IsNegative ? "-" : "+")}, {Val}, {Suffix})";
+			return string.Concat(Enumerable.Repeat(" ", indent)) + $"Literal({Type}, {(IsNegative ? "-" : "+")}, '{Val}', {Suffix})";
 		}
 	}
 }

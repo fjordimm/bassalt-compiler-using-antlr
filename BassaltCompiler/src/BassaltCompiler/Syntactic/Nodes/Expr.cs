@@ -1,9 +1,10 @@
 
 using System.Linq;
+using BassaltCompiler.Debug;
 
 namespace BassaltCompiler.Syntactic.Nodes
 {
-	abstract class Expr
+	abstract class Expr : IDebugStringable
 	{
 		public Types.Datatype EvalType { get; set; }
 
