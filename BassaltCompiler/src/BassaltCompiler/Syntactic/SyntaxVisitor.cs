@@ -88,72 +88,117 @@ namespace BassaltCompiler.Syntactic
 			return base.VisitExprBase_identifier(context);
 		}
 
-		// public override object ([NotNull] BassaltParser.ExprBaseContext context)
-		// {
-		// 	// Console.WriteLine(context.);
-
-		// 	return base.VisitExprBase(context);
-		// }
-
-		public override Literal VisitLiteral([NotNull] BassaltParser.LiteralContext context)
+		public override Literal VisitLiteral_boolean([NotNull] BassaltParser.Literal_booleanContext context)
 		{
-			BassaltParser.LiteralBooleanContext literalBoolean = context.literalBoolean();
-			BassaltParser.LiteralIntegerContext literalInteger = context.literalInteger();
-			BassaltParser.LiteralFractionalContext literalFractional = context.literalFractional();
-			BassaltParser.LiteralStringContext literalString = context.literalString();
+			Literal ret = new Literal(LiteralType.Boolean, context.literalBoolean().GetText());
+			base.VisitLiteral_boolean(context);
+			return ret;
+		}
 
-			Literal ret = null;
-
-			if (literalBoolean is not null)
-			{
-				ret = new Literal(LiteralType.Boolean, literalBoolean.GetText());
-			}
-			else if (literalInteger is not null)
-			{
-				ITerminalNode decInt = literalInteger.DecIntLiteral();
-				ITerminalNode hexInt = literalInteger.HexIntLiteral();
-				ITerminalNode octalInt = literalInteger.OctalIntLiteral();
-				ITerminalNode binaryInt = literalInteger.BinaryIntLiteral();
-				ITerminalNode charr = literalInteger.CharLiteral();
-
-				if (decInt is not null)
-				{ ret = Reparsing.ReparseDecInt(decInt.GetText(), bassaltSyntaxErrorHandler, context.Start.Line, context.Start.Column); }
-				else if (hexInt is not null)
-				{ ret = Reparsing.ReparseHexInt(hexInt.GetText(), bassaltSyntaxErrorHandler, context.Start.Line, context.Start.Column); }
-				else if (octalInt is not null)
-				{ ret = Reparsing.ReparseOctalInt(octalInt.GetText(), bassaltSyntaxErrorHandler, context.Start.Line, context.Start.Column); }
-				else if (binaryInt is not null)
-				{ ret = Reparsing.ReparseBinaryInt(binaryInt.GetText(), bassaltSyntaxErrorHandler, context.Start.Line, context.Start.Column); }
-				else if (charr is not null)
-				{ ret = Reparsing.ReparseChar(charr.GetText(), bassaltSyntaxErrorHandler, context.Start.Line, context.Start.Column); }
-			}
-			else if (literalFractional is not null)
-			{
-				ITerminalNode plainFrac = literalFractional.PlainFracLiteral();
-				ITerminalNode scientificFrac = literalFractional.ScientificFracLiteral();
-				ITerminalNode scientificWholeNum = literalFractional.ScientificWholeNumLiteral();
-
-				if (plainFrac is not null)
-				{ ret = Reparsing.ReparsePlainFrac(plainFrac.GetText(), bassaltSyntaxErrorHandler, context.Start.Line, context.Start.Column); }
-				else if (scientificFrac is not null)
-				{ ret = Reparsing.ReparseScientificFrac(scientificFrac.GetText(), bassaltSyntaxErrorHandler, context.Start.Line, context.Start.Column); }
-				else if (scientificWholeNum is not null)
-				{ ret = Reparsing.ReparseScientificWholeNum(scientificWholeNum.GetText(), bassaltSyntaxErrorHandler, context.Start.Line, context.Start.Column); }
-			}
-			else if (literalString is not null)
-			{
-				ITerminalNode str = literalString.StringLiteral();
-
-				if (str is not null)
-				{ ret = Reparsing.ReparseString(str.GetText(), bassaltSyntaxErrorHandler, context.Start.Line, context.Start.Column); }
-			}
-
-			base.VisitLiteral(context);
+		public override Literal VisitLiteral_integer([NotNull] BassaltParser.Literal_integerContext context)
+		{
+			Literal ret = (base.VisitLiteral_integer(context) as List<object>)[0] as Literal;
 
 			if (ret is null)
 			{ throw new ArgumentException("This should not happen."); }
 
 			return ret;
 		}
+
+		public override Literal VisitLiteralInteger_decInt([NotNull] BassaltParser.LiteralInteger_decIntContext context)
+		{
+			Literal ret = Reparsing.ReparseDecInt(context.DecIntLiteral().GetText(), bassaltSyntaxErrorHandler, context.Start.Line, context.Start.Column);
+			base.VisitLiteralInteger_decInt(context);
+			return ret;
+		}
+
+		public override Literal VisitLiteralInteger_hexInt([NotNull] BassaltParser.LiteralInteger_hexIntContext context)
+		{
+			Literal ret = Reparsing.ReparseHexInt(context.HexIntLiteral().GetText(), bassaltSyntaxErrorHandler, context.Start.Line, context.Start.Column);
+			base.VisitLiteralInteger_hexInt(context);
+			return ret;
+		}
+
+		public override Literal VisitLiteralInteger_octalInt([NotNull] BassaltParser.LiteralInteger_octalIntContext context)
+		{
+			Literal ret = Reparsing.ReparseOctalInt(context.OctalIntLiteral().GetText(), bassaltSyntaxErrorHandler, context.Start.Line, context.Start.Column);
+			base.VisitLiteralInteger_octalInt(context);
+			return ret;
+		}
+
+		public override Literal VisitLiteralInteger_binaryInt([NotNull] BassaltParser.LiteralInteger_binaryIntContext context)
+		{
+			Literal ret = Reparsing.ReparseBinaryInt(context.BinaryIntLiteral().GetText(), bassaltSyntaxErrorHandler, context.Start.Line, context.Start.Column);
+			base.VisitLiteralInteger_binaryInt(context);
+			return ret;
+		}
+
+		public override Literal VisitLiteralInteger_char([NotNull] BassaltParser.LiteralInteger_charContext context)
+		{
+			Literal ret = Reparsing.ReparseChar(context.CharLiteral().GetText(), bassaltSyntaxErrorHandler, context.Start.Line, context.Start.Column);
+			base.VisitLiteralInteger_char(context);
+			return ret;
+		}
+
+		// public override Literal VisitLiteral([NotNull] BassaltParser.LiteralContext context)
+		// {
+		// 	BassaltParser.LiteralBooleanContext literalBoolean = context.literalBoolean();
+		// 	BassaltParser.LiteralIntegerContext literalInteger = context.literalInteger();
+		// 	BassaltParser.LiteralFractionalContext literalFractional = context.literalFractional();
+		// 	BassaltParser.LiteralStringContext literalString = context.literalString();
+
+		// 	Literal ret = null;
+
+		// 	if (literalBoolean is not null)
+		// 	{
+		// 		ret = new Literal(LiteralType.Boolean, literalBoolean.GetText());
+		// 	}
+		// 	else if (literalInteger is not null)
+		// 	{
+		// 		ITerminalNode decInt = literalInteger.DecIntLiteral();
+		// 		ITerminalNode hexInt = literalInteger.HexIntLiteral();
+		// 		ITerminalNode octalInt = literalInteger.OctalIntLiteral();
+		// 		ITerminalNode binaryInt = literalInteger.BinaryIntLiteral();
+		// 		ITerminalNode charr = literalInteger.CharLiteral();
+
+		// 		if (decInt is not null)
+		// 		{ ret = Reparsing.ReparseDecInt(decInt.GetText(), bassaltSyntaxErrorHandler, context.Start.Line, context.Start.Column); }
+		// 		else if (hexInt is not null)
+		// 		{ ret = Reparsing.ReparseHexInt(hexInt.GetText(), bassaltSyntaxErrorHandler, context.Start.Line, context.Start.Column); }
+		// 		else if (octalInt is not null)
+		// 		{ ret = Reparsing.ReparseOctalInt(octalInt.GetText(), bassaltSyntaxErrorHandler, context.Start.Line, context.Start.Column); }
+		// 		else if (binaryInt is not null)
+		// 		{ ret = Reparsing.ReparseBinaryInt(binaryInt.GetText(), bassaltSyntaxErrorHandler, context.Start.Line, context.Start.Column); }
+		// 		else if (charr is not null)
+		// 		{ ret = Reparsing.ReparseChar(charr.GetText(), bassaltSyntaxErrorHandler, context.Start.Line, context.Start.Column); }
+		// 	}
+		// 	else if (literalFractional is not null)
+		// 	{
+		// 		ITerminalNode plainFrac = literalFractional.PlainFracLiteral();
+		// 		ITerminalNode scientificFrac = literalFractional.ScientificFracLiteral();
+		// 		ITerminalNode scientificWholeNum = literalFractional.ScientificWholeNumLiteral();
+
+		// 		if (plainFrac is not null)
+		// 		{ ret = Reparsing.ReparsePlainFrac(plainFrac.GetText(), bassaltSyntaxErrorHandler, context.Start.Line, context.Start.Column); }
+		// 		else if (scientificFrac is not null)
+		// 		{ ret = Reparsing.ReparseScientificFrac(scientificFrac.GetText(), bassaltSyntaxErrorHandler, context.Start.Line, context.Start.Column); }
+		// 		else if (scientificWholeNum is not null)
+		// 		{ ret = Reparsing.ReparseScientificWholeNum(scientificWholeNum.GetText(), bassaltSyntaxErrorHandler, context.Start.Line, context.Start.Column); }
+		// 	}
+		// 	else if (literalString is not null)
+		// 	{
+		// 		ITerminalNode str = literalString.StringLiteral();
+
+		// 		if (str is not null)
+		// 		{ ret = Reparsing.ReparseString(str.GetText(), bassaltSyntaxErrorHandler, context.Start.Line, context.Start.Column); }
+		// 	}
+
+		// 	base.VisitLiteral(context);
+
+		// 	if (ret is null)
+		// 	{ throw new ArgumentException("This should not happen."); }
+
+		// 	return ret;
+		// }
 	}
 }

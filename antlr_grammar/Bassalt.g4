@@ -172,10 +172,10 @@ exprBase
 // Literals
 
 literal
-	: literalBoolean
-	| literalInteger
-	| literalFractional
-	| literalString
+	: literalBoolean		#literal_boolean
+	| literalInteger		#literal_integer
+	| literalFractional		#literal_fractional
+	| literalString			#literal_string
 	;
 
 literalBoolean
@@ -183,17 +183,17 @@ literalBoolean
 	;
 
 literalInteger
-	: DecIntLiteral
-	| HexIntLiteral
-	| OctalIntLiteral
-	| BinaryIntLiteral
-	| CharLiteral
+	: DecIntLiteral		#literalInteger_decInt
+	| HexIntLiteral		#literalInteger_hexInt
+	| OctalIntLiteral	#literalInteger_octalInt
+	| BinaryIntLiteral	#literalInteger_binaryInt
+	| CharLiteral		#literalInteger_char
 	;
 
 literalFractional
-	: PlainFracLiteral
-	| ScientificFracLiteral
-	| ScientificWholeNumLiteral
+	: PlainFracLiteral				#literalFractional_plainFrac
+	| ScientificFracLiteral			#literalFractional_scientificFrac
+	| ScientificWholeNumLiteral		#literalFractional_scientificWholeNum
 	;
 
 literalString
