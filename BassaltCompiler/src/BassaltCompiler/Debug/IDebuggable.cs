@@ -7,9 +7,9 @@ namespace BassaltCompiler.Debug
 {
 	interface IDebuggable
 	{
-		public string ToStringTree()
+		public static string ToStringTree(IDebuggable obj)
 		{
-			return $"{StringTreeName()}{ChildrenToStringTree("", StringTreeChildren())}";
+			return $"{obj.StringTreeName()}{ChildrenToStringTree("", obj.StringTreeChildren())}";
 		}
 
 		protected string StringTreeName();

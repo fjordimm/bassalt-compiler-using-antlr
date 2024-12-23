@@ -125,7 +125,7 @@ namespace BassaltCompiler.Syntactic
 			System.Diagnostics.Debug.Assert(childrenR is not null);
 			
 			Console.WriteLine("print thingy is...");
-			Console.WriteLine((childrenR as IDebuggable).ToStringTree());
+			Console.WriteLine(IDebuggable.ToStringTree(childrenR));
 
 			return null;
 		}

@@ -31,12 +31,7 @@ namespace BassaltCompiler.Syntactic.Nodes
 
 		protected override IReadOnlyList<IDebuggable> StringTreeChildren1()
 		{
-			List<IDebuggable> ret = new List<IDebuggable>();
-
-			ret.Add(Lhs);
-			ret.Add(Rhs);
-
-			return ret;
+			return new List<IDebuggable>{ Lhs, Rhs };
 		}
 	}
 }
