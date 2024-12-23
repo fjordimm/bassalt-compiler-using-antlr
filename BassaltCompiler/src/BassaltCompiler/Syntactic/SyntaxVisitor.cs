@@ -124,7 +124,10 @@ namespace BassaltCompiler.Syntactic
 		{
 			object children = base.VisitStatementPrint(context);
 			if (children is null)
-			{ return null; }
+			{
+				bassaltSyntaxErrorHandler.Add(context.Stop.Line, context.Stop.Column, "unkown error.");
+				return null;
+			}
 
 			AggregateObj childrenNodes = children as AggregateObj;
 			System.Diagnostics.Debug.Assert(childrenNodes is not null);
@@ -189,35 +192,35 @@ namespace BassaltCompiler.Syntactic
 
 		public override Literal VisitLiteralInteger_decInt([NotNull] BassaltParser.LiteralInteger_decIntContext context)
 		{
-			Literal ret = Reparsing.ReparseDecInt(context.DecIntLiteral().GetText(), bassaltSyntaxErrorHandler, context.Start.Line, context.Start.Column);
+			Literal ret = Reparsing.ReparseDecInt(context.DecIntLiteral().GetText(), bassaltSyntaxErrorHandler, context.Stop.Line, context.Stop.Column);
 			base.VisitLiteralInteger_decInt(context);
 			return ret;
 		}
 
 		public override Literal VisitLiteralInteger_hexInt([NotNull] BassaltParser.LiteralInteger_hexIntContext context)
 		{
-			Literal ret = Reparsing.ReparseHexInt(context.HexIntLiteral().GetText(), bassaltSyntaxErrorHandler, context.Start.Line, context.Start.Column);
+			Literal ret = Reparsing.ReparseHexInt(context.HexIntLiteral().GetText(), bassaltSyntaxErrorHandler, context.Stop.Line, context.Stop.Column);
 			base.VisitLiteralInteger_hexInt(context);
 			return ret;
 		}
 
 		public override Literal VisitLiteralInteger_octalInt([NotNull] BassaltParser.LiteralInteger_octalIntContext context)
 		{
-			Literal ret = Reparsing.ReparseOctalInt(context.OctalIntLiteral().GetText(), bassaltSyntaxErrorHandler, context.Start.Line, context.Start.Column);
+			Literal ret = Reparsing.ReparseOctalInt(context.OctalIntLiteral().GetText(), bassaltSyntaxErrorHandler, context.Stop.Line, context.Stop.Column);
 			base.VisitLiteralInteger_octalInt(context);
 			return ret;
 		}
 
 		public override Literal VisitLiteralInteger_binaryInt([NotNull] BassaltParser.LiteralInteger_binaryIntContext context)
 		{
-			Literal ret = Reparsing.ReparseBinaryInt(context.BinaryIntLiteral().GetText(), bassaltSyntaxErrorHandler, context.Start.Line, context.Start.Column);
+			Literal ret = Reparsing.ReparseBinaryInt(context.BinaryIntLiteral().GetText(), bassaltSyntaxErrorHandler, context.Stop.Line, context.Stop.Column);
 			base.VisitLiteralInteger_binaryInt(context);
 			return ret;
 		}
 
 		public override Literal VisitLiteralInteger_char([NotNull] BassaltParser.LiteralInteger_charContext context)
 		{
-			Literal ret = Reparsing.ReparseChar(context.CharLiteral().GetText(), bassaltSyntaxErrorHandler, context.Start.Line, context.Start.Column);
+			Literal ret = Reparsing.ReparseChar(context.CharLiteral().GetText(), bassaltSyntaxErrorHandler, context.Stop.Line, context.Stop.Column);
 			base.VisitLiteralInteger_char(context);
 			return ret;
 		}

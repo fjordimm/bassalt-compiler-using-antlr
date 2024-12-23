@@ -19,7 +19,7 @@ namespace BassaltCompiler.ErrorHandling
 
 		public override void SyntaxError(TextWriter output, IRecognizer recognizer, IToken offendingSymbol, int line, int charPositionInLine, string msg, RecognitionException e)
 		{
-			errorHandler.Add(line, charPositionInLine, $"{msg} (given by Antlr4).");
+			errorHandler.Add(line, charPositionInLine, $"{msg} (error from Antlr4).");
 		}
 	}
 

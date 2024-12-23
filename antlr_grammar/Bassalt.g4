@@ -186,7 +186,7 @@ exprDotAndVia
 	;
 
 exprNamespaceRes
-	: exprNamespaceRes '::' exprBase
+	: datatypeBase '::' exprBase
 	| exprBase
 	;
 
