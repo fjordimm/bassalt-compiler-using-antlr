@@ -28,11 +28,12 @@ namespace BassaltCompiler
 			AntlrInputStream input = new AntlrInputStream(inFile);
 			BassaltLexer lexer = new BassaltLexer(input);
 			CommonTokenStream tokens = new CommonTokenStream(lexer);
+
 			BassaltParser parser = new BassaltParser(tokens);
 			parser.RemoveErrorListeners();
 			parser.AddErrorListener(new BassaltSyntaxErrorListener(bassaltSyntaxErrorHandler));
 			
-			SyntaxVisitor syntaxVisitor = new SyntaxVisitor(bassaltSyntaxErrorHandler, bassaltSemanticErrorHandler);
+			SyntaxVisitor syntaxVisitor = new SyntaxVisitor(lexer.Vocabulary, bassaltSyntaxErrorHandler);
 			IParseTree parseTree = parser.program();
 			syntaxVisitor.Visit(parseTree);
 			if (bassaltSyntaxErrorHandler.Errors.Count > 0)

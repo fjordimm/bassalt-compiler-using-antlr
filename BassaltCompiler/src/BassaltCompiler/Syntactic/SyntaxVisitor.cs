@@ -5,6 +5,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using System.Text;
+using Antlr4.Runtime;
 using Antlr4.Runtime.Misc;
 using Antlr4.Runtime.Tree;
 using BassaltCompiler.Debug;
@@ -16,14 +17,15 @@ namespace BassaltCompiler.Syntactic
 	class SyntaxVisitor : BassaltBaseVisitor<object>
 	{
 		private readonly SyntaxTree syntaxTree;
+		private readonly IVocabulary lexerVocab;
 		private readonly BassaltSyntaxErrorHandler bassaltSyntaxErrorHandler;
-		private readonly BassaltSemanticErrorHandler bassaltSemanticErrorHandler;
+		// private readonly BassaltSemanticErrorHandler bassaltSemanticErrorHandler;
 
-		public SyntaxVisitor(BassaltSyntaxErrorHandler syntaxErrorHandler, BassaltSemanticErrorHandler semanticErrorHandler)
+		public SyntaxVisitor(IVocabulary vocab, BassaltSyntaxErrorHandler syntaxErrorHandler)
 		{
 			syntaxTree = new SyntaxTree();
+			lexerVocab = vocab;
 			bassaltSyntaxErrorHandler = syntaxErrorHandler;
-			bassaltSemanticErrorHandler = semanticErrorHandler;
 		}
 
 		public SyntaxTree GetSyntaxTree()
@@ -102,7 +104,7 @@ namespace BassaltCompiler.Syntactic
 
 		public override Terminal VisitTerminal(ITerminalNode node)
 		{
-			return new Terminal(node.GetText());
+			return new Terminal(node, lexerVocab);
 		}
 
 		public override object VisitProgram([NotNull] BassaltParser.ProgramContext context)
