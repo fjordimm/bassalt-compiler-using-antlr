@@ -16,6 +16,10 @@ namespace BassaltCompiler.Syntactic
 {
 	class SyntaxVisitor : BassaltBaseVisitor<object>
 	{
+		////////////////////////////////////////////////////////////////////////
+		
+		///// Class Stuff /////
+
 		private readonly SyntaxTree syntaxTree;
 		private readonly IVocabulary lexerVocab;
 		private readonly BassaltSyntaxErrorHandler bassaltSyntaxErrorHandler;
@@ -94,107 +98,27 @@ namespace BassaltCompiler.Syntactic
 			}
 		}
 
+		////////////////////////////////////////////////////////////////////////
+		
+		///// Terminals /////
+
 		public override Terminal VisitTerminal(ITerminalNode node)
 		{
 			return new Terminal(node, lexerVocab);
 		}
 
-		public override object VisitProgram([NotNull] BassaltParser.ProgramContext context)
+		////////////////////////////////////////////////////////////////////////
+		
+		///// Useful Things /////
+		
+		public override object VisitLangDatatype([NotNull] BassaltParser.LangDatatypeContext context)
 		{
-			// outFile.WriteLine("#include <stdio.h>");
-			// outFile.WriteLine("int main(void) {");
-
-			base.VisitProgram(context);
-
-			// outFile.WriteLine("return 0;");
-			// outFile.WriteLine("}");
-
-			return null;
+			return base.VisitLangDatatype(context);
 		}
-
-		public override object VisitStatementPrint([NotNull] BassaltParser.StatementPrintContext context)
-		{
-			object children = base.VisitStatementPrint(context);
-			if (children is null)
-			{
-				bassaltSyntaxErrorHandler.Add(context.Stop.Line, context.Stop.Column, "unkown error.");
-				return null;
-			}
-
-			AggregateObj childrenR = children as AggregateObj;
-			System.Diagnostics.Debug.Assert(childrenR is not null);
-			
-			Console.WriteLine("print thingy is...");
-			Console.WriteLine(IDebuggable.ToStringTree(childrenR));
-
-			return null;
-		}
-
-		public override object VisitExpr([NotNull] BassaltParser.ExprContext context)
-		{
-			return base.VisitExpr(context);
-		}
-
-		public override object VisitExprLambda([NotNull] BassaltParser.ExprLambdaContext context)
-		{
-			return base.VisitExprLambda(context);
-		}
-
-		public override object VisitExprSum_plus([NotNull] BassaltParser.ExprSum_plusContext context)
-		{
-			object children = base.VisitExprSum_plus(context);
-			if (children is null)
-			{
-				bassaltSyntaxErrorHandler.Add(context.Stop.Line, context.Stop.Column, "unkown error.");
-				return null;
-			}
-
-			AggregateObj childrenR = children as AggregateObj;
-			System.Diagnostics.Debug.Assert(childrenR is not null);
-
-			IDebuggable lhs = childrenR.Items[0];
-			System.Diagnostics.Debug.Assert(lhs is not null);
-			Terminal op = childrenR.Items[1] as Terminal;
-			System.Diagnostics.Debug.Assert(op is not null);
-			IDebuggable rhs = childrenR.Items[2];
-			System.Diagnostics.Debug.Assert(rhs is not null);
-
-			return new ExprBinaryOp(op, lhs, rhs);
-		}
-
-		public override Identifier VisitExprBase_identifier([NotNull] BassaltParser.ExprBase_identifierContext context)
-		{
-			Identifier ret = new Identifier(context.Identifier().GetText());
-			base.VisitExprBase_identifier(context);
-			return ret;
-		}
-
-		public override object VisitExprBase_literal([NotNull] BassaltParser.ExprBase_literalContext context)
-		{
-			return base.VisitExprBase_literal(context);
-		}
-
-		public override object VisitExprBase_parenthesis([NotNull] BassaltParser.ExprBase_parenthesisContext context)
-		{
-			object children = base.VisitExprBase_parenthesis(context);
-			if (children is null)
-			{
-				bassaltSyntaxErrorHandler.Add(context.Stop.Line, context.Stop.Column, "unkown error.");
-				return null;
-			}
-
-			AggregateObj childrenR = children as AggregateObj;
-			System.Diagnostics.Debug.Assert(childrenR is not null);
-
-			Terminal openParen = childrenR.Items[0] as Terminal;
-			System.Diagnostics.Debug.Assert(openParen is not null);
-			IDebuggable innerExpr = childrenR.Items[1] as IDebuggable;
-			System.Diagnostics.Debug.Assert(innerExpr is not null);
-			Terminal closeParen = childrenR.Items[2] as Terminal;
-			System.Diagnostics.Debug.Assert(closeParen is not null);
-
-			return innerExpr;
-		}
+		
+		////////////////////////////////////////////////////////////////////////
+		
+		///// Literals /////
 
 		public override Literal VisitLiteral_boolean([NotNull] BassaltParser.Literal_booleanContext context)
 		{
@@ -245,5 +169,132 @@ namespace BassaltCompiler.Syntactic
 			base.VisitLiteralInteger_char(context);
 			return ret;
 		}
+
+		////////////////////////////////////////////////////////////////////////
+		
+		///// Expressions /////
+
+		public override object VisitExpr([NotNull] BassaltParser.ExprContext context)
+		{
+			return base.VisitExpr(context);
+		}
+
+		public override object VisitExprLambda([NotNull] BassaltParser.ExprLambdaContext context)
+		{
+			return base.VisitExprLambda(context);
+		}
+
+		public override object VisitExprSum_plus([NotNull] BassaltParser.ExprSum_plusContext context)
+		{
+			object children = base.VisitExprSum_plus(context);
+			if (children is null)
+			{
+				bassaltSyntaxErrorHandler.Add(context.Stop.Line, context.Stop.Column, "unkown error.");
+				return null;
+			}
+
+			AggregateObj childrenR = children as AggregateObj;
+			System.Diagnostics.Debug.Assert(childrenR is not null);
+
+			IDebuggable lhs = childrenR.Items[0];
+			System.Diagnostics.Debug.Assert(lhs is not null);
+			Terminal op = childrenR.Items[1] as Terminal;
+			System.Diagnostics.Debug.Assert(op is not null);
+			IDebuggable rhs = childrenR.Items[2];
+			System.Diagnostics.Debug.Assert(rhs is not null);
+
+			return new ExprBinaryOp(op, lhs, rhs);
+		}
+
+		// public override object VisitExprNamespaceRes_main([NotNull] BassaltParser.ExprNamespaceRes_mainContext context)
+		// {
+		// 	object children = base.VisitExprNamespaceRes_main(context);
+		// 	if (children is null)
+		// 	{
+		// 		bassaltSyntaxErrorHandler.Add(context.Stop.Line, context.Stop.Column, "unkown error.");
+		// 		return null;
+		// 	}
+
+		// 	AggregateObj childrenR = children as AggregateObj;
+		// 	System.Diagnostics.Debug.Assert(childrenR is not null);
+
+
+		// }
+
+		public override object VisitExprNamespaceRes_other([NotNull] BassaltParser.ExprNamespaceRes_otherContext context)
+		{
+			return base.VisitExprNamespaceRes_other(context);
+		}
+
+		public override Identifier VisitExprBase_identifier([NotNull] BassaltParser.ExprBase_identifierContext context)
+		{
+			Identifier ret = new Identifier(context.Identifier().GetText());
+			base.VisitExprBase_identifier(context);
+			return ret;
+		}
+
+		public override object VisitExprBase_literal([NotNull] BassaltParser.ExprBase_literalContext context)
+		{
+			return base.VisitExprBase_literal(context);
+		}
+
+		public override object VisitExprBase_parenthesis([NotNull] BassaltParser.ExprBase_parenthesisContext context)
+		{
+			object children = base.VisitExprBase_parenthesis(context);
+			if (children is null)
+			{
+				bassaltSyntaxErrorHandler.Add(context.Stop.Line, context.Stop.Column, "unkown error.");
+				return null;
+			}
+
+			AggregateObj childrenR = children as AggregateObj;
+			System.Diagnostics.Debug.Assert(childrenR is not null);
+
+			Terminal openParen = childrenR.Items[0] as Terminal;
+			System.Diagnostics.Debug.Assert(openParen is not null);
+			IDebuggable innerExpr = childrenR.Items[1] as IDebuggable;
+			System.Diagnostics.Debug.Assert(innerExpr is not null);
+			Terminal closeParen = childrenR.Items[2] as Terminal;
+			System.Diagnostics.Debug.Assert(closeParen is not null);
+
+			return innerExpr;
+		}
+
+		////////////////////////////////////////////////////////////////////////
+		
+		///// Statements /////
+
+		public override object VisitProgram([NotNull] BassaltParser.ProgramContext context)
+		{
+			// outFile.WriteLine("#include <stdio.h>");
+			// outFile.WriteLine("int main(void) {");
+
+			base.VisitProgram(context);
+
+			// outFile.WriteLine("return 0;");
+			// outFile.WriteLine("}");
+
+			return null;
+		}
+
+		public override object VisitStatementPrint([NotNull] BassaltParser.StatementPrintContext context)
+		{
+			object children = base.VisitStatementPrint(context);
+			if (children is null)
+			{
+				bassaltSyntaxErrorHandler.Add(context.Stop.Line, context.Stop.Column, "unkown error.");
+				return null;
+			}
+
+			AggregateObj childrenR = children as AggregateObj;
+			System.Diagnostics.Debug.Assert(childrenR is not null);
+			
+			Console.WriteLine("print thingy is...");
+			Console.WriteLine(IDebuggable.ToStringTree(childrenR));
+
+			return null;
+		}
+
+		////////////////////////////////////////////////////////////////////////
 	}
 }

@@ -3,28 +3,7 @@ grammar Bassalt;
 
 ///// Rules /////
 
-// Main
-
-program
-	: statementList
-	;
-
-statementList
-	: '{' statement* '}'
-	| statement
-	;
-
-statement
-	: statementNoSemi ';'
-	;
-
-statementNoSemi
-	: statementPrint
-	;
-
-statementPrint
-	: KPrint expr
-	;
+// Useful Things
 
 // TODO
 argumentList
@@ -48,7 +27,8 @@ datatype
 	;
 
 datatypeNamespaced
-	: (datatypeBase '::')* datatypeBase
+	: datatypeBase '::' datatypeNamespaced
+	| datatypeBase
 	;
 
 datatypeBase
@@ -61,6 +41,65 @@ face
 	| KPublic
 	| KPrivate
 	| KProtected
+	;
+
+langDatatype
+	: KVoid
+	| KFunc
+	| KSptr
+	| KWsptr
+	| KBool
+	| KChar
+	| KChar8
+	| KChar16
+	| KSbyte
+	| KByte
+	| KShort
+	| KUshort
+	| KInt
+	| KUint
+	| KLong
+	| KUlong
+	| KFloat
+	| KDouble
+	| KString
+	| KInt128
+	| KUint128
+	| KInt256
+	| KUint256
+	| KFloat128
+	| KFloat256
+	;
+
+// Literals
+
+literal
+	: literalBoolean		#literal_boolean
+	| literalInteger		#literal_integer
+	| literalFractional		#literal_fractional
+	| literalString			#literal_string
+	;
+
+literalBoolean
+	: KTrue | KFalse
+	;
+
+literalInteger
+	: DecIntLiteral		#literalInteger_decInt
+	| HexIntLiteral		#literalInteger_hexInt
+	| OctalIntLiteral	#literalInteger_octalInt
+	| BinaryIntLiteral	#literalInteger_binaryInt
+	| CharLiteral		#literalInteger_char
+	;
+
+literalFractional
+	: PlainFracLiteral				#literalFractional_plainFrac
+	| ScientificFracLiteral			#literalFractional_scientificFrac
+	| ScientificWholeNumLiteral		#literalFractional_scientificWholeNum
+	;
+
+literalString
+	: StringLiteral
 	;
 
 // Expressions
@@ -186,8 +225,8 @@ exprDotAndVia
 	;
 
 exprNamespaceRes
-	: datatypeBase '::' exprBase
-	| exprBase
+	: datatypeBase '::' exprBase	#exprNamespaceRes_main
+	| exprBase						#exprNamespaceRes_other
 	;
 
 exprBase
@@ -196,37 +235,28 @@ exprBase
 	| '(' expr ')'			#exprBase_parenthesis
 	;
 
-// Literals
+// Statements
 
-literal
-	: literalBoolean		#literal_boolean
-	| literalInteger		#literal_integer
-	| literalFractional		#literal_fractional
-	| literalString			#literal_string
+program
+	: statementList
 	;
 
-literalBoolean
-	: KTrue | KFalse
+statementList
+	: '{' statement* '}'
+	| statement
 	;
 
-literalInteger
-	: DecIntLiteral		#literalInteger_decInt
-	| HexIntLiteral		#literalInteger_hexInt
-	| OctalIntLiteral	#literalInteger_octalInt
-	| BinaryIntLiteral	#literalInteger_binaryInt
-	| CharLiteral		#literalInteger_char
+statement
+	: statementNoSemi ';'
 	;
 
-literalFractional
-	: PlainFracLiteral				#literalFractional_plainFrac
-	| ScientificFracLiteral			#literalFractional_scientificFrac
-	| ScientificWholeNumLiteral		#literalFractional_scientificWholeNum
+statementNoSemi
+	: statementPrint
 	;
 
-literalString
-	: StringLiteral
+statementPrint
+	: KPrint expr
 	;
-
 
 ///// Tokens /////
 
@@ -326,34 +356,6 @@ KInt256: 'int256' ;
 KUint256: 'uint256' ;
 KFloat128: 'float128' ;
 KFloat256: 'float256' ;
-
-langDatatype
-	: KVoid
-	| KFunc
-	| KSptr
-	| KWsptr
-	| KBool
-	| KChar
-	| KChar8
-	| KChar16
-	| KSbyte
-	| KByte
-	| KShort
-	| KUshort
-	| KInt
-	| KUint
-	| KLong
-	| KUlong
-	| KFloat
-	| KDouble
-	| KString
-	| KInt128
-	| KUint128
-	| KInt256
-	| KUint256
-	| KFloat128
-	| KFloat256
-	;
 
 // Identifiers
 
