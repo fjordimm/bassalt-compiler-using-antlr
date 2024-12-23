@@ -58,7 +58,7 @@ namespace BassaltCompiler.Syntactic.Nodes
 				if (suffixDict.TryGetValue(suffixStr.ToLower(), out LiteralSuffix tryGetVal))
 				{ Suffix = tryGetVal; }
 				else
-				{ throw new ArgumentException("suffixStr was not valid."); }
+				{ throw new ArgumentException("argument was not valid."); }
 			}
 			else
 			{

@@ -71,6 +71,15 @@ langDatatype
 	| KFloat256
 	;
 
+langVar
+	: KThis
+	| KBase
+	| KStdout
+	| KStdin
+	| KStderr
+	| KPlaceholder
+	;
+
 // Literals
 
 literal
@@ -225,12 +234,15 @@ exprDotAndVia
 	;
 
 exprNamespaceRes
-	: datatypeBase '::' exprBase	#exprNamespaceRes_main
-	| exprBase						#exprNamespaceRes_other
+	: langDatatype '::' exprNamespaceRes	#exprNamespaceRes_langtype
+	| langVar '::' exprNamespaceRes			#exprNamespaceRes_langvar
+	| Identifier '::' exprNamespaceRes		#exprNamespaceRes_identifier
+	| exprBase								#exprNamespaceRes_other
 	;
 
 exprBase
-	: Identifier			#exprBase_identifier
+	: langVar				#exprBase_langVar
+	| Identifier			#exprBase_identifier
 	| literal				#exprBase_literal
 	| '(' expr ')'			#exprBase_parenthesis
 	;

@@ -7,11 +7,11 @@ namespace BassaltCompiler.Syntactic.Nodes
 {
 	abstract class Expr : IDebuggable
 	{
-		public Types.Datatype EvalType { get; set; }
+		public Datatype EvalType { get; set; }
 
 		public Expr()
 		{
-			EvalType = Types.TUnset;
+			EvalType = Datatype.LtUnset;
 		}
 
 		string IDebuggable.StringTreeName()
