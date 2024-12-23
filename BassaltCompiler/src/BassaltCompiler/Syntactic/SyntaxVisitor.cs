@@ -149,10 +149,10 @@ namespace BassaltCompiler.Syntactic
 			return ret;
 		}
 
-		public override LangDatatype VisitLangDatatype([NotNull] BassaltParser.LangDatatypeContext context)
+		public override DatatypeLang VisitLangType([NotNull] BassaltParser.LangTypeContext context)
 		{
-			LangDatatype ret = base.VisitLangDatatype(context) as LangDatatype;
-			System.Diagnostics.Debug.Assert(ret is not null);
+			DatatypeLang ret = DatatypeLang.Get(context.GetText());
+			base.VisitLangType(context);
 			return ret;
 		}
 
@@ -279,14 +279,14 @@ namespace BassaltCompiler.Syntactic
 			AggregateObj childrenR = children as AggregateObj;
 			System.Diagnostics.Debug.Assert(childrenR is not null);
 
-			IDebuggable namespacee = childrenR.Items[0];
+			DatatypeLang namespacee = childrenR.Items[0] as DatatypeLang;
 			System.Diagnostics.Debug.Assert(namespacee is not null);
 			Terminal doubleColon = childrenR.Items[1] as Terminal;
 			System.Diagnostics.Debug.Assert(doubleColon is not null);
 			IDebuggable item = childrenR.Items[2];
 			System.Diagnostics.Debug.Assert(item is not null);
 
-			return new Namespaced(Datatype.LtLangtypeTEMP, item);
+			return new Namespaced(namespacee, item);
 		}
 
 		public override object VisitExprNamespaceRes_langvar([NotNull] BassaltParser.ExprNamespaceRes_langvarContext context)

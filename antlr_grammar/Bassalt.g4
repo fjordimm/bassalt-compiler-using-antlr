@@ -32,7 +32,7 @@ datatypeNamespaced
 	;
 
 datatypeBase
-	: langDatatype
+	: langType
 	| identifier
 	;
 
@@ -43,7 +43,7 @@ face
 	| KProtected
 	;
 
-langDatatype
+langType
 	: KVoid
 	| KFunc
 	| KSptr
@@ -243,7 +243,7 @@ exprDotAndVia
 	;
 
 exprNamespaceRes
-	: langDatatype '::' exprNamespaceRes	#exprNamespaceRes_langtype
+	: langType '::' exprNamespaceRes	#exprNamespaceRes_langtype
 	| langVar '::' exprNamespaceRes			#exprNamespaceRes_langvar
 	| identifier '::' exprNamespaceRes		#exprNamespaceRes_identifier
 	| exprBase								#exprNamespaceRes_other

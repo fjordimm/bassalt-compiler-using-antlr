@@ -1,13 +1,17 @@
 
+using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using BassaltCompiler.Debug;
 
 namespace BassaltCompiler.Syntactic.Nodes
 {
 	abstract class Datatype : IDebuggable
 	{
-		public static UnsetDatatype LtUnset = new UnsetDatatype();
-		public static LangDatatypeTEMP LtLangtypeTEMP = new LangDatatypeTEMP();
+		public static DatatypeUnset DtUnset = new DatatypeUnset();
+		public static readonly DatatypeLang DtVoid = DatatypeLang.DtVoid_;
+		// TODO: more
+		// public static LangDatatypeTEMP LtLangtypeTEMP = new LangDatatypeTEMP();
 
 		string IDebuggable.StringTreeName()
 		{
@@ -22,24 +26,59 @@ namespace BassaltCompiler.Syntactic.Nodes
 		}
 	}
 
-	sealed class UnsetDatatype : Datatype
+	sealed class DatatypeUnset : Datatype
 	{
 		protected override string StringTreeName1()
 		{
-			return "UnsetDatatype";
+			return "DatatypeUnset";
 		}
 	}
 
-	abstract class LangDatatype : Datatype
-	{ }
-
-	class LangDatatypeTEMP : LangDatatype
+	class DatatypeLang : Datatype
 	{
+		public static readonly DatatypeLang DtVoid_ = new DatatypeLang("void");
+		public static readonly DatatypeLang DtFunc_ = new DatatypeLang("func");
+		public static readonly DatatypeLang DtSptr_ = new DatatypeLang("sptr");
+		public static readonly DatatypeLang DtWsptr_ = new DatatypeLang("wsptr");
+		public static readonly DatatypeLang DtBool_ = new DatatypeLang("bool");
+
+		protected static readonly ReadOnlyDictionary<string, DatatypeLang> DatatypeLangDict = new Dictionary<string, DatatypeLang>
+		{
+			{"void", DtVoid_},
+			{"func", DtFunc_},
+			{"sptr", DtSptr_},
+			{"wsptr", DtWsptr_},
+			{"bool", DtBool_},
+		}.AsReadOnly();
+
+		public static DatatypeLang Get(string name)
+		{
+			if (DatatypeLangDict.TryGetValue(name, out DatatypeLang tryGetVal))
+			{ return tryGetVal; }
+			else
+			{ throw new ArgumentException("argument was not valid."); }
+		}
+
+		public string Name { get; }
+
+		protected DatatypeLang(string name)
+		{
+			Name = name;
+		}
+
 		protected override string StringTreeName1()
 		{
-			return "LangtypeTEMP";
+			return $"DatatypeLang({Name})";
 		}
 	}
+
+	// class LangDatatypeTEMP : LangDatatype
+	// {
+	// 	protected override string StringTreeName1()
+	// 	{
+	// 		return "LangtypeTEMP";
+	// 	}
+	// }
 
 	// static class Types
 	// {

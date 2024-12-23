@@ -27,19 +27,19 @@ namespace BassaltCompiler.Syntactic.Nodes
 			{"placeholder", LvPlaceholder}
 		}.AsReadOnly();
 
-		public string Name { get; }
-
-		private LangVar(string name)
-		{
-			Name = name;
-		}
-
 		public static LangVar Get(string name)
 		{
 			if (LangVarDict.TryGetValue(name, out LangVar tryGetVal))
 			{ return tryGetVal; }
 			else
 			{ throw new ArgumentException("argument was not valid."); }
+		}
+
+		public string Name { get; }
+
+		private LangVar(string name)
+		{
+			Name = name;
 		}
 
 		string IDebuggable.StringTreeName()

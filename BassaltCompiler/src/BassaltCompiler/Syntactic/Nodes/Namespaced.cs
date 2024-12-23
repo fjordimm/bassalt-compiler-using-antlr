@@ -18,8 +18,8 @@ namespace BassaltCompiler.Syntactic.Nodes
 
 		string IDebuggable.StringTreeName()
 		{
-			if (Namespace as LangDatatype is not null)
-			{ return $"Namespaced(LangDatatype: {IDebuggable.ToStringTree(Namespace as LangDatatype)})"; }
+			if (Namespace as DatatypeLang is not null)
+			{ return $"Namespaced(DatatypeLang: {(Namespace as DatatypeLang).Name})"; }
 			else if (Namespace as LangVar is not null)
 			{ return $"Namespaced(LangVar: {(Namespace as LangVar).Name})"; }
 			else if (Namespace as Identifier is not null)

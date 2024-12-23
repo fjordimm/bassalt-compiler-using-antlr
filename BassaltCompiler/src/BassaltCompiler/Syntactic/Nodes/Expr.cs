@@ -11,7 +11,7 @@ namespace BassaltCompiler.Syntactic.Nodes
 
 		public Expr()
 		{
-			EvalType = Datatype.LtUnset;
+			EvalType = Datatype.DtUnset;
 		}
 
 		string IDebuggable.StringTreeName()
