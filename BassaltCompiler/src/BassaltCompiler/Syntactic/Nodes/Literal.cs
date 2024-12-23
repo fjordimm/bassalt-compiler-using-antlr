@@ -16,7 +16,7 @@ namespace BassaltCompiler.Syntactic.Nodes
 		None, C8, C, C32, SB, S, I, L, B, US, UI, UL, F, D, II, UII, III, UIII, R, T
 	}
 
-	class Literal : IDebugStringable
+	class Literal : IDebuggable
 	{
 		private static readonly Dictionary<string, LiteralSuffix> suffixDict = new Dictionary<string, LiteralSuffix>
 		{
@@ -66,14 +66,14 @@ namespace BassaltCompiler.Syntactic.Nodes
 			}
 		}
 
-		public override string ToString()
+		string IDebuggable.StringTreeName()
 		{
-			return ToString(0);
+			return $"Literal({Type}, {(IsNegative ? "-" : "+")}, '{Val}', {Suffix})";
 		}
 
-		public string ToString(int indent)
+		IReadOnlyList<IDebuggable> IDebuggable.StringTreeChildren()
 		{
-			return string.Concat(Enumerable.Repeat(" ", indent)) + $"Literal({Type}, {(IsNegative ? "-" : "+")}, '{Val}', {Suffix})";
+			return null;
 		}
 	}
 }

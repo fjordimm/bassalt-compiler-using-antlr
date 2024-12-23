@@ -1,4 +1,5 @@
 
+using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using BassaltCompiler.Debug;
@@ -13,40 +14,29 @@ namespace BassaltCompiler.Syntactic.Nodes
 	class ExprBinaryOp : Expr
 	{
 		public string Op { get; }
-		public IDebugStringable Lhs { get; }
-		public IDebugStringable Rhs { get; }
+		public IDebuggable Lhs { get; }
+		public IDebuggable Rhs { get; }
 
-		public ExprBinaryOp(Terminal op, IDebugStringable lhs, IDebugStringable rhs)
+		public ExprBinaryOp(Terminal op, IDebuggable lhs, IDebuggable rhs)
 		{
 			Op = op.Text;
 			Lhs = lhs;
 			Rhs = rhs;
 		}
 
-		protected override string ToStringName()
+		protected override string StringTreeName1()
 		{
 			return $"BinaryOp({Op})";
 		}
 
-		protected override string ToStringChildren(int indent)
+		protected override IReadOnlyList<IDebuggable> StringTreeChildren1()
 		{
-			StringBuilder ret = new StringBuilder();
+			List<IDebuggable> ret = new List<IDebuggable>();
 
-			ret.Append($"\n{Lhs.ToString(indent + 2)}");
-			ret.Append($"\n{Rhs.ToString(indent + 2)}");
+			ret.Add(Lhs);
+			ret.Add(Rhs);
 
-			return ret.ToString();
+			return ret;
 		}
-
-		// protected override string ToString1(int indent)
-		// {
-		// 	StringBuilder ret = new StringBuilder();
-
-		// 	ret.Append($"BinaryOp({Op})");
-		// 	ret.Append("\n" + Lhs.ToString(indent + 2));
-		// 	ret.Append("\n" + Rhs.ToString(indent + 2));
-
-		// 	return ret.ToString();
-		// }
 	}
 }

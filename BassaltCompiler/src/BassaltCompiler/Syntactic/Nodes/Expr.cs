@@ -1,10 +1,11 @@
 
+using System.Collections.Generic;
 using System.Linq;
 using BassaltCompiler.Debug;
 
 namespace BassaltCompiler.Syntactic.Nodes
 {
-	abstract class Expr : IDebugStringable
+	abstract class Expr : IDebuggable
 	{
 		public Types.Datatype EvalType { get; set; }
 
@@ -13,17 +14,18 @@ namespace BassaltCompiler.Syntactic.Nodes
 			EvalType = Types.TUnset;
 		}
 
-		public sealed override string ToString()
+		string IDebuggable.StringTreeName()
 		{
-			return ToString(0);
+			return $"Expr.{StringTreeName1()} with type [{EvalType}]";
 		}
 
-		public string ToString(int indent)
+		protected abstract string StringTreeName1();
+
+		IReadOnlyList<IDebuggable> IDebuggable.StringTreeChildren()
 		{
-			return string.Concat(Enumerable.Repeat(" ", indent)) + $"Expr::{ToStringName()} with evalType={EvalType}{ToStringChildren(indent + 2)}";
+			return StringTreeChildren1();
 		}
 
-		protected abstract string ToStringName();
-		protected abstract string ToStringChildren(int indent);
+		protected abstract IReadOnlyList<IDebuggable> StringTreeChildren1();
 	}
 }

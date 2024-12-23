@@ -48,7 +48,7 @@ namespace BassaltCompiler.Syntactic
 					if (nextResult is null)
 					{ return null; }
 
-					IDebugStringable nextResultS = nextResult as IDebugStringable;
+					IDebuggable nextResultS = nextResult as IDebuggable;
 					System.Diagnostics.Debug.Assert(nextResultS is not null);
 
 					aggregateR.Items.Add(nextResultS);
@@ -59,10 +59,10 @@ namespace BassaltCompiler.Syntactic
 					if (nextResult is null)
 					{ return null; }
 
-					IDebugStringable aggregateS = aggregate as IDebugStringable;
+					IDebuggable aggregateS = aggregate as IDebuggable;
 					System.Diagnostics.Debug.Assert(aggregateS is not null);
 
-					IDebugStringable nextResultS = nextResult as IDebugStringable;
+					IDebuggable nextResultS = nextResult as IDebuggable;
 					System.Diagnostics.Debug.Assert(nextResultS is not null);
 
 					AggregateObj ret = new AggregateObj();
@@ -74,31 +74,23 @@ namespace BassaltCompiler.Syntactic
 			}
 		}
 
-		protected class AggregateObj : IDebugStringable
+		public class AggregateObj : IDebuggable
 		{
-			public List<IDebugStringable> Items { get; }
+			public List<IDebuggable> Items { get; }
 
 			public AggregateObj()
 			{
-				Items = new List<IDebugStringable>();
+				Items = new List<IDebuggable>();
 			}
 
-			public override string ToString()
+			string IDebuggable.StringTreeName()
 			{
-				return ToString(0);
+				return "AGGREGATE";
 			}
 
-			public string ToString(int indent)
+			IReadOnlyList<IDebuggable> IDebuggable.StringTreeChildren()
 			{
-				StringBuilder ret = new StringBuilder();
-
-				ret.Append(string.Concat(Enumerable.Repeat(" ", indent)) + "Aggregate");
-				foreach (IDebugStringable item in Items)
-				{
-					ret.Append("\n" + item.ToString(indent + 2));
-				}
-
-				return ret.ToString();
+				return Items;
 			}
 		}
 
@@ -133,7 +125,7 @@ namespace BassaltCompiler.Syntactic
 			System.Diagnostics.Debug.Assert(childrenR is not null);
 			
 			Console.WriteLine("print thingy is...");
-			Console.WriteLine(childrenR);
+			Console.WriteLine((childrenR as IDebuggable).ToStringTree());
 
 			return null;
 		}
@@ -160,11 +152,11 @@ namespace BassaltCompiler.Syntactic
 			AggregateObj childrenR = children as AggregateObj;
 			System.Diagnostics.Debug.Assert(childrenR is not null);
 
-			IDebugStringable lhs = childrenR.Items[0];
+			IDebuggable lhs = childrenR.Items[0];
 			System.Diagnostics.Debug.Assert(lhs is not null);
 			Terminal op = childrenR.Items[1] as Terminal;
 			System.Diagnostics.Debug.Assert(op is not null);
-			IDebugStringable rhs = childrenR.Items[2];
+			IDebuggable rhs = childrenR.Items[2];
 			System.Diagnostics.Debug.Assert(rhs is not null);
 
 			return new ExprBinaryOp(op, lhs, rhs);
@@ -196,7 +188,7 @@ namespace BassaltCompiler.Syntactic
 
 			Terminal openParen = childrenR.Items[0] as Terminal;
 			System.Diagnostics.Debug.Assert(openParen is not null);
-			IDebugStringable innerExpr = childrenR.Items[1] as IDebugStringable;
+			IDebuggable innerExpr = childrenR.Items[1] as IDebuggable;
 			System.Diagnostics.Debug.Assert(innerExpr is not null);
 			Terminal closeParen = childrenR.Items[2] as Terminal;
 			System.Diagnostics.Debug.Assert(closeParen is not null);

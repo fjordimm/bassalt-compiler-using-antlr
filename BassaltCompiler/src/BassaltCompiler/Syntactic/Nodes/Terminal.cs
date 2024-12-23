@@ -1,4 +1,5 @@
 
+using System.Collections.Generic;
 using System.Linq;
 using Antlr4.Runtime;
 using Antlr4.Runtime.Tree;
@@ -6,7 +7,7 @@ using BassaltCompiler.Debug;
 
 namespace BassaltCompiler.Syntactic.Nodes
 {
-	class Terminal : IDebugStringable
+	class Terminal : IDebuggable
 	{
 		public string Type { get; }
 		public string Text { get; }
@@ -26,14 +27,14 @@ namespace BassaltCompiler.Syntactic.Nodes
 			Text = text;
 		}
 
-		public override string ToString()
+		string IDebuggable.StringTreeName()
 		{
-			return ToString(0);
+			return $"Terminal({Type}, '{Text}')";
 		}
 
-		public string ToString(int indent)
+		IReadOnlyList<IDebuggable> IDebuggable.StringTreeChildren()
 		{
-			return string.Concat(Enumerable.Repeat(" ", indent)) + $"Terminal({Type}, '{Text}')";
+			return null;
 		}
 	}
 }

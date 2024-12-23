@@ -1,10 +1,11 @@
 
+using System.Collections.Generic;
 using System.Linq;
 using BassaltCompiler.Debug;
 
 namespace BassaltCompiler.Syntactic.Nodes
 {
-	class Identifier : IDebugStringable
+	class Identifier : IDebuggable
 	{
 		public string Name { get; }
 
@@ -13,14 +14,14 @@ namespace BassaltCompiler.Syntactic.Nodes
 			Name = name;
 		}
 
-		public override string ToString()
+		string IDebuggable.StringTreeName()
 		{
-			return ToString(0);
+			return $"Identifier('{Name}')";
 		}
 
-		public string ToString(int indent)
+		IReadOnlyList<IDebuggable> IDebuggable.StringTreeChildren()
 		{
-			return string.Concat(Enumerable.Repeat(" ", indent)) + $"Identifier('{Name}')";
+			return null;
 		}
 	}
 }
