@@ -52,6 +52,7 @@ langType
 	| KChar
 	| KChar8
 	| KChar16
+	| KChar32
 	| KSbyte
 	| KByte
 	| KShort
@@ -359,6 +360,7 @@ KBool: 'bool' ;
 KChar: 'char' ;
 KChar8: 'char8' ;
 KChar16: 'char16' ;
+KChar32: 'char32' ;
 KSbyte: 'sbyte' ;
 KByte: 'byte' ;
 KShort: 'short' ;
