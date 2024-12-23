@@ -5,11 +5,11 @@ namespace BassaltCompiler.Syntactic
 {
 	class SyntaxTree
 	{
-		public CodeBlock MainCodeBlock { get; }
+		// public CodeBlock MainCodeBlock { get; }
 
 		public SyntaxTree()
 		{
-			MainCodeBlock = new CodeBlock();
+			// MainCodeBlock = new CodeBlock();
 		}
 	}
 }

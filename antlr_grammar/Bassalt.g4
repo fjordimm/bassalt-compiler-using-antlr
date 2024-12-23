@@ -32,8 +32,8 @@ datatypeNamespaced
 	;
 
 datatypeBase
-	: langDatatype
-	| Identifier
+	: langDatatype		#datatypeBase_langtype
+	| Identifier		#datatypeBase_identifier
 	;
 
 face
