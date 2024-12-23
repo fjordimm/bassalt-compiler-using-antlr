@@ -7,7 +7,7 @@ grammar Bassalt;
 
 // TODO
 argumentList
-	: Identifier
+	: identifier
 	;
 
 datatypeList
@@ -32,8 +32,8 @@ datatypeNamespaced
 	;
 
 datatypeBase
-	: langDatatype		#datatypeBase_langtype
-	| Identifier		#datatypeBase_identifier
+	: langDatatype
+	| identifier
 	;
 
 face
@@ -78,6 +78,10 @@ langVar
 	| KStdin
 	| KStderr
 	| KPlaceholder
+	;
+
+identifier
+	: IdentifierTerminal
 	;
 
 // Literals
@@ -241,13 +245,13 @@ exprDotAndVia
 exprNamespaceRes
 	: langDatatype '::' exprNamespaceRes	#exprNamespaceRes_langtype
 	| langVar '::' exprNamespaceRes			#exprNamespaceRes_langvar
-	| Identifier '::' exprNamespaceRes		#exprNamespaceRes_identifier
+	| identifier '::' exprNamespaceRes		#exprNamespaceRes_identifier
 	| exprBase								#exprNamespaceRes_other
 	;
 
 exprBase
 	: langVar				#exprBase_langVar
-	| Identifier			#exprBase_identifier
+	| identifier			#exprBase_identifier
 	| literal				#exprBase_literal
 	| '(' expr ')'			#exprBase_parenthesis
 	;
@@ -376,7 +380,7 @@ KFloat256: 'float256' ;
 
 // Identifiers
 
-Identifier: [a-zA-Z_][a-zA-Z_0-9]* ;
+IdentifierTerminal: [a-zA-Z_][a-zA-Z_0-9]* ;
 
 // Operators
 

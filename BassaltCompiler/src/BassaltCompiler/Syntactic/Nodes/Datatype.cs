@@ -6,7 +6,8 @@ namespace BassaltCompiler.Syntactic.Nodes
 {
 	abstract class Datatype : IDebuggable
 	{
-		public static Datatype LtUnset = new UnsetDatatype();
+		public static UnsetDatatype LtUnset = new UnsetDatatype();
+		public static LangDatatypeTEMP LtLangtypeTEMP = new LangDatatypeTEMP();
 
 		string IDebuggable.StringTreeName()
 		{
@@ -17,10 +18,8 @@ namespace BassaltCompiler.Syntactic.Nodes
 
 		IReadOnlyList<IDebuggable> IDebuggable.StringTreeChildren()
 		{
-			return StringTreeChildren1();
+			return null;
 		}
-
-		protected abstract IReadOnlyList<IDebuggable> StringTreeChildren1();
 	}
 
 	sealed class UnsetDatatype : Datatype
@@ -29,10 +28,16 @@ namespace BassaltCompiler.Syntactic.Nodes
 		{
 			return "UnsetDatatype";
 		}
+	}
 
-		protected override IReadOnlyList<IDebuggable> StringTreeChildren1()
+	abstract class LangDatatype : Datatype
+	{ }
+
+	class LangDatatypeTEMP : LangDatatype
+	{
+		protected override string StringTreeName1()
 		{
-			return null;
+			return "LangtypeTEMP";
 		}
 	}
 

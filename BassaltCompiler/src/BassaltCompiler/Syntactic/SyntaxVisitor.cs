@@ -142,27 +142,31 @@ namespace BassaltCompiler.Syntactic
 
 		///// Useful Things /////
 
-		public override object VisitDatatypeBase_langtype([NotNull] BassaltParser.DatatypeBase_langtypeContext context)
+		public override Datatype VisitDatatypeBase([NotNull] BassaltParser.DatatypeBaseContext context)
 		{
-			return base.VisitDatatypeBase_langtype(context);
-		}
-
-		public override object VisitDatatypeBase_identifier([NotNull] BassaltParser.DatatypeBase_identifierContext context)
-		{
-			Identifier ret = new Identifier(context.Identifier().GetText());
-			base.VisitDatatypeBase_identifier(context);
+			Datatype ret = base.VisitDatatypeBase(context) as Datatype;
+			System.Diagnostics.Debug.Assert(ret is not null);
 			return ret;
 		}
 
-		public override object VisitLangDatatype([NotNull] BassaltParser.LangDatatypeContext context)
+		public override LangDatatype VisitLangDatatype([NotNull] BassaltParser.LangDatatypeContext context)
 		{
-			return base.VisitLangDatatype(context);
+			LangDatatype ret = base.VisitLangDatatype(context) as LangDatatype;
+			System.Diagnostics.Debug.Assert(ret is not null);
+			return ret;
 		}
 
-		public override object VisitLangVar([NotNull] BassaltParser.LangVarContext context)
+		public override LangVar VisitLangVar([NotNull] BassaltParser.LangVarContext context)
 		{
 			LangVar ret = LangVar.Get(context.GetText());
 			base.VisitLangVar(context);
+			return ret;
+		}
+
+		public override Identifier VisitIdentifier([NotNull] BassaltParser.IdentifierContext context)
+		{
+			Identifier ret = new Identifier(context.IdentifierTerminal().GetText());
+			base.VisitIdentifier(context);
 			return ret;
 		}
 
@@ -263,25 +267,76 @@ namespace BassaltCompiler.Syntactic
 			return new ExprBinaryOp(op, lhs, rhs);
 		}
 
-		// public override object VisitExprNamespaceRes_langtype([NotNull] BassaltParser.ExprNamespaceRes_langtypeContext context)
-		// {
-		// 	object children = base.VisitExprNamespaceRes_langtype(context);
-		// 	if (children is null)
-		// 	{
-		// 		bassaltSyntaxErrorHandler.Add(context.Stop.Line, context.Stop.Column, "unkown error.");
-		// 		return null;
-		// 	}
+		public override object VisitExprNamespaceRes_langtype([NotNull] BassaltParser.ExprNamespaceRes_langtypeContext context)
+		{
+			object children = base.VisitExprNamespaceRes_langtype(context);
+			if (children is null)
+			{
+				bassaltSyntaxErrorHandler.Add(context.Stop.Line, context.Stop.Column, "unkown error.");
+				return null;
+			}
 
-		// 	AggregateObj childrenR = children as AggregateObj;
-		// 	System.Diagnostics.Debug.Assert(childrenR is not null);
+			AggregateObj childrenR = children as AggregateObj;
+			System.Diagnostics.Debug.Assert(childrenR is not null);
 
-		// 	IDebuggable namespacee = childrenR.Items[0];
-		// 	System.Diagnostics.Debug.Assert(namespacee is not null);
-		// 	Terminal doubleColon = childrenR.Items[1] as Terminal;
-		// 	System.Diagnostics.Debug.Assert(doubleColon is not null);
-		// 	IDebuggable item = childrenR.Items[2];
-		// 	System.Diagnostics.Debug.Assert(item is not null);
-		// }
+			IDebuggable namespacee = childrenR.Items[0];
+			System.Diagnostics.Debug.Assert(namespacee is not null);
+			Terminal doubleColon = childrenR.Items[1] as Terminal;
+			System.Diagnostics.Debug.Assert(doubleColon is not null);
+			IDebuggable item = childrenR.Items[2];
+			System.Diagnostics.Debug.Assert(item is not null);
+
+			return new Namespaced(Datatype.LtLangtypeTEMP, item);
+		}
+
+		public override object VisitExprNamespaceRes_langvar([NotNull] BassaltParser.ExprNamespaceRes_langvarContext context)
+		{
+			object children = base.VisitExprNamespaceRes_langvar(context);
+			if (children is null)
+			{
+				bassaltSyntaxErrorHandler.Add(context.Stop.Line, context.Stop.Column, "unkown error.");
+				return null;
+			}
+
+			AggregateObj childrenR = children as AggregateObj;
+			System.Diagnostics.Debug.Assert(childrenR is not null);
+
+			LangVar namespacee = childrenR.Items[0] as LangVar;
+			System.Diagnostics.Debug.Assert(namespacee is not null);
+			Terminal doubleColon = childrenR.Items[1] as Terminal;
+			System.Diagnostics.Debug.Assert(doubleColon is not null);
+			IDebuggable item = childrenR.Items[2];
+			System.Diagnostics.Debug.Assert(item is not null);
+
+			return new Namespaced(namespacee, item);
+		}
+
+		public override object VisitExprNamespaceRes_identifier([NotNull] BassaltParser.ExprNamespaceRes_identifierContext context)
+		{
+			object children = base.VisitExprNamespaceRes_identifier(context);
+			if (children is null)
+			{
+				bassaltSyntaxErrorHandler.Add(context.Stop.Line, context.Stop.Column, "unkown error.");
+				return null;
+			}
+
+			AggregateObj childrenR = children as AggregateObj;
+			System.Diagnostics.Debug.Assert(childrenR is not null);
+
+			Identifier namespacee = childrenR.Items[0] as Identifier;
+			System.Diagnostics.Debug.Assert(namespacee is not null);
+			Terminal doubleColon = childrenR.Items[1] as Terminal;
+			System.Diagnostics.Debug.Assert(doubleColon is not null);
+			IDebuggable item = childrenR.Items[2];
+			System.Diagnostics.Debug.Assert(item is not null);
+
+			return new Namespaced(namespacee, item);
+		}
+
+		public override object VisitExprNamespaceRes_other([NotNull] BassaltParser.ExprNamespaceRes_otherContext context)
+		{
+			return base.VisitExprNamespaceRes_other(context);
+		}
 
 		// public override object VisitExprNamespaceRes_main([NotNull] BassaltParser.ExprNamespaceRes_mainContext context)
 		// {
@@ -317,21 +372,25 @@ namespace BassaltCompiler.Syntactic
 		// 	return base.VisitExprNamespaceRes_other(context);
 		// }
 
-		public override object VisitExprBase_langVar([NotNull] BassaltParser.ExprBase_langVarContext context)
+		public override LangVar VisitExprBase_langVar([NotNull] BassaltParser.ExprBase_langVarContext context)
 		{
-			return base.VisitExprBase_langVar(context);
+			LangVar ret = base.VisitExprBase_langVar(context) as LangVar;
+			System.Diagnostics.Debug.Assert(ret is not null);
+			return ret;
 		}
 
 		public override Identifier VisitExprBase_identifier([NotNull] BassaltParser.ExprBase_identifierContext context)
 		{
-			Identifier ret = new Identifier(context.Identifier().GetText());
-			base.VisitExprBase_identifier(context);
+			Identifier ret = base.VisitExprBase_identifier(context) as Identifier;
+			System.Diagnostics.Debug.Assert(ret is not null);
 			return ret;
 		}
 
-		public override object VisitExprBase_literal([NotNull] BassaltParser.ExprBase_literalContext context)
+		public override Literal VisitExprBase_literal([NotNull] BassaltParser.ExprBase_literalContext context)
 		{
-			return base.VisitExprBase_literal(context);
+			Literal ret = base.VisitExprBase_literal(context) as Literal;
+			System.Diagnostics.Debug.Assert(ret is not null);
+			return ret;
 		}
 
 		public override object VisitExprBase_parenthesis([NotNull] BassaltParser.ExprBase_parenthesisContext context)
