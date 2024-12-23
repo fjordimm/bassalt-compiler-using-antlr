@@ -95,7 +95,7 @@ namespace BassaltCompiler.Syntactic
 				ret.Append(string.Concat(Enumerable.Repeat(" ", indent)) + "Aggregate");
 				foreach (IDebugStringable item in Items)
 				{
-					ret.Append("\n" + item.ToString(indent+2));
+					ret.Append("\n" + item.ToString(indent + 2));
 				}
 
 				return ret.ToString();
@@ -129,11 +129,11 @@ namespace BassaltCompiler.Syntactic
 				return null;
 			}
 
-			AggregateObj childrenNodes = children as AggregateObj;
-			System.Diagnostics.Debug.Assert(childrenNodes is not null);
+			AggregateObj childrenR = children as AggregateObj;
+			System.Diagnostics.Debug.Assert(childrenR is not null);
 			
 			Console.WriteLine("print thingy is...");
-			Console.WriteLine(childrenNodes);
+			Console.WriteLine(childrenR);
 
 			return null;
 		}
@@ -147,6 +147,8 @@ namespace BassaltCompiler.Syntactic
 		{
 			return base.VisitExprLambda(context);
 		}
+
+		
 
 		public override Identifier VisitExprBase_identifier([NotNull] BassaltParser.ExprBase_identifierContext context)
 		{
@@ -162,14 +164,21 @@ namespace BassaltCompiler.Syntactic
 
 		public override object VisitExprBase_parenthesis([NotNull] BassaltParser.ExprBase_parenthesisContext context)
 		{
-			AggregateObj childrenNodes = base.VisitExprBase_parenthesis(context) as AggregateObj;
-			System.Diagnostics.Debug.Assert(childrenNodes is not null);
+			object children = base.VisitExprBase_parenthesis(context);
+			if (children is null)
+			{
+				bassaltSyntaxErrorHandler.Add(context.Stop.Line, context.Stop.Column, "unkown error.");
+				return null;
+			}
 
-			Terminal openParen = childrenNodes.Items[0] as Terminal;
+			AggregateObj childrenR = children as AggregateObj;
+			System.Diagnostics.Debug.Assert(childrenR is not null);
+
+			Terminal openParen = childrenR.Items[0] as Terminal;
 			System.Diagnostics.Debug.Assert(openParen is not null);
-			IDebugStringable innerExpr = childrenNodes.Items[1] as IDebugStringable;
+			IDebugStringable innerExpr = childrenR.Items[1] as IDebugStringable;
 			System.Diagnostics.Debug.Assert(innerExpr is not null);
-			Terminal closeParen = childrenNodes.Items[2] as Terminal;
+			Terminal closeParen = childrenR.Items[2] as Terminal;
 			System.Diagnostics.Debug.Assert(closeParen is not null);
 
 			return innerExpr;

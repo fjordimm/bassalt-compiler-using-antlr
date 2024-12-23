@@ -131,9 +131,9 @@ exprBitshift
 	;
 
 exprSum
-	: exprSum '+' exprProduct
-	| exprSum '-' exprProduct
-	| exprProduct
+	: exprSum '+' exprProduct	#exprSum_plus
+	| exprSum '-' exprProduct	#exprSum_minus
+	| exprProduct				#exprSum_other
 	;
 
 exprProduct
