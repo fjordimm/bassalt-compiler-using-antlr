@@ -31,9 +31,36 @@ argumentList
 	: Identifier
 	;
 
-// TODO
-typename
-	: Identifier
+datatypeList
+	: datatype? (',' datatype)*
+	;
+
+datatype
+	: datatype '!'
+	| datatype '~' face
+	| '(' datatypeList ')'
+	| datatype '<' datatypeList '>'
+	| datatype '[' exprList ']'
+	| datatype '*'
+	| datatype '&'
+	| datatype '^'
+	| datatypeNamespaced
+	;
+
+datatypeNamespaced
+	: (datatypeBase '::')* datatypeBase
+	;
+
+datatypeBase
+	: langDatatype
+	| Identifier
+	;
+
+face
+	: datatypeNamespaced
+	| KPublic
+	| KPrivate
+	| KProtected
 	;
 
 // Expressions
@@ -122,7 +149,7 @@ exprUnaryPrefix
 	| '!' exprUnaryPrefix
 	| '~' exprUnaryPrefix
 	| '%' exprUnaryPrefix
-	| '%' '<' typename '>' exprUnaryPrefix
+	| '%' '<' datatype '>' exprUnaryPrefix
 	| KRfree exprUnaryPrefix
 	| KCede exprUnaryPrefix
 	| KRef exprUnaryPrefix
@@ -143,18 +170,18 @@ exprUnarySuffix
 	;
 
 exprNew
-	: KNew typename '{' expr '}'
-	| KNew typename '(' expr ')'
-	| KRnew typename '{' expr '}'
-	| KRnew typename '(' expr ')'
-	| KSnew typename '{' expr '}'
-	| KSnew typename '(' expr ')'
+	: KNew datatype '{' expr '}'
+	| KNew datatype '(' exprList ')'
+	| KRnew datatype '{' expr '}'
+	| KRnew datatype '(' exprList ')'
+	| KSnew datatype '{' expr '}'
+	| KSnew datatype '(' exprList ')'
 	| exprDotAndVia
 	;
 
 exprDotAndVia
 	: exprDotAndVia '.' exprNamespaceRes
-	| exprDotAndVia '~' exprNamespaceRes
+	| exprDotAndVia '~' face
 	| exprNamespaceRes
 	;
 
@@ -299,6 +326,34 @@ KInt256: 'int256' ;
 KUint256: 'uint256' ;
 KFloat128: 'float128' ;
 KFloat256: 'float256' ;
+
+langDatatype
+	: KVoid
+	| KFunc
+	| KSptr
+	| KWsptr
+	| KBool
+	| KChar
+	| KChar8
+	| KChar16
+	| KSbyte
+	| KByte
+	| KShort
+	| KUshort
+	| KInt
+	| KUint
+	| KLong
+	| KUlong
+	| KFloat
+	| KDouble
+	| KString
+	| KInt128
+	| KUint128
+	| KInt256
+	| KUint256
+	| KFloat128
+	| KFloat256
+	;
 
 // Identifiers
 

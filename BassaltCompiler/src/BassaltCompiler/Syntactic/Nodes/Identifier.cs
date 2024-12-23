@@ -20,7 +20,7 @@ namespace BassaltCompiler.Syntactic.Nodes
 
 		public string ToString(int indent)
 		{
-			return string.Concat(Enumerable.Repeat(" ", indent)) + $"Identifier(\"{Name}\")";
+			return string.Concat(Enumerable.Repeat(" ", indent)) + $"Identifier('{Name}')";
 		}
 	}
 }

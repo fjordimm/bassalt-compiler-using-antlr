@@ -1,13 +1,15 @@
 
 namespace BassaltCompiler.Syntactic.Nodes
 {
-	class ExprLambda : Expr
+	enum BinaryOp
 	{
-		public string Name { get; }
+		
+	}
 
-		public ExprLambda(string name)
+	class ExprBinaryOp : Expr
+	{
+		public ExprBinaryOp()
 		{
-			Name = name;
 		}
 
 		protected override string ToString1(int indent)

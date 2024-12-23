@@ -120,14 +120,15 @@ namespace BassaltCompiler.Syntactic
 
 		public override object VisitStatementPrint([NotNull] BassaltParser.StatementPrintContext context)
 		{
-			AggregateObj childrenNodes = base.VisitStatementPrint(context) as AggregateObj;
+			object children = base.VisitStatementPrint(context);
+			if (children is null)
+			{ return null; }
+
+			AggregateObj childrenNodes = children as AggregateObj;
 			System.Diagnostics.Debug.Assert(childrenNodes is not null);
 			
-			Console.WriteLine("children...");
-			foreach (IDebugStringable child in childrenNodes.Items)
-			{
-				Console.WriteLine(child.ToString(2));
-			}
+			Console.WriteLine("print thingy is...");
+			Console.WriteLine(childrenNodes);
 
 			return null;
 		}
@@ -142,9 +143,31 @@ namespace BassaltCompiler.Syntactic
 			return base.VisitExprLambda(context);
 		}
 
-		public override object VisitExprBase_identifier([NotNull] BassaltParser.ExprBase_identifierContext context)
+		public override Identifier VisitExprBase_identifier([NotNull] BassaltParser.ExprBase_identifierContext context)
 		{
-			return base.VisitExprBase_identifier(context);
+			Identifier ret = new Identifier(context.Identifier().GetText());
+			base.VisitExprBase_identifier(context);
+			return ret;
+		}
+
+		public override object VisitExprBase_literal([NotNull] BassaltParser.ExprBase_literalContext context)
+		{
+			return base.VisitExprBase_literal(context);
+		}
+
+		public override object VisitExprBase_parenthesis([NotNull] BassaltParser.ExprBase_parenthesisContext context)
+		{
+			AggregateObj childrenNodes = base.VisitExprBase_parenthesis(context) as AggregateObj;
+			System.Diagnostics.Debug.Assert(childrenNodes is not null);
+
+			Terminal openParen = childrenNodes.Items[0] as Terminal;
+			System.Diagnostics.Debug.Assert(openParen is not null);
+			IDebugStringable innerExpr = childrenNodes.Items[1] as IDebugStringable;
+			System.Diagnostics.Debug.Assert(innerExpr is not null);
+			Terminal closeParen = childrenNodes.Items[2] as Terminal;
+			System.Diagnostics.Debug.Assert(closeParen is not null);
+
+			return innerExpr;
 		}
 
 		public override Literal VisitLiteral_boolean([NotNull] BassaltParser.Literal_booleanContext context)
