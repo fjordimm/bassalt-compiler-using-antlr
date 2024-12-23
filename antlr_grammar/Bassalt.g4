@@ -84,6 +84,7 @@ langVar
 
 literal
 	: literalBoolean		#literal_boolean
+	| literalNull			#literal_null
 	| literalInteger		#literal_integer
 	| literalFractional		#literal_fractional
 	| literalString			#literal_string
@@ -91,6 +92,10 @@ literal
 
 literalBoolean
 	: KTrue | KFalse
+	;
+
+literalNull
+	: KNull
 	;
 
 literalInteger

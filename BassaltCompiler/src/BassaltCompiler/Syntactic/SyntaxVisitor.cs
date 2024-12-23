@@ -172,8 +172,15 @@ namespace BassaltCompiler.Syntactic
 
 		public override Literal VisitLiteral_boolean([NotNull] BassaltParser.Literal_booleanContext context)
 		{
-			Literal ret = new Literal(LiteralType.Boolean, context.literalBoolean().GetText());
+			Literal ret = Reparsing.ReparseBool(context.literalBoolean().GetText(), bassaltSyntaxErrorHandler, context.Stop.Line, context.Stop.Column);
 			base.VisitLiteral_boolean(context);
+			return ret;
+		}
+
+		public override Literal VisitLiteral_null([NotNull] BassaltParser.Literal_nullContext context)
+		{
+			Literal ret = Reparsing.ReparseNull(context.literalNull().GetText(), bassaltSyntaxErrorHandler, context.Stop.Line, context.Stop.Column);
+			base.VisitLiteral_null(context);
 			return ret;
 		}
 

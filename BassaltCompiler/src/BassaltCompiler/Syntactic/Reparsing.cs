@@ -8,14 +8,20 @@ namespace BassaltCompiler.Syntactic
 {
 	static partial class Reparsing
 	{
-		// private static readonly char[] baseChars = "0123456789ABCDEFGHIJKLMNOPQRSTUV"
-
 		public static Literal ReparseBool(string input, BassaltSyntaxErrorHandler errorHandler, int errorLine, int errorCharPos)
 		{
 			if (input == "true")
-			{ return new Literal(LiteralType.Boolean, "1"); }
+			{ return new Literal(LiteralType.Boolean, "true"); }
 			else if (input == "false")
-			{ return new Literal(LiteralType.Boolean, "0"); }
+			{ return new Literal(LiteralType.Boolean, "false"); }
+			else
+			{ throw new ArgumentException("Input must be valid."); }
+		}
+
+		public static Literal ReparseNull(string input, BassaltSyntaxErrorHandler errorHandler, int errorLine, int errorCharPos)
+		{
+			if (input == "null")
+			{ return new Literal(LiteralType.Null, "null"); }
 			else
 			{ throw new ArgumentException("Input must be valid."); }
 		}

@@ -8,7 +8,7 @@ namespace BassaltCompiler.Syntactic.Nodes
 {
 	enum LiteralType
 	{
-		Boolean, Integer, Fractional, String
+		Boolean, Null, Integer, Fractional, String
 	}
 
 	enum LiteralSuffix
