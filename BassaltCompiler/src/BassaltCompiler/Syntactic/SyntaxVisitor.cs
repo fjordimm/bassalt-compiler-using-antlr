@@ -148,7 +148,27 @@ namespace BassaltCompiler.Syntactic
 			return base.VisitExprLambda(context);
 		}
 
-		
+		public override object VisitExprSum_plus([NotNull] BassaltParser.ExprSum_plusContext context)
+		{
+			object children = base.VisitExprSum_plus(context);
+			if (children is null)
+			{
+				bassaltSyntaxErrorHandler.Add(context.Stop.Line, context.Stop.Column, "unkown error.");
+				return null;
+			}
+
+			AggregateObj childrenR = children as AggregateObj;
+			System.Diagnostics.Debug.Assert(childrenR is not null);
+
+			IDebugStringable lhs = childrenR.Items[0];
+			System.Diagnostics.Debug.Assert(lhs is not null);
+			Terminal op = childrenR.Items[1] as Terminal;
+			System.Diagnostics.Debug.Assert(op is not null);
+			IDebugStringable rhs = childrenR.Items[2];
+			System.Diagnostics.Debug.Assert(rhs is not null);
+
+			return new ExprBinaryOp(op, lhs, rhs);
+		}
 
 		public override Identifier VisitExprBase_identifier([NotNull] BassaltParser.ExprBase_identifierContext context)
 		{

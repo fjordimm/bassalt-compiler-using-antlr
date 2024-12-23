@@ -20,9 +20,10 @@ namespace BassaltCompiler.Syntactic.Nodes
 
 		public string ToString(int indent)
 		{
-			return string.Concat(Enumerable.Repeat(" ", indent)) + $"Expr[{EvalType}]: {ToString1(indent)}";
+			return string.Concat(Enumerable.Repeat(" ", indent)) + $"Expr::{ToStringName()} with evalType={EvalType}{ToStringChildren(indent + 2)}";
 		}
 
-		protected abstract string ToString1(int indent);
+		protected abstract string ToStringName();
+		protected abstract string ToStringChildren(int indent);
 	}
 }

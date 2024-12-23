@@ -23,15 +23,30 @@ namespace BassaltCompiler.Syntactic.Nodes
 			Rhs = rhs;
 		}
 
-		protected override string ToString1(int indent)
+		protected override string ToStringName()
+		{
+			return $"BinaryOp({Op})";
+		}
+
+		protected override string ToStringChildren(int indent)
 		{
 			StringBuilder ret = new StringBuilder();
 
-			ret.Append(string.Concat(Enumerable.Repeat(" ", indent)) + $"BinaryOp({Op})");
-			ret.Append("\n" + Lhs.ToString(indent + 2));
-			ret.Append("\n" + Rhs.ToString(indent + 2));
+			ret.Append($"\n{Lhs.ToString(indent + 2)}");
+			ret.Append($"\n{Rhs.ToString(indent + 2)}");
 
 			return ret.ToString();
 		}
+
+		// protected override string ToString1(int indent)
+		// {
+		// 	StringBuilder ret = new StringBuilder();
+
+		// 	ret.Append($"BinaryOp({Op})");
+		// 	ret.Append("\n" + Lhs.ToString(indent + 2));
+		// 	ret.Append("\n" + Rhs.ToString(indent + 2));
+
+		// 	return ret.ToString();
+		// }
 	}
 }
