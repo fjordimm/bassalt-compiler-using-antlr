@@ -272,7 +272,7 @@ namespace BassaltCompiler.Syntactic
 		// 	return base.VisitExprConditional_other(context);
 		// }
 
-		public override object VisitExprOr_main([NotNull] BassaltParser.ExprOr_mainContext context)
+		public override ExprBinaryOp VisitExprOr_main([NotNull] BassaltParser.ExprOr_mainContext context)
 		{
 			object children = base.VisitExprOr_main(context);
 			if (children is null)
@@ -299,7 +299,7 @@ namespace BassaltCompiler.Syntactic
 			return base.VisitExprOr_other(context);
 		}
 
-		public override object VisitExprAnd_main([NotNull] BassaltParser.ExprAnd_mainContext context)
+		public override ExprBinaryOp VisitExprAnd_main([NotNull] BassaltParser.ExprAnd_mainContext context)
 		{
 			object children = base.VisitExprAnd_main(context);
 			if (children is null)
@@ -326,7 +326,7 @@ namespace BassaltCompiler.Syntactic
 			return base.VisitExprAnd_other(context);
 		}
 
-		public override object VisitExprBitOr_main([NotNull] BassaltParser.ExprBitOr_mainContext context)
+		public override ExprBinaryOp VisitExprBitOr_main([NotNull] BassaltParser.ExprBitOr_mainContext context)
 		{
 			object children = base.VisitExprBitOr_main(context);
 			if (children is null)
@@ -353,7 +353,7 @@ namespace BassaltCompiler.Syntactic
 			return base.VisitExprBitOr_other(context);
 		}
 
-		public override object VisitExprBitXor_main([NotNull] BassaltParser.ExprBitXor_mainContext context)
+		public override ExprBinaryOp VisitExprBitXor_main([NotNull] BassaltParser.ExprBitXor_mainContext context)
 		{
 			object children = base.VisitExprBitXor_main(context);
 			if (children is null)
@@ -380,7 +380,7 @@ namespace BassaltCompiler.Syntactic
 			return base.VisitExprBitXor_other(context);
 		}
 
-		public override object VisitExprBitAnd_main([NotNull] BassaltParser.ExprBitAnd_mainContext context)
+		public override ExprBinaryOp VisitExprBitAnd_main([NotNull] BassaltParser.ExprBitAnd_mainContext context)
 		{
 			object children = base.VisitExprBitAnd_main(context);
 			if (children is null)
@@ -407,7 +407,7 @@ namespace BassaltCompiler.Syntactic
 			return base.VisitExprBitAnd_other(context);
 		}
 
-		public override object VisitExprEquality_main([NotNull] BassaltParser.ExprEquality_mainContext context)
+		public override ExprBinaryOp VisitExprEquality_main([NotNull] BassaltParser.ExprEquality_mainContext context)
 		{
 			object children = base.VisitExprEquality_main(context);
 			if (children is null)
@@ -434,7 +434,7 @@ namespace BassaltCompiler.Syntactic
 			return base.VisitExprEquality_other(context);
 		}
 
-		public override object VisitExprComparison_main([NotNull] BassaltParser.ExprComparison_mainContext context)
+		public override ExprBinaryOp VisitExprComparison_main([NotNull] BassaltParser.ExprComparison_mainContext context)
 		{
 			object children = base.VisitExprComparison_main(context);
 			if (children is null)
@@ -461,7 +461,7 @@ namespace BassaltCompiler.Syntactic
 			return base.VisitExprComparison_other(context);
 		}
 
-		public override object VisitExprBitshift_main([NotNull] BassaltParser.ExprBitshift_mainContext context)
+		public override ExprBinaryOp VisitExprBitshift_main([NotNull] BassaltParser.ExprBitshift_mainContext context)
 		{
 			object children = base.VisitExprBitshift_main(context);
 			if (children is null)
@@ -488,7 +488,7 @@ namespace BassaltCompiler.Syntactic
 			return base.VisitExprBitshift_other(context);
 		}
 
-		public override object VisitExprSum_main([NotNull] BassaltParser.ExprSum_mainContext context)
+		public override ExprBinaryOp VisitExprSum_main([NotNull] BassaltParser.ExprSum_mainContext context)
 		{
 			object children = base.VisitExprSum_main(context);
 			if (children is null)
@@ -515,7 +515,7 @@ namespace BassaltCompiler.Syntactic
 			return base.VisitExprSum_other(context);
 		}
 
-		public override object VisitExprProduct_main([NotNull] BassaltParser.ExprProduct_mainContext context)
+		public override ExprBinaryOp VisitExprProduct_main([NotNull] BassaltParser.ExprProduct_mainContext context)
 		{
 			object children = base.VisitExprProduct_main(context);
 			if (children is null)
@@ -542,7 +542,7 @@ namespace BassaltCompiler.Syntactic
 			return base.VisitExprProduct_other(context);
 		}
 
-		public override object VisitExprNamespaceRes_main([NotNull] BassaltParser.ExprNamespaceRes_mainContext context)
+		public override Namespaced VisitExprNamespaceRes_main([NotNull] BassaltParser.ExprNamespaceRes_mainContext context)
 		{
 			object children = base.VisitExprNamespaceRes_main(context);
 			if (children is null)
