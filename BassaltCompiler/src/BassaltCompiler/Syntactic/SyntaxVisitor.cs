@@ -59,7 +59,7 @@ namespace BassaltCompiler.Syntactic
 
 			string IDebuggable.StringTreeName()
 			{
-				return $"Terminal({Type}, '{Text}')";
+				return $"TERMINAL({Type}, '{Text}')";
 			}
 
 			IReadOnlyList<IDebuggable> IDebuggable.StringTreeChildren()
