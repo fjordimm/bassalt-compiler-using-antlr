@@ -27,11 +27,15 @@ datatype
 	;
 
 datatypeNamespaced
-	: langType '::' datatypeNamespaced			#datatypeNamespaced_main
-	| langVar '::' datatypeNamespaced			#datatypeNamespaced_main
-	| identifier '::' datatypeNamespaced		#datatypeNamespaced_main
-	| datatypeBase								#datatypeNamespaced_other
+	: expr '::' datatypeBase		#datatypeNamespaced_main
+	| datatypeBase					#datatypeNamespaced_other
 	;
+
+//	: langType '::' datatypeNamespaced			#datatypeNamespaced_main
+//	| langVar '::' datatypeNamespaced			#datatypeNamespaced_main
+//	| identifier '::' datatypeNamespaced		#datatypeNamespaced_main
+//	| datatypeBase								#datatypeNamespaced_other
+//	;
 
 datatypeBase
 	: langType				#datatypeBase_langtype
@@ -249,12 +253,6 @@ exprNamespaceRes
 	: exprNamespaceRes '::' exprBase	#exprNamespaceRes_main
 	| exprBase							#exprNamespaceRes_other
 	;
-
-//	: langType '::' exprNamespaceRes		#exprNamespaceRes_main
-//	| langVar '::' exprNamespaceRes			#exprNamespaceRes_main
-//	| identifier '::' exprNamespaceRes		#exprNamespaceRes_main
-//	| exprBase								#exprNamespaceRes_other
-//	;
 
 exprBase
 	: langVar				#exprBase_langVar
