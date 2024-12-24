@@ -8,29 +8,34 @@ using BassaltCompiler.Debug;
 
 namespace BassaltCompiler.Syntactic.Nodes
 {
-	class Faces : IDebuggable
+	class FaceList : IDebuggable
 	{
-		private readonly List<Face> _val;
-		public IReadOnlyList<Face> Val { get => _val.AsReadOnly(); }
+		private readonly List<Face> _faces;
+		public IReadOnlyList<Face> Faces { get => _faces.AsReadOnly(); }
 
-		public Faces(IEnumerable<Face> faces)
+		public FaceList(IEnumerable<Face> faces)
 		{
-			_val = faces.ToList();
+			_faces = faces.ToList();
+		}
+
+		public void Add(Face face)
+		{
+			_faces.Add(face);
 		}
 
 		public override string ToString()
 		{
 			StringBuilder ret = new StringBuilder();
 
-			ret.Append("Faces[");
-			for (int i = 0; i < Val.Count; i++)
+			ret.Append("Faces[ ");
+			for (int i = 0; i < Faces.Count; i++)
 			{
 				if (i == 0)
-				{ ret.Append($"{Val[i]}"); }
+				{ ret.Append($"{Faces[i]}"); }
 				else
-				{ ret.Append($",{Val[i]}"); }
+				{ ret.Append($", {Faces[i]}"); }
 			}
-			ret.Append(']');
+			ret.Append(" ]");
 
 			return ret.ToString();
 		}
@@ -48,7 +53,7 @@ namespace BassaltCompiler.Syntactic.Nodes
 
 	abstract class Face
 	{
-		// public static readonly FaceNone FcNone = FaceNone.FcNone_;
+		public static readonly FaceImmutable FcImmutable = FaceImmutable.FcImmutable_;
 
 		public override string ToString()
 		{

@@ -142,6 +142,41 @@ namespace BassaltCompiler.Syntactic
 
 		///// Useful Things /////
 
+		public override DatatypeFaced VisitDatatype_immutface([NotNull] BassaltParser.Datatype_immutfaceContext context)
+		{
+			object children = base.VisitDatatype_immutface(context);
+			if (children is null)
+			{
+				bassaltSyntaxErrorHandler.Add(context.Stop.Line, context.Stop.Column, "unkown error.");
+				return null;
+			}
+
+			AggregateObj childrenR = children as AggregateObj;
+			System.Diagnostics.Debug.Assert(childrenR is not null);
+
+			Datatype datatype = childrenR.Items[0] as Datatype;
+			System.Diagnostics.Debug.Assert(datatype is not null);
+			Terminal exclam = childrenR.Items[1] as Terminal;
+			System.Diagnostics.Debug.Assert(exclam is not null);
+
+			DatatypeFaced datatypeF = datatype as DatatypeFaced;
+			if (datatypeF is null)
+			{
+				FaceList faceList = new FaceList(new List<Face>{ Face.FcImmutable });
+				return new DatatypeFaced(faceList, datatype);
+			}
+			else
+			{
+				datatypeF.Faces.Add(Face.FcImmutable);
+				return datatypeF;
+			}
+		}
+
+		public override object VisitDatatype_other([NotNull] BassaltParser.Datatype_otherContext context)
+		{
+			return base.VisitDatatype_other(context);
+		}
+
 		public override DatatypeNamespaced VisitDatatypeNamespaced_main([NotNull] BassaltParser.DatatypeNamespaced_mainContext context)
 		{
 			object children = base.VisitDatatypeNamespaced_main(context);

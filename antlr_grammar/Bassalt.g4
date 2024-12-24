@@ -15,15 +15,15 @@ datatypeList
 	;
 
 datatype
-	: datatype '!'
-	| datatype '~' face
-	| '(' datatypeList ')'
-	| datatype '<' datatypeList '>'
-	| datatype '[' exprList ']'
-	| datatype '*'
-	| datatype '&'
-	| datatype '^'
-	| datatypeNamespaced
+	: datatype '!'						#datatype_immutface
+	| datatype '~' face					#datatype_other
+	| '(' datatypeList ')'				#datatype_other
+	| datatype '<' datatypeList '>'		#datatype_other
+	| datatype '[' exprList ']'			#datatype_other
+	| datatype '*'						#datatype_other
+	| datatype '&'						#datatype_other
+	| datatype '^'						#datatype_other
+	| datatypeNamespaced				#datatype_other
 	;
 
 datatypeNamespaced
