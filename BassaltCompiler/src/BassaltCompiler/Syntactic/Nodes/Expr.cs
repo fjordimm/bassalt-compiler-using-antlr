@@ -7,16 +7,9 @@ namespace BassaltCompiler.Syntactic.Nodes
 {
 	abstract class Expr : IDebuggable
 	{
-		public Datatype EvalType { get; set; }
-
-		public Expr()
-		{
-			EvalType = Datatype.DtUnset;
-		}
-
 		string IDebuggable.StringTreeName()
 		{
-			return $"Expr.{StringTreeName1()} with type [{EvalType}]";
+			return $"Expr.{StringTreeName1()}";
 		}
 
 		protected abstract string StringTreeName1();

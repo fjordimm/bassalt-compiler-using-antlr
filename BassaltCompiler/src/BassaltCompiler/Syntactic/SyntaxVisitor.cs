@@ -142,31 +142,31 @@ namespace BassaltCompiler.Syntactic
 
 		///// Useful Things /////
 
-		public override object VisitDatatypeNamespaced_main([NotNull] BassaltParser.DatatypeNamespaced_mainContext context)
-		{
-			object children = base.VisitDatatypeNamespaced_main(context);
-			if (children is null)
-			{
-				bassaltSyntaxErrorHandler.Add(context.Stop.Line, context.Stop.Column, "unkown error.");
-				return null;
-			}
+		// public override object VisitDatatypeNamespaced_main([NotNull] BassaltParser.DatatypeNamespaced_mainContext context)
+		// {
+		// 	object children = base.VisitDatatypeNamespaced_main(context);
+		// 	if (children is null)
+		// 	{
+		// 		bassaltSyntaxErrorHandler.Add(context.Stop.Line, context.Stop.Column, "unkown error.");
+		// 		return null;
+		// 	}
 
-			AggregateObj childrenR = children as AggregateObj;
-			System.Diagnostics.Debug.Assert(childrenR is not null);
+		// 	AggregateObj childrenR = children as AggregateObj;
+		// 	System.Diagnostics.Debug.Assert(childrenR is not null);
 
-			IDebuggable condition = childrenR.Items[0];
-			System.Diagnostics.Debug.Assert(condition is not null);
-			Terminal questionMark = childrenR.Items[1] as Terminal;
-			System.Diagnostics.Debug.Assert(questionMark is not null);
-			IDebuggable expressionA = childrenR.Items[2];
-			System.Diagnostics.Debug.Assert(expressionA is not null);
-			Terminal colon = childrenR.Items[3] as Terminal;
-			System.Diagnostics.Debug.Assert(colon is not null);
-			IDebuggable expressionB = childrenR.Items[4];
-			System.Diagnostics.Debug.Assert(expressionB is not null);
+		// 	IDebuggable condition = childrenR.Items[0];
+		// 	System.Diagnostics.Debug.Assert(condition is not null);
+		// 	Terminal questionMark = childrenR.Items[1] as Terminal;
+		// 	System.Diagnostics.Debug.Assert(questionMark is not null);
+		// 	IDebuggable expressionA = childrenR.Items[2];
+		// 	System.Diagnostics.Debug.Assert(expressionA is not null);
+		// 	Terminal colon = childrenR.Items[3] as Terminal;
+		// 	System.Diagnostics.Debug.Assert(colon is not null);
+		// 	IDebuggable expressionB = childrenR.Items[4];
+		// 	System.Diagnostics.Debug.Assert(expressionB is not null);
 
-			return new ExprConditional(condition, expressionA, expressionB);
-		}
+		// 	return new ExprConditional(condition, expressionA, expressionB);
+		// }
 
 		public override object VisitDatatypeNamespaced_other([NotNull] BassaltParser.DatatypeNamespaced_otherContext context)
 		{

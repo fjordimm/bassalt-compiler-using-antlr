@@ -2,20 +2,47 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Linq;
+using System.Text;
 using BassaltCompiler.Debug;
 
 namespace BassaltCompiler.Syntactic.Nodes
 {
 	class Faces : IDebuggable
 	{
+		private readonly List<Face> _val;
+		public IReadOnlyList<Face> Val { get => _val.AsReadOnly(); }
+
+		public Faces(IEnumerable<Face> faces)
+		{
+			_val = faces.ToList();
+		}
+
+		public override string ToString()
+		{
+			StringBuilder ret = new StringBuilder();
+
+			ret.Append("Faces[");
+			for (int i = 0; i < Val.Count; i++)
+			{
+				if (i == 0)
+				{ ret.Append($"{Val[i]}"); }
+				else
+				{ ret.Append($",{Val[i]}"); }
+			}
+			ret.Append(']');
+
+			return ret.ToString();
+		}
+
 		string IDebuggable.StringTreeName()
 		{
-			throw new NotImplementedException();
+			return ToString();
 		}
 
 		IReadOnlyList<IDebuggable> IDebuggable.StringTreeChildren()
 		{
-			throw new NotImplementedException();
+			return null;
 		}
 	}
 
@@ -30,19 +57,6 @@ namespace BassaltCompiler.Syntactic.Nodes
 
 		protected abstract string ToString1();
 	}
-
-	// sealed class FaceNone : Face
-	// {
-	// 	public static readonly FaceNone FcNone_ = new FaceNone();
-
-	// 	private FaceNone()
-	// 	{ }
-
-	// 	protected override string ToString1()
-	// 	{
-	// 		return "FaceNone";
-	// 	}
-	// }
 
 	sealed class FaceImmutable : Face
 	{

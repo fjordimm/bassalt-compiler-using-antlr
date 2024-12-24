@@ -39,22 +39,19 @@ namespace BassaltCompiler.Syntactic.Nodes
 		public static readonly DatatypeLang DtFloat128 = DatatypeLang.DtFloat128_;
 		public static readonly DatatypeLang DtFloat256 = DatatypeLang.DtFloat256_;
 
-		public override string ToString()
-		{
-			return ToString1();
-		}
-
 		string IDebuggable.StringTreeName()
 		{
-			return ToString1();
+			return $"Datatype.{StringTreeName1()}";
 		}
 
-		protected abstract string ToString1();
+		protected abstract string StringTreeName1();
 
 		IReadOnlyList<IDebuggable> IDebuggable.StringTreeChildren()
 		{
-			return null;
+			return StringTreeChildren1();
 		}
+
+		protected abstract IReadOnlyList<IDebuggable> StringTreeChildren1();
 	}
 
 	sealed class DatatypeUnset : Datatype
@@ -64,9 +61,14 @@ namespace BassaltCompiler.Syntactic.Nodes
 		private DatatypeUnset()
 		{ }
 
-		protected override string ToString1()
+		protected override string StringTreeName1()
 		{
-			return "DatatypeUnset";
+			return "Unset";
+		}
+
+		protected override IReadOnlyList<IDebuggable> StringTreeChildren1()
+		{
+			return null;
 		}
 	}
 
@@ -146,9 +148,31 @@ namespace BassaltCompiler.Syntactic.Nodes
 			Name = name;
 		}
 
-		protected override string ToString1()
+		protected override string StringTreeName1()
 		{
-			return $"DatatypeLang({Name})";
+			return $"Lang({Name})";
+		}
+
+		protected override IReadOnlyList<IDebuggable> StringTreeChildren1()
+		{
+			return null;
 		}
 	}
+
+	// sealed class DatatypeNamespace
+	// {
+	// 	public IDebuggable Namespace { get; }
+	// 	public Datatype Inner { get; }
+
+	// 	public DatatypeNamespace(IDebuggable namespacee, Datatype inner)
+	// 	{
+	// 		if (!(namespacee as DatatypeLang is not null || namespacee as LangVar is not null || namespacee as Identifier is not null))
+	// 		{ throw new ArgumentException("The namespacee argument must be a DatatypeLang, LangVar, or Identifier."); }
+			
+	// 		Namespace = namespacee;
+	// 		Inner = inner;
+	// 	}
+
+	// 	// public 
+	// }
 }
