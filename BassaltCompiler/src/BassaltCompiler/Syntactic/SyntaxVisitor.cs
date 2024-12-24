@@ -566,9 +566,30 @@ namespace BassaltCompiler.Syntactic
 			return new ExprUnaryOp(op, inner);
 		}
 
-		public override object VisitExprUnaryPrefix_explicitcast([NotNull] BassaltParser.ExprUnaryPrefix_explicitcastContext context)
+		public override ExprExplicitCast VisitExprUnaryPrefix_explicitcast([NotNull] BassaltParser.ExprUnaryPrefix_explicitcastContext context)
 		{
-			throw new NotImplementedException();
+			object children = base.VisitExprUnaryPrefix_explicitcast(context);
+			if (children is null)
+			{
+				bassaltSyntaxErrorHandler.Add(context.Stop.Line, context.Stop.Column, "unkown error.");
+				return null;
+			}
+
+			AggregateObj childrenR = children as AggregateObj;
+			System.Diagnostics.Debug.Assert(childrenR is not null);
+
+			Terminal percentSign = childrenR.Items[0] as Terminal;
+			System.Diagnostics.Debug.Assert(percentSign is not null);
+			Terminal openAngleBracket = childrenR.Items[1] as Terminal;
+			System.Diagnostics.Debug.Assert(openAngleBracket is not null);
+			Datatype targetType = childrenR.Items[2] as Datatype;
+			System.Diagnostics.Debug.Assert(targetType is not null);
+			Terminal closeAngleBracket = childrenR.Items[3] as Terminal;
+			System.Diagnostics.Debug.Assert(closeAngleBracket is not null);
+			IDebuggable inner = childrenR.Items[4];
+			System.Diagnostics.Debug.Assert(inner is not null);
+
+			return new ExprExplicitCast(targetType, inner);
 		}
 
 		public override object VisitExprUnaryPrefix_other([NotNull] BassaltParser.ExprUnaryPrefix_otherContext context)
