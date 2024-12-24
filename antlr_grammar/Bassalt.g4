@@ -137,8 +137,8 @@ exprLambda
 	;
 
 exprConditional
-	: exprOr '?' expr ':' exprConditional
-	| exprOr
+	: exprOr '?' expr ':' exprConditional		#exprConditional_main
+	| exprOr									#exprConditional_other
 	;
 
 exprOr
@@ -244,9 +244,9 @@ exprDotAndVia
 	;
 
 exprNamespaceRes
-	: langType '::' exprNamespaceRes	#exprNamespaceRes_langtype
-	| langVar '::' exprNamespaceRes			#exprNamespaceRes_langvar
-	| identifier '::' exprNamespaceRes		#exprNamespaceRes_identifier
+	: langType '::' exprNamespaceRes		#exprNamespaceRes_main
+	| langVar '::' exprNamespaceRes			#exprNamespaceRes_main
+	| identifier '::' exprNamespaceRes		#exprNamespaceRes_main
 	| exprBase								#exprNamespaceRes_other
 	;
 

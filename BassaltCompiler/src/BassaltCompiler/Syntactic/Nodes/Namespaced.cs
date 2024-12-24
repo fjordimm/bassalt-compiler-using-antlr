@@ -1,4 +1,5 @@
 
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using BassaltCompiler.Debug;
@@ -12,6 +13,9 @@ namespace BassaltCompiler.Syntactic.Nodes
 
 		public Namespaced(IDebuggable namespacee, IDebuggable item)
 		{
+			if (!(namespacee as DatatypeLang is not null || namespacee as LangVar is not null || namespacee as Identifier is not null))
+			{ throw new ArgumentException("The namespacee argument must be a DatatypeLang, LangVar, or Identifier."); }
+
 			Namespace = namespacee;
 			Item = item;
 		}
