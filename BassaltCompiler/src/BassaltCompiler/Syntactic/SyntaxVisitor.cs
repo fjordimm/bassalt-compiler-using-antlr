@@ -142,43 +142,57 @@ namespace BassaltCompiler.Syntactic
 
 		///// Useful Things /////
 
-		// public override object VisitDatatypeNamespaced_main([NotNull] BassaltParser.DatatypeNamespaced_mainContext context)
-		// {
-		// 	object children = base.VisitDatatypeNamespaced_main(context);
-		// 	if (children is null)
-		// 	{
-		// 		bassaltSyntaxErrorHandler.Add(context.Stop.Line, context.Stop.Column, "unkown error.");
-		// 		return null;
-		// 	}
+		public override DatatypeNamespaced VisitDatatypeNamespaced_main([NotNull] BassaltParser.DatatypeNamespaced_mainContext context)
+		{
+			object children = base.VisitDatatypeNamespaced_main(context);
+			if (children is null)
+			{
+				bassaltSyntaxErrorHandler.Add(context.Stop.Line, context.Stop.Column, "unkown error.");
+				return null;
+			}
 
-		// 	AggregateObj childrenR = children as AggregateObj;
-		// 	System.Diagnostics.Debug.Assert(childrenR is not null);
+			AggregateObj childrenR = children as AggregateObj;
+			System.Diagnostics.Debug.Assert(childrenR is not null);
 
-		// 	IDebuggable condition = childrenR.Items[0];
-		// 	System.Diagnostics.Debug.Assert(condition is not null);
-		// 	Terminal questionMark = childrenR.Items[1] as Terminal;
-		// 	System.Diagnostics.Debug.Assert(questionMark is not null);
-		// 	IDebuggable expressionA = childrenR.Items[2];
-		// 	System.Diagnostics.Debug.Assert(expressionA is not null);
-		// 	Terminal colon = childrenR.Items[3] as Terminal;
-		// 	System.Diagnostics.Debug.Assert(colon is not null);
-		// 	IDebuggable expressionB = childrenR.Items[4];
-		// 	System.Diagnostics.Debug.Assert(expressionB is not null);
+			IDebuggable namespacee = childrenR.Items[0];
+			System.Diagnostics.Debug.Assert(namespacee is not null);
+			Terminal doubleColon = childrenR.Items[1] as Terminal;
+			System.Diagnostics.Debug.Assert(doubleColon is not null);
+			Datatype inner = childrenR.Items[2] as Datatype;
+			System.Diagnostics.Debug.Assert(inner is not null);
 
-		// 	return new ExprConditional(condition, expressionA, expressionB);
-		// }
+			return new DatatypeNamespaced(namespacee, inner);
+		}
 
 		public override object VisitDatatypeNamespaced_other([NotNull] BassaltParser.DatatypeNamespaced_otherContext context)
 		{
 			return base.VisitDatatypeNamespaced_other(context);
 		}
 
-		public override Datatype VisitDatatypeBase([NotNull] BassaltParser.DatatypeBaseContext context)
+		public override Datatype VisitDatatypeBase_langtype([NotNull] BassaltParser.DatatypeBase_langtypeContext context)
 		{
-			Datatype ret = base.VisitDatatypeBase(context) as Datatype;
+			Datatype ret = base.VisitDatatypeBase_langtype(context) as Datatype;
 			System.Diagnostics.Debug.Assert(ret is not null);
 			return ret;
 		}
+
+		public override DatatypeIdentifier VisitDatatypeBase_identifier([NotNull] BassaltParser.DatatypeBase_identifierContext context)
+		{
+			// Identifier identifier = base.VisitDatatypeBase_identifier(context) as Identifier;
+			// System.Diagnostics.Debug.Assert(identifier is not null);
+
+			// return new DatatypeIdentifier(identifier.Name);
+			DatatypeIdentifier ret = new DatatypeIdentifier(context.IdentifierTerminal().GetText());
+			base.VisitDatatypeBase_identifier(context);
+			return ret;
+		}
+
+		// public override Datatype VisitDatatypeBase([NotNull] BassaltParser.DatatypeBaseContext context)
+		// {
+		// 	Datatype ret = base.VisitDatatypeBase(context) as Datatype;
+		// 	System.Diagnostics.Debug.Assert(ret is not null);
+		// 	return ret;
+		// }
 
 		public override DatatypeLang VisitLangType([NotNull] BassaltParser.LangTypeContext context)
 		{
@@ -644,10 +658,10 @@ namespace BassaltCompiler.Syntactic
 			System.Diagnostics.Debug.Assert(namespacee is not null);
 			Terminal doubleColon = childrenR.Items[1] as Terminal;
 			System.Diagnostics.Debug.Assert(doubleColon is not null);
-			IDebuggable item = childrenR.Items[2];
-			System.Diagnostics.Debug.Assert(item is not null);
+			IDebuggable inner = childrenR.Items[2];
+			System.Diagnostics.Debug.Assert(inner is not null);
 
-			return new Namespaced(namespacee, item);
+			return new Namespaced(namespacee, inner);
 		}
 
 		public override object VisitExprNamespaceRes_other([NotNull] BassaltParser.ExprNamespaceRes_otherContext context)

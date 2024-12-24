@@ -19,12 +19,12 @@ namespace BassaltCompiler.Syntactic.Nodes
 
 		protected override string StringTreeName1()
 		{
-			return $"ExplicitCast('{TargetType}')";
+			return $"ExplicitCast";
 		}
 
 		protected override IReadOnlyList<IDebuggable> StringTreeChildren1()
 		{
-			return new List<IDebuggable>{ Inner };
+			return new List<IDebuggable>{ TargetType, Inner };
 		}
 	}
 }

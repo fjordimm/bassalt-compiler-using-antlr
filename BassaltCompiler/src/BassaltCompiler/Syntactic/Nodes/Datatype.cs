@@ -159,20 +159,45 @@ namespace BassaltCompiler.Syntactic.Nodes
 		}
 	}
 
-	// sealed class DatatypeNamespace
-	// {
-	// 	public IDebuggable Namespace { get; }
-	// 	public Datatype Inner { get; }
+	sealed class DatatypeIdentifier : Datatype
+	{
+		public string Name { get; }
 
-	// 	public DatatypeNamespace(IDebuggable namespacee, Datatype inner)
-	// 	{
-	// 		if (!(namespacee as DatatypeLang is not null || namespacee as LangVar is not null || namespacee as Identifier is not null))
-	// 		{ throw new ArgumentException("The namespacee argument must be a DatatypeLang, LangVar, or Identifier."); }
-			
-	// 		Namespace = namespacee;
-	// 		Inner = inner;
-	// 	}
+		public DatatypeIdentifier(string name)
+		{
+			Name = name;
+		}
 
-	// 	// public 
-	// }
+		protected override string StringTreeName1()
+		{
+			return $"Identifier('{Name}')";
+		}
+
+		protected override IReadOnlyList<IDebuggable> StringTreeChildren1()
+		{
+			return null;
+		}
+	}
+
+	sealed class DatatypeNamespaced : Datatype
+	{
+		public IDebuggable Namespace { get; }
+		public Datatype Inner { get; }
+
+		public DatatypeNamespaced(IDebuggable namespacee, Datatype inner)
+		{
+			Namespace = namespacee;
+			Inner = inner;
+		}
+
+		protected override string StringTreeName1()
+		{
+			return "Namespaced";
+		}
+
+		protected override IReadOnlyList<IDebuggable> StringTreeChildren1()
+		{
+			return new List<IDebuggable>{ Namespace, Inner };
+		}
+	}
 }
