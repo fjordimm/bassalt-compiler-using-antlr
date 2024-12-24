@@ -17,7 +17,7 @@ namespace BassaltCompiler.Syntactic.Nodes
 		public static readonly LangVar LvStderr = new LangVar("stderr");
 		public static readonly LangVar LvPlaceholder = new LangVar("placeholder");
 
-		private static readonly ReadOnlyDictionary<string, LangVar> LangVarDict = new Dictionary<string, LangVar>
+		private static readonly ReadOnlyDictionary<string, LangVar> langVarDict = new Dictionary<string, LangVar>
 		{
 			{"this", LvThis},
 			{"base", LvBase},
@@ -29,7 +29,7 @@ namespace BassaltCompiler.Syntactic.Nodes
 
 		public static LangVar Get(string name)
 		{
-			if (LangVarDict.TryGetValue(name, out LangVar tryGetVal))
+			if (langVarDict.TryGetValue(name, out LangVar tryGetVal))
 			{ return tryGetVal; }
 			else
 			{ throw new ArgumentException("argument was not valid."); }

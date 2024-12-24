@@ -101,7 +101,7 @@ namespace BassaltCompiler.Syntactic.Nodes
 		public static readonly DatatypeLang DtFloat128_ = new DatatypeLang("float128");
 		public static readonly DatatypeLang DtFloat256_ = new DatatypeLang("float256");
 
-		private static readonly ReadOnlyDictionary<string, DatatypeLang> DatatypeLangDict = new Dictionary<string, DatatypeLang>
+		private static readonly ReadOnlyDictionary<string, DatatypeLang> datatypeLangDict = new Dictionary<string, DatatypeLang>
 		{
 			{"void", DtVoid_},
 			{"func", DtFunc_},
@@ -133,7 +133,7 @@ namespace BassaltCompiler.Syntactic.Nodes
 
 		public static DatatypeLang Get(string name)
 		{
-			if (DatatypeLangDict.TryGetValue(name, out DatatypeLang tryGetVal))
+			if (datatypeLangDict.TryGetValue(name, out DatatypeLang tryGetVal))
 			{ return tryGetVal; }
 			else
 			{ throw new ArgumentException("argument was not valid."); }

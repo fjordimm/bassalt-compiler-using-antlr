@@ -26,7 +26,7 @@ namespace BassaltCompiler.Syntactic
 			{ throw new ArgumentException("Input must be valid."); }
 		}
 
-		[GeneratedRegex(@"([-+]?)([0-9]+)(?:_?([a-zA-Z0-9]))?")]
+		[GeneratedRegex(@"([-+]?)([0-9]+)(?:_?([a-zA-Z0-9]+))?")]
 		private static partial Regex DecIntRegex();
 
 		public static Literal ReparseDecInt(string input, BassaltSyntaxErrorHandler errorHandler, int errorLine, int errorCharPos)
@@ -44,7 +44,7 @@ namespace BassaltCompiler.Syntactic
 			}
 		}
 
-		[GeneratedRegex(@"([-+]?)0[xX]([0-9a-fA-F]+)(?:_?([a-zA-Z0-9]))?")]
+		[GeneratedRegex(@"([-+]?)0[xX]([0-9a-fA-F]+)(?:_?([a-zA-Z0-9]+))?")]
 		private static partial Regex HexIntRegex();
 
 		public static Literal ReparseHexInt(string input, BassaltSyntaxErrorHandler errorHandler, int errorLine, int errorCharPos)
@@ -62,7 +62,7 @@ namespace BassaltCompiler.Syntactic
 			}
 		}
 
-		[GeneratedRegex(@"([-+]?)0[oO]([0-7]+)(?:_?([a-zA-Z0-9]))?")]
+		[GeneratedRegex(@"([-+]?)0[oO]([0-7]+)(?:_?([a-zA-Z0-9]+))?")]
 		private static partial Regex OctalIntRegex();
 
 		public static Literal ReparseOctalInt(string input, BassaltSyntaxErrorHandler errorHandler, int errorLine, int errorCharPos)
@@ -80,7 +80,7 @@ namespace BassaltCompiler.Syntactic
 			}
 		}
 
-		[GeneratedRegex(@"([-+]?)0[bB]([0-1]+)(?:_?([a-zA-Z0-9]))?")]
+		[GeneratedRegex(@"([-+]?)0[bB]([0-1]+)(?:_?([a-zA-Z0-9]+))?")]
 		private static partial Regex BinaryIntRegex();
 
 		public static Literal ReparseBinaryInt(string input, BassaltSyntaxErrorHandler errorHandler, int errorLine, int errorCharPos)
@@ -98,7 +98,7 @@ namespace BassaltCompiler.Syntactic
 			}
 		}
 
-		[GeneratedRegex(@"([-+]?)([0-9]+\.[0-9]+)(?:_?([a-zA-Z0-9]))?")]
+		[GeneratedRegex(@"([-+]?)([0-9]+\.[0-9]+)(?:_?([a-zA-Z0-9]+))?")]
 		private static partial Regex PlainFracRegex();
 
 		public static Literal ReparsePlainFrac(string input, BassaltSyntaxErrorHandler errorHandler, int errorLine, int errorCharPos)
@@ -116,7 +116,7 @@ namespace BassaltCompiler.Syntactic
 			}
 		}
 
-		[GeneratedRegex(@"([-+]?)([0-9]+\.[0-9]+[eE][-+]?[0-9]+)(?:_?([a-zA-Z0-9]))?")]
+		[GeneratedRegex(@"([-+]?)([0-9]+\.[0-9]+[eE][-+]?[0-9]+)(?:_?([a-zA-Z0-9]+))?")]
 		private static partial Regex ScientificFracRegex();
 
 		public static Literal ReparseScientificFrac(string input, BassaltSyntaxErrorHandler errorHandler, int errorLine, int errorCharPos)
@@ -134,7 +134,7 @@ namespace BassaltCompiler.Syntactic
 			}
 		}
 
-		[GeneratedRegex(@"([-+]?)([0-9]+[eE][-+]?[0-9]+)(?:_?([a-zA-Z0-9]))?")]
+		[GeneratedRegex(@"([-+]?)([0-9]+[eE][-+]?[0-9]+)(?:_?([a-zA-Z0-9]+))?")]
 		private static partial Regex ScientificWholeNumRegex();
 
 		public static Literal ReparseScientificWholeNum(string input, BassaltSyntaxErrorHandler errorHandler, int errorLine, int errorCharPos)
@@ -152,7 +152,7 @@ namespace BassaltCompiler.Syntactic
 			}
 		}
 
-		[GeneratedRegex(@"'((?:[^'\\]|\\.)*)'(?:_?([a-zA-Z0-9]))?")]
+		[GeneratedRegex(@"'((?:[^'\\]|\\.)*)'(?:_?([a-zA-Z0-9]+))?")]
 		private static partial Regex CharRegex();
 
 		[GeneratedRegex(@"\\u([0-9a-fA-F]{4})")]
