@@ -245,6 +245,168 @@ namespace BassaltCompiler.Syntactic
 			return base.VisitExprLambda(context);
 		}
 
+		public override object VisitExprOr_main([NotNull] BassaltParser.ExprOr_mainContext context)
+		{
+			object children = base.VisitExprOr_main(context);
+			if (children is null)
+			{
+				bassaltSyntaxErrorHandler.Add(context.Stop.Line, context.Stop.Column, "unkown error.");
+				return null;
+			}
+
+			AggregateObj childrenR = children as AggregateObj;
+			System.Diagnostics.Debug.Assert(childrenR is not null);
+
+			IDebuggable lhs = childrenR.Items[0];
+			System.Diagnostics.Debug.Assert(lhs is not null);
+			Terminal op = childrenR.Items[1] as Terminal;
+			System.Diagnostics.Debug.Assert(op is not null);
+			IDebuggable rhs = childrenR.Items[2];
+			System.Diagnostics.Debug.Assert(rhs is not null);
+
+			return new ExprBinaryOp(op, lhs, rhs);
+		}
+
+		public override object VisitExprOr_other([NotNull] BassaltParser.ExprOr_otherContext context)
+		{
+			return base.VisitExprOr_other(context);
+		}
+
+		public override object VisitExprAnd_main([NotNull] BassaltParser.ExprAnd_mainContext context)
+		{
+			object children = base.VisitExprAnd_main(context);
+			if (children is null)
+			{
+				bassaltSyntaxErrorHandler.Add(context.Stop.Line, context.Stop.Column, "unkown error.");
+				return null;
+			}
+
+			AggregateObj childrenR = children as AggregateObj;
+			System.Diagnostics.Debug.Assert(childrenR is not null);
+
+			IDebuggable lhs = childrenR.Items[0];
+			System.Diagnostics.Debug.Assert(lhs is not null);
+			Terminal op = childrenR.Items[1] as Terminal;
+			System.Diagnostics.Debug.Assert(op is not null);
+			IDebuggable rhs = childrenR.Items[2];
+			System.Diagnostics.Debug.Assert(rhs is not null);
+
+			return new ExprBinaryOp(op, lhs, rhs);
+		}
+
+		public override object VisitExprAnd_other([NotNull] BassaltParser.ExprAnd_otherContext context)
+		{
+			return base.VisitExprAnd_other(context);
+		}
+
+		public override object VisitExprBitOr_main([NotNull] BassaltParser.ExprBitOr_mainContext context)
+		{
+			object children = base.VisitExprBitOr_main(context);
+			if (children is null)
+			{
+				bassaltSyntaxErrorHandler.Add(context.Stop.Line, context.Stop.Column, "unkown error.");
+				return null;
+			}
+
+			AggregateObj childrenR = children as AggregateObj;
+			System.Diagnostics.Debug.Assert(childrenR is not null);
+
+			IDebuggable lhs = childrenR.Items[0];
+			System.Diagnostics.Debug.Assert(lhs is not null);
+			Terminal op = childrenR.Items[1] as Terminal;
+			System.Diagnostics.Debug.Assert(op is not null);
+			IDebuggable rhs = childrenR.Items[2];
+			System.Diagnostics.Debug.Assert(rhs is not null);
+
+			return new ExprBinaryOp(op, lhs, rhs);
+		}
+
+		public override object VisitExprBitOr_other([NotNull] BassaltParser.ExprBitOr_otherContext context)
+		{
+			return base.VisitExprBitOr_other(context);
+		}
+
+		public override object VisitExprBitXor_main([NotNull] BassaltParser.ExprBitXor_mainContext context)
+		{
+			object children = base.VisitExprBitXor_main(context);
+			if (children is null)
+			{
+				bassaltSyntaxErrorHandler.Add(context.Stop.Line, context.Stop.Column, "unkown error.");
+				return null;
+			}
+
+			AggregateObj childrenR = children as AggregateObj;
+			System.Diagnostics.Debug.Assert(childrenR is not null);
+
+			IDebuggable lhs = childrenR.Items[0];
+			System.Diagnostics.Debug.Assert(lhs is not null);
+			Terminal op = childrenR.Items[1] as Terminal;
+			System.Diagnostics.Debug.Assert(op is not null);
+			IDebuggable rhs = childrenR.Items[2];
+			System.Diagnostics.Debug.Assert(rhs is not null);
+
+			return new ExprBinaryOp(op, lhs, rhs);
+		}
+
+		public override object VisitExprBitXor_other([NotNull] BassaltParser.ExprBitXor_otherContext context)
+		{
+			return base.VisitExprBitXor_other(context);
+		}
+
+		public override object VisitExprBitAnd_main([NotNull] BassaltParser.ExprBitAnd_mainContext context)
+		{
+			object children = base.VisitExprBitAnd_main(context);
+			if (children is null)
+			{
+				bassaltSyntaxErrorHandler.Add(context.Stop.Line, context.Stop.Column, "unkown error.");
+				return null;
+			}
+
+			AggregateObj childrenR = children as AggregateObj;
+			System.Diagnostics.Debug.Assert(childrenR is not null);
+
+			IDebuggable lhs = childrenR.Items[0];
+			System.Diagnostics.Debug.Assert(lhs is not null);
+			Terminal op = childrenR.Items[1] as Terminal;
+			System.Diagnostics.Debug.Assert(op is not null);
+			IDebuggable rhs = childrenR.Items[2];
+			System.Diagnostics.Debug.Assert(rhs is not null);
+
+			return new ExprBinaryOp(op, lhs, rhs);
+		}
+
+		public override object VisitExprBitAnd_other([NotNull] BassaltParser.ExprBitAnd_otherContext context)
+		{
+			return base.VisitExprBitAnd_other(context);
+		}
+
+		public override object VisitExprEquality_main([NotNull] BassaltParser.ExprEquality_mainContext context)
+		{
+			object children = base.VisitExprEquality_main(context);
+			if (children is null)
+			{
+				bassaltSyntaxErrorHandler.Add(context.Stop.Line, context.Stop.Column, "unkown error.");
+				return null;
+			}
+
+			AggregateObj childrenR = children as AggregateObj;
+			System.Diagnostics.Debug.Assert(childrenR is not null);
+
+			IDebuggable lhs = childrenR.Items[0];
+			System.Diagnostics.Debug.Assert(lhs is not null);
+			Terminal op = childrenR.Items[1] as Terminal;
+			System.Diagnostics.Debug.Assert(op is not null);
+			IDebuggable rhs = childrenR.Items[2];
+			System.Diagnostics.Debug.Assert(rhs is not null);
+
+			return new ExprBinaryOp(op, lhs, rhs);
+		}
+
+		public override object VisitExprEquality_other([NotNull] BassaltParser.ExprEquality_otherContext context)
+		{
+			return base.VisitExprEquality_other(context);
+		}
+
 		public override object VisitExprComparison_main([NotNull] BassaltParser.ExprComparison_mainContext context)
 		{
 			object children = base.VisitExprComparison_main(context);

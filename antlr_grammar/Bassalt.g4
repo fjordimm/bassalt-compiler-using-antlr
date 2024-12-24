@@ -142,34 +142,34 @@ exprConditional
 	;
 
 exprOr
-	: exprOr '||' exprAnd
-	| exprAnd
+	: exprOr '||' exprAnd		#exprOr_main
+	| exprAnd					#exprOr_other
 	;
 
 exprAnd
-	: exprAnd '&&' exprBitOr
-	| exprBitOr
+	: exprAnd '&&' exprBitOr	#exprAnd_main
+	| exprBitOr					#exprAnd_other
 	;
 
 exprBitOr
-	: exprBitOr '|' exprBitXor
-	| exprBitXor
+	: exprBitOr '|' exprBitXor		#exprBitOr_main
+	| exprBitXor					#exprBitOr_other
 	;
 
 exprBitXor
-	: exprBitXor '^' exprBitAnd
-	| exprBitAnd
+	: exprBitXor '^' exprBitAnd		#exprBitXor_main
+	| exprBitAnd					#exprBitXor_other
 	;
 
 exprBitAnd
-	: exprBitAnd '&' exprEquality
-	| exprEquality
+	: exprBitAnd '&' exprEquality		#exprBitAnd_main
+	| exprEquality						#exprBitAnd_other
 	;
 
 exprEquality
-	: exprEquality '==' exprComparison
-	| exprEquality '!=' exprComparison
-	| exprComparison
+	: exprEquality '==' exprComparison		#exprEquality_main
+	| exprEquality '!=' exprComparison		#exprEquality_main
+	| exprComparison						#exprEquality_other
 	;
 
 exprComparison
