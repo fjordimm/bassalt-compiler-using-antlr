@@ -178,21 +178,10 @@ namespace BassaltCompiler.Syntactic
 
 		public override DatatypeIdentifier VisitDatatypeBase_identifier([NotNull] BassaltParser.DatatypeBase_identifierContext context)
 		{
-			// Identifier identifier = base.VisitDatatypeBase_identifier(context) as Identifier;
-			// System.Diagnostics.Debug.Assert(identifier is not null);
-
-			// return new DatatypeIdentifier(identifier.Name);
 			DatatypeIdentifier ret = new DatatypeIdentifier(context.IdentifierTerminal().GetText());
 			base.VisitDatatypeBase_identifier(context);
 			return ret;
 		}
-
-		// public override Datatype VisitDatatypeBase([NotNull] BassaltParser.DatatypeBaseContext context)
-		// {
-		// 	Datatype ret = base.VisitDatatypeBase(context) as Datatype;
-		// 	System.Diagnostics.Debug.Assert(ret is not null);
-		// 	return ret;
-		// }
 
 		public override DatatypeLang VisitLangType([NotNull] BassaltParser.LangTypeContext context)
 		{
