@@ -27,8 +27,8 @@ datatype
 	;
 
 datatypeNamespaced
-	: datatypeBase '::' datatypeNamespaced
-	| datatypeBase
+	: datatypeBase '::' datatypeNamespaced		#datatypeNamespaced_main
+	| datatypeBase								#datatypeNamespaced_other
 	;
 
 datatypeBase
