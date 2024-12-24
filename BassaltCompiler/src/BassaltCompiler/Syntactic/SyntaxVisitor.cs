@@ -245,32 +245,36 @@ namespace BassaltCompiler.Syntactic
 			return base.VisitExprLambda(context);
 		}
 
-		// public override object VisitExprConditional_main([NotNull] BassaltParser.ExprConditional_mainContext context)
-		// {
-		// 	object children = base.VisitExprConditional_main(context);
-		// 	if (children is null)
-		// 	{
-		// 		bassaltSyntaxErrorHandler.Add(context.Stop.Line, context.Stop.Column, "unkown error.");
-		// 		return null;
-		// 	}
+		public override ExprConditional VisitExprConditional_main([NotNull] BassaltParser.ExprConditional_mainContext context)
+		{
+			object children = base.VisitExprConditional_main(context);
+			if (children is null)
+			{
+				bassaltSyntaxErrorHandler.Add(context.Stop.Line, context.Stop.Column, "unkown error.");
+				return null;
+			}
 
-		// 	AggregateObj childrenR = children as AggregateObj;
-		// 	System.Diagnostics.Debug.Assert(childrenR is not null);
+			AggregateObj childrenR = children as AggregateObj;
+			System.Diagnostics.Debug.Assert(childrenR is not null);
 
-		// 	IDebuggable lhs = childrenR.Items[0];
-		// 	System.Diagnostics.Debug.Assert(lhs is not null);
-		// 	Terminal op = childrenR.Items[1] as Terminal;
-		// 	System.Diagnostics.Debug.Assert(op is not null);
-		// 	IDebuggable rhs = childrenR.Items[2];
-		// 	System.Diagnostics.Debug.Assert(rhs is not null);
+			IDebuggable condition = childrenR.Items[0];
+			System.Diagnostics.Debug.Assert(condition is not null);
+			Terminal questionMark = childrenR.Items[1] as Terminal;
+			System.Diagnostics.Debug.Assert(questionMark is not null);
+			IDebuggable expressionA = childrenR.Items[2];
+			System.Diagnostics.Debug.Assert(expressionA is not null);
+			Terminal colon = childrenR.Items[3] as Terminal;
+			System.Diagnostics.Debug.Assert(colon is not null);
+			IDebuggable expressionB = childrenR.Items[4];
+			System.Diagnostics.Debug.Assert(expressionB is not null);
 
-		// 	return new ExprBinaryOp(op, lhs, rhs);
-		// }
+			return new ExprConditional(condition, expressionA, expressionB);
+		}
 
-		// public override object VisitExprConditional_other([NotNull] BassaltParser.ExprConditional_otherContext context)
-		// {
-		// 	return base.VisitExprConditional_other(context);
-		// }
+		public override object VisitExprConditional_other([NotNull] BassaltParser.ExprConditional_otherContext context)
+		{
+			return base.VisitExprConditional_other(context);
+		}
 
 		public override ExprBinaryOp VisitExprOr_main([NotNull] BassaltParser.ExprOr_mainContext context)
 		{
