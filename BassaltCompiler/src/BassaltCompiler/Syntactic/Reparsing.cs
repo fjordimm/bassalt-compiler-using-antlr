@@ -26,7 +26,7 @@ namespace BassaltCompiler.Syntactic
 			{ throw new ArgumentException("Input must be valid."); }
 		}
 
-		[GeneratedRegex(@"([-+]?)([0-9]+)(?:_?([a-zA-Z0-9]+))?")]
+		[GeneratedRegex(@"([0-9]+)(?:_?([a-zA-Z0-9]+))?")]
 		private static partial Regex DecIntRegex();
 
 		public static ExprLiteral ReparseDecInt(string input, BassaltSyntaxErrorHandler errorHandler, int errorLine, int errorCharPos)
@@ -36,15 +36,14 @@ namespace BassaltCompiler.Syntactic
 			{ throw new ArgumentException("Input must be valid."); }
 			else
 			{
-				bool isNegative = match.Groups[1].Value == "-";
-				string value = match.Groups[2].Value;
-				string suffixStr = match.Groups[3].Value;
+				string value = match.Groups[1].Value;
+				string suffixStr = match.Groups[2].Value;
 
-				return new ExprLiteral(ExprLiteralType.Integer, value, isNegative: isNegative, suffixStr: suffixStr);
+				return new ExprLiteral(ExprLiteralType.Integer, value, suffixStr: suffixStr);
 			}
 		}
 
-		[GeneratedRegex(@"([-+]?)0[xX]([0-9a-fA-F]+)(?:_?([a-zA-Z0-9]+))?")]
+		[GeneratedRegex(@"0[xX]([0-9a-fA-F]+)(?:_?([a-zA-Z0-9]+))?")]
 		private static partial Regex HexIntRegex();
 
 		public static ExprLiteral ReparseHexInt(string input, BassaltSyntaxErrorHandler errorHandler, int errorLine, int errorCharPos)
@@ -54,15 +53,14 @@ namespace BassaltCompiler.Syntactic
 			{ throw new ArgumentException("Input must be valid."); }
 			else
 			{
-				bool isNegative = match.Groups[1].Value == "-";
-				string value = Convert.ToString(Convert.ToUInt64(match.Groups[2].Value, 16));
-				string suffixStr = match.Groups[3].Value;
+				string value = Convert.ToString(Convert.ToUInt64(match.Groups[1].Value, 16));
+				string suffixStr = match.Groups[2].Value;
 				
-				return new ExprLiteral(ExprLiteralType.Integer, value, isNegative: isNegative, suffixStr: suffixStr);
+				return new ExprLiteral(ExprLiteralType.Integer, value, suffixStr: suffixStr);
 			}
 		}
 
-		[GeneratedRegex(@"([-+]?)0[oO]([0-7]+)(?:_?([a-zA-Z0-9]+))?")]
+		[GeneratedRegex(@"0[oO]([0-7]+)(?:_?([a-zA-Z0-9]+))?")]
 		private static partial Regex OctalIntRegex();
 
 		public static ExprLiteral ReparseOctalInt(string input, BassaltSyntaxErrorHandler errorHandler, int errorLine, int errorCharPos)
@@ -72,15 +70,14 @@ namespace BassaltCompiler.Syntactic
 			{ throw new ArgumentException("Input must be valid."); }
 			else
 			{
-				bool isNegative = match.Groups[1].Value == "-";
-				string value = Convert.ToString(Convert.ToUInt64(match.Groups[2].Value, 8));
-				string suffixStr = match.Groups[3].Value;
+				string value = Convert.ToString(Convert.ToUInt64(match.Groups[1].Value, 8));
+				string suffixStr = match.Groups[2].Value;
 				
-				return new ExprLiteral(ExprLiteralType.Integer, value, isNegative: isNegative, suffixStr: suffixStr);
+				return new ExprLiteral(ExprLiteralType.Integer, value, suffixStr: suffixStr);
 			}
 		}
 
-		[GeneratedRegex(@"([-+]?)0[bB]([0-1]+)(?:_?([a-zA-Z0-9]+))?")]
+		[GeneratedRegex(@"0[bB]([0-1]+)(?:_?([a-zA-Z0-9]+))?")]
 		private static partial Regex BinaryIntRegex();
 
 		public static ExprLiteral ReparseBinaryInt(string input, BassaltSyntaxErrorHandler errorHandler, int errorLine, int errorCharPos)
@@ -90,15 +87,14 @@ namespace BassaltCompiler.Syntactic
 			{ throw new ArgumentException("Input must be valid."); }
 			else
 			{
-				bool isNegative = match.Groups[1].Value == "-";
-				string value = Convert.ToString(Convert.ToUInt64(match.Groups[2].Value, 2));
-				string suffixStr = match.Groups[3].Value;
+				string value = Convert.ToString(Convert.ToUInt64(match.Groups[1].Value, 2));
+				string suffixStr = match.Groups[2].Value;
 				
-				return new ExprLiteral(ExprLiteralType.Integer, value, isNegative: isNegative, suffixStr: suffixStr);
+				return new ExprLiteral(ExprLiteralType.Integer, value, suffixStr: suffixStr);
 			}
 		}
 
-		[GeneratedRegex(@"([-+]?)([0-9]+\.[0-9]+)(?:_?([a-zA-Z0-9]+))?")]
+		[GeneratedRegex(@"([0-9]+\.[0-9]+)(?:_?([a-zA-Z0-9]+))?")]
 		private static partial Regex PlainFracRegex();
 
 		public static ExprLiteral ReparsePlainFrac(string input, BassaltSyntaxErrorHandler errorHandler, int errorLine, int errorCharPos)
@@ -108,15 +104,14 @@ namespace BassaltCompiler.Syntactic
 			{ throw new ArgumentException("Input must be valid."); }
 			else
 			{
-				bool isNegative = match.Groups[1].Value == "-";
-				string value = match.Groups[2].Value;
-				string suffixStr = match.Groups[3].Value;
+				string value = match.Groups[1].Value;
+				string suffixStr = match.Groups[2].Value;
 				
-				return new ExprLiteral(ExprLiteralType.Fractional, value, isNegative: isNegative, suffixStr: suffixStr);
+				return new ExprLiteral(ExprLiteralType.Fractional, value, suffixStr: suffixStr);
 			}
 		}
 
-		[GeneratedRegex(@"([-+]?)([0-9]+\.[0-9]+[eE][-+]?[0-9]+)(?:_?([a-zA-Z0-9]+))?")]
+		[GeneratedRegex(@"([0-9]+\.[0-9]+[eE][-+]?[0-9]+)(?:_?([a-zA-Z0-9]+))?")]
 		private static partial Regex ScientificFracRegex();
 
 		public static ExprLiteral ReparseScientificFrac(string input, BassaltSyntaxErrorHandler errorHandler, int errorLine, int errorCharPos)
@@ -126,15 +121,14 @@ namespace BassaltCompiler.Syntactic
 			{ throw new ArgumentException("Input must be valid."); }
 			else
 			{
-				bool isNegative = match.Groups[1].Value == "-";
-				string value = match.Groups[2].Value;
-				string suffixStr = match.Groups[3].Value;
+				string value = match.Groups[1].Value;
+				string suffixStr = match.Groups[2].Value;
 				
-				return new ExprLiteral(ExprLiteralType.Fractional, value, isNegative: isNegative, suffixStr: suffixStr);
+				return new ExprLiteral(ExprLiteralType.Fractional, value, suffixStr: suffixStr);
 			}
 		}
 
-		[GeneratedRegex(@"([-+]?)([0-9]+[eE][-+]?[0-9]+)(?:_?([a-zA-Z0-9]+))?")]
+		[GeneratedRegex(@"([0-9]+[eE][-+]?[0-9]+)(?:_?([a-zA-Z0-9]+))?")]
 		private static partial Regex ScientificWholeNumRegex();
 
 		public static ExprLiteral ReparseScientificWholeNum(string input, BassaltSyntaxErrorHandler errorHandler, int errorLine, int errorCharPos)
@@ -144,11 +138,10 @@ namespace BassaltCompiler.Syntactic
 			{ throw new ArgumentException("Input must be valid."); }
 			else
 			{
-				bool isNegative = match.Groups[1].Value == "-";
-				string value = match.Groups[2].Value;
-				string suffixStr = match.Groups[3].Value;
+				string value = match.Groups[1].Value;
+				string suffixStr = match.Groups[2].Value;
 				
-				return new ExprLiteral(ExprLiteralType.Fractional, value, isNegative: isNegative, suffixStr: suffixStr);
+				return new ExprLiteral(ExprLiteralType.Fractional, value, suffixStr: suffixStr);
 			}
 		}
 

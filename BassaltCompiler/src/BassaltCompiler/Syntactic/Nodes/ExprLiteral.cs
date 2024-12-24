@@ -11,11 +11,6 @@ namespace BassaltCompiler.Syntactic.Nodes
 		Boolean, Null, Integer, Fractional, String
 	}
 
-	// enum LiteralSuffix
-	// {
-	// 	None, C8, C, C32, SB, S, I, L, B, US, UI, UL, F, D, II, UII, III, UIII, R, T
-	// }
-
 	class ExprLiteral : Expr
 	{
 		private static readonly ReadOnlyDictionary<string, DatatypeLang> suffixDict = new Dictionary<string, DatatypeLang>
@@ -43,14 +38,12 @@ namespace BassaltCompiler.Syntactic.Nodes
 
 		public ExprLiteralType Type { get; }
 		public string Val { get; }
-		public bool IsNegative { get; }
 		public DatatypeLang Suffix { get; }
 
-		public ExprLiteral(ExprLiteralType type, string val, bool isNegative = false, string suffixStr = null, DatatypeLang suffix = null)
+		public ExprLiteral(ExprLiteralType type, string val, string suffixStr = null, DatatypeLang suffix = null)
 		{
 			Type = type;
 			Val = val;
-			IsNegative = isNegative;
 
 			if (suffixStr is not null)
 			{
@@ -67,7 +60,7 @@ namespace BassaltCompiler.Syntactic.Nodes
 
 		protected override string StringTreeName1()
 		{
-			return $"Literal({Type}, {(IsNegative ? "-" : "+")}, '{Val}', {(Suffix is null ? "None" : Suffix)})";
+			return $"Literal({Type}, '{Val}', {(Suffix is null ? "None" : Suffix)})";
 		}
 
 		protected override IReadOnlyList<IDebuggable> StringTreeChildren1()

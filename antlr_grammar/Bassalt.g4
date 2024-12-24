@@ -423,31 +423,31 @@ IdentifierTerminal: [a-zA-Z_][a-zA-Z_0-9]* ;
 // Literals
 
 DecIntLiteral
-	: [-+]? [0-9]+ ('_'? ('c' | 'c8' | 'c16' | 'c32' | 'sb' | 's' | 'i' | 'l' | 'b' | 'us' | 'ui' | 'ul' | 'f' | 'd' | 'ii' | 'uii' | 'iii' | 'uiii'))?
+	: [0-9]+ ('_'? ('c' | 'c8' | 'c16' | 'c32' | 'sb' | 's' | 'i' | 'l' | 'b' | 'us' | 'ui' | 'ul' | 'f' | 'd' | 'ii' | 'uii' | 'iii' | 'uiii'))?
 	;
 
 HexIntLiteral
-	: [-+]? '0' [xX] [0-9a-fA-F]+ ('_' ('c' | 'c8' | 'c16' | 'c32' | 'sb' | 's' | 'i' | 'l' | 'b' | 'us' | 'ui' | 'ul' | 'f' | 'd' | 'ii' | 'uii' | 'iii' | 'uiii'))?
+	: '0' [xX] [0-9a-fA-F]+ ('_' ('c' | 'c8' | 'c16' | 'c32' | 'sb' | 's' | 'i' | 'l' | 'b' | 'us' | 'ui' | 'ul' | 'f' | 'd' | 'ii' | 'uii' | 'iii' | 'uiii'))?
 	;
 
 OctalIntLiteral
-	: [-+]? '0' [oO] [0-7]+ ('_'? ('c' | 'c8' | 'c16' | 'c32' | 'sb' | 's' | 'i' | 'l' | 'b' | 'us' | 'ui' | 'ul' | 'f' | 'd' | 'ii' | 'uii' | 'iii' | 'uiii'))?
+	: '0' [oO] [0-7]+ ('_'? ('c' | 'c8' | 'c16' | 'c32' | 'sb' | 's' | 'i' | 'l' | 'b' | 'us' | 'ui' | 'ul' | 'f' | 'd' | 'ii' | 'uii' | 'iii' | 'uiii'))?
 	;
 
 BinaryIntLiteral
-	: [-+]? '0' [bB] [0-1]+ ('_'? ('c' | 'c8' | 'c16' | 'c32' | 'sb' | 's' | 'i' | 'l' | 'b' | 'us' | 'ui' | 'ul' | 'f' | 'd' | 'ii' | 'uii' | 'iii' | 'uiii'))?
+	: '0' [bB] [0-1]+ ('_'? ('c' | 'c8' | 'c16' | 'c32' | 'sb' | 's' | 'i' | 'l' | 'b' | 'us' | 'ui' | 'ul' | 'f' | 'd' | 'ii' | 'uii' | 'iii' | 'uiii'))?
 	;
 
 PlainFracLiteral
-	: [-+]? [0-9]+ '.' [0-9]+ ('_'? ('c' | 'c8' | 'c16' | 'c32' | 'sb' | 's' | 'i' | 'l' | 'b' | 'us' | 'ui' | 'ul' | 'f' | 'd' | 'ii' | 'uii' | 'iii' | 'uiii'))?
+	: [0-9]+ '.' [0-9]+ ('_'? ('c' | 'c8' | 'c16' | 'c32' | 'sb' | 's' | 'i' | 'l' | 'b' | 'us' | 'ui' | 'ul' | 'f' | 'd' | 'ii' | 'uii' | 'iii' | 'uiii'))?
 	;
 
 ScientificFracLiteral
-	: [-+]? [0-9]+ '.' [0-9]+ [eE] [-+]? [0-9]+ ('_'? ('c' | 'c8' | 'c16' | 'c32' | 'sb' | 's' | 'i' | 'l' | 'b' | 'us' | 'ui' | 'ul' | 'f' | 'd' | 'ii' | 'uii' | 'iii' | 'uiii'))?
+	: [0-9]+ '.' [0-9]+ [eE] [-+]? [0-9]+ ('_'? ('c' | 'c8' | 'c16' | 'c32' | 'sb' | 's' | 'i' | 'l' | 'b' | 'us' | 'ui' | 'ul' | 'f' | 'd' | 'ii' | 'uii' | 'iii' | 'uiii'))?
 	;
 
 ScientificWholeNumLiteral
-	: [-+]? [0-9]+ [eE] [-+]? [0-9]+ ('_'? ('c' | 'c8' | 'c16' | 'c32' | 'sb' | 's' | 'i' | 'l' | 'b' | 'us' | 'ui' | 'ul' | 'f' | 'd' | 'ii' | 'uii' | 'iii' | 'uiii'))?
+	: [0-9]+ [eE] [-+]? [0-9]+ ('_'? ('c' | 'c8' | 'c16' | 'c32' | 'sb' | 's' | 'i' | 'l' | 'b' | 'us' | 'ui' | 'ul' | 'f' | 'd' | 'ii' | 'uii' | 'iii' | 'uiii'))?
 	;
 
 CharLiteral
