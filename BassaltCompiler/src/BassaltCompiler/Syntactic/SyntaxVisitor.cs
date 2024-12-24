@@ -154,22 +154,12 @@ namespace BassaltCompiler.Syntactic
 			AggregateObj childrenR = children as AggregateObj;
 			System.Diagnostics.Debug.Assert(childrenR is not null);
 
-			Datatype datatype = childrenR.Items[0] as Datatype;
-			System.Diagnostics.Debug.Assert(datatype is not null);
+			Datatype inner = childrenR.Items[0] as Datatype;
+			System.Diagnostics.Debug.Assert(inner is not null);
 			Terminal exclam = childrenR.Items[1] as Terminal;
 			System.Diagnostics.Debug.Assert(exclam is not null);
 
-			DatatypeFaced datatypeF = datatype as DatatypeFaced;
-			if (datatypeF is null)
-			{
-				FaceList faceList = new FaceList(new List<Face>{ Face.FcImmutable });
-				return new DatatypeFaced(faceList, datatype);
-			}
-			else
-			{
-				datatypeF.Faces.Add(Face.FcImmutable);
-				return datatypeF;
-			}
+			return new DatatypeFaced(Face.FcImmutable, inner);
 		}
 
 		public override object VisitDatatype_other([NotNull] BassaltParser.Datatype_otherContext context)

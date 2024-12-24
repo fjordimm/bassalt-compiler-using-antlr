@@ -8,8 +8,6 @@ namespace BassaltCompiler.Syntactic.Nodes
 {
 	abstract class Datatype : IDebuggable
 	{
-		// public static DatatypeUnset DtUnset = DatatypeUnset.DtUnset_;
-		
 		public static readonly DatatypeLang DtVoid = DatatypeLang.DtVoid_;
 		public static readonly DatatypeLang DtFunc = DatatypeLang.DtFunc_;
 		public static readonly DatatypeLang DtSptr = DatatypeLang.DtSptr_;
@@ -53,24 +51,6 @@ namespace BassaltCompiler.Syntactic.Nodes
 
 		protected abstract IReadOnlyList<IDebuggable> StringTreeChildren1();
 	}
-
-	// sealed class DatatypeUnset : Datatype
-	// {
-	// 	public static readonly DatatypeUnset DtUnset_ = new DatatypeUnset();
-
-	// 	private DatatypeUnset()
-	// 	{ }
-
-	// 	protected override string StringTreeName1()
-	// 	{
-	// 		return "Unset";
-	// 	}
-
-	// 	protected override IReadOnlyList<IDebuggable> StringTreeChildren1()
-	// 	{
-	// 		return null;
-	// 	}
-	// }
 
 	sealed class DatatypeLang : Datatype
 	{
@@ -179,27 +159,27 @@ namespace BassaltCompiler.Syntactic.Nodes
 		}
 	}
 
-	sealed class DatatypeFaced : Datatype
-	{
-		public FaceList Faces { get; }
-		public Datatype Inner { get; }
+	// sealed class DatatypeFaced : Datatype
+	// {
+	// 	public FaceList Faces { get; }
+	// 	public Datatype Inner { get; }
 
-		public DatatypeFaced(FaceList faces, Datatype inner)
-		{
-			Faces = faces;
-			Inner = inner;
-		}
+	// 	public DatatypeFaced(FaceList faces, Datatype inner)
+	// 	{
+	// 		Faces = faces;
+	// 		Inner = inner;
+	// 	}
 
-		protected override string StringTreeName1()
-		{
-			return "Faced";
-		}
+	// 	protected override string StringTreeName1()
+	// 	{
+	// 		return "Faced";
+	// 	}
 
-		protected override IReadOnlyList<IDebuggable> StringTreeChildren1()
-		{
-			return new List<IDebuggable>{ Faces, Inner };
-		}
-	}
+	// 	protected override IReadOnlyList<IDebuggable> StringTreeChildren1()
+	// 	{
+	// 		return new List<IDebuggable>{ Faces, Inner };
+	// 	}
+	// }
 
 	sealed class DatatypeNamespaced : Datatype
 	{
