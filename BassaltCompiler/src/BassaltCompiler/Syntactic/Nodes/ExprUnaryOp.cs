@@ -6,27 +6,25 @@ using BassaltCompiler.Debug;
 
 namespace BassaltCompiler.Syntactic.Nodes
 {
-	class ExprBinaryOp : Expr
+	class ExprUnaryOp : Expr
 	{
 		public string Op { get; }
-		public IDebuggable Lhs { get; }
-		public IDebuggable Rhs { get; }
+		public IDebuggable Inner { get; }
 
-		public ExprBinaryOp(SyntaxVisitor.Terminal op, IDebuggable lhs, IDebuggable rhs)
+		public ExprUnaryOp(SyntaxVisitor.Terminal op, IDebuggable inner)
 		{
 			Op = op.Text;
-			Lhs = lhs;
-			Rhs = rhs;
+			Inner = inner;
 		}
 
 		protected override string StringTreeName1()
 		{
-			return $"BinaryOp({Op})";
+			return $"UnaryOp({Op})";
 		}
 
 		protected override IReadOnlyList<IDebuggable> StringTreeChildren1()
 		{
-			return new List<IDebuggable>{ Lhs, Rhs };
+			return new List<IDebuggable>{ Inner };
 		}
 	}
 }

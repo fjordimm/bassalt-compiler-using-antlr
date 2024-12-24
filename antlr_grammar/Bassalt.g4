@@ -202,18 +202,18 @@ exprProduct
 	;
 
 exprUnaryPrefix
-	: '+' exprUnaryPrefix
-	| '-' exprUnaryPrefix
-	| '!' exprUnaryPrefix
-	| '~' exprUnaryPrefix
-	| '%' exprUnaryPrefix
-	| '%' '<' datatype '>' exprUnaryPrefix
-	| KRfree exprUnaryPrefix
-	| KCede exprUnaryPrefix
-	| KRef exprUnaryPrefix
-	| KInref exprUnaryPrefix
-	| KOutref exprUnaryPrefix
-	| exprUnarySuffix
+	: '+' exprUnaryPrefix						#exprUnaryPrefix_main
+	| '-' exprUnaryPrefix						#exprUnaryPrefix_main
+	| '!' exprUnaryPrefix						#exprUnaryPrefix_main
+	| '~' exprUnaryPrefix						#exprUnaryPrefix_main
+	| '%' exprUnaryPrefix						#exprUnaryPrefix_main
+	| '%' '<' datatype '>' exprUnaryPrefix		#exprUnaryPrefix_explicitcast
+	| KRfree exprUnaryPrefix					#exprUnaryPrefix_main
+	| KCede exprUnaryPrefix						#exprUnaryPrefix_main
+	| KRef exprUnaryPrefix						#exprUnaryPrefix_main
+	| KInref exprUnaryPrefix					#exprUnaryPrefix_main
+	| KOutref exprUnaryPrefix					#exprUnaryPrefix_main
+	| exprUnarySuffix							#exprUnaryPrefix_other
 	;
 
 exprUnarySuffix

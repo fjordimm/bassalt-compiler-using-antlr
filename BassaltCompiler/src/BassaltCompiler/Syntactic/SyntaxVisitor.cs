@@ -546,6 +546,36 @@ namespace BassaltCompiler.Syntactic
 			return base.VisitExprProduct_other(context);
 		}
 
+		public override ExprUnaryOp VisitExprUnaryPrefix_main([NotNull] BassaltParser.ExprUnaryPrefix_mainContext context)
+		{
+			object children = base.VisitExprUnaryPrefix_main(context);
+			if (children is null)
+			{
+				bassaltSyntaxErrorHandler.Add(context.Stop.Line, context.Stop.Column, "unkown error.");
+				return null;
+			}
+
+			AggregateObj childrenR = children as AggregateObj;
+			System.Diagnostics.Debug.Assert(childrenR is not null);
+
+			Terminal op = childrenR.Items[0] as Terminal;
+			System.Diagnostics.Debug.Assert(op is not null);
+			IDebuggable inner = childrenR.Items[1];
+			System.Diagnostics.Debug.Assert(inner is not null);
+
+			return new ExprUnaryOp(op, inner);
+		}
+
+		public override object VisitExprUnaryPrefix_explicitcast([NotNull] BassaltParser.ExprUnaryPrefix_explicitcastContext context)
+		{
+			throw new NotImplementedException();
+		}
+
+		public override object VisitExprUnaryPrefix_other([NotNull] BassaltParser.ExprUnaryPrefix_otherContext context)
+		{
+			return base.VisitExprUnaryPrefix_other(context);
+		}
+
 		public override Namespaced VisitExprNamespaceRes_main([NotNull] BassaltParser.ExprNamespaceRes_mainContext context)
 		{
 			object children = base.VisitExprNamespaceRes_main(context);
