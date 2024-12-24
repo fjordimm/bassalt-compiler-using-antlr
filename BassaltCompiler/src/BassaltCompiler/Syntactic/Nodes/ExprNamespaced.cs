@@ -6,23 +6,23 @@ using BassaltCompiler.Debug;
 
 namespace BassaltCompiler.Syntactic.Nodes
 {
-	class Namespaced : IDebuggable
+	class ExprNamespaced : Expr
 	{
 		public IDebuggable Namespace { get; }
 		public IDebuggable Inner { get; }
 
-		public Namespaced(IDebuggable namespacee, IDebuggable inner)
+		public ExprNamespaced(IDebuggable namespacee, IDebuggable inner)
 		{
 			Namespace = namespacee;
 			Inner = inner;
 		}
 
-		string IDebuggable.StringTreeName()
+		protected override string StringTreeName1()
 		{
 			return "Namespaced";
 		}
 
-		IReadOnlyList<IDebuggable> IDebuggable.StringTreeChildren()
+		protected override IReadOnlyList<IDebuggable> StringTreeChildren1()
 		{
 			return new List<IDebuggable>{ Namespace, Inner };
 		}

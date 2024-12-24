@@ -27,15 +27,9 @@ datatype
 	;
 
 datatypeNamespaced
-	: expr '::' datatypeBase		#datatypeNamespaced_main
+	: exprNamespaceRes '::' datatypeBase		#datatypeNamespaced_main
 	| datatypeBase					#datatypeNamespaced_other
 	;
-
-//	: langType '::' datatypeNamespaced			#datatypeNamespaced_main
-//	| langVar '::' datatypeNamespaced			#datatypeNamespaced_main
-//	| identifier '::' datatypeNamespaced		#datatypeNamespaced_main
-//	| datatypeBase								#datatypeNamespaced_other
-//	;
 
 datatypeBase
 	: langType				#datatypeBase_langtype

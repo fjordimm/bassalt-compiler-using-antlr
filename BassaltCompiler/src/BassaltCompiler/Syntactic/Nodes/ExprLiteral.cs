@@ -6,7 +6,7 @@ using BassaltCompiler.Debug;
 
 namespace BassaltCompiler.Syntactic.Nodes
 {
-	enum LiteralType
+	enum ExprLiteralType
 	{
 		Boolean, Null, Integer, Fractional, String
 	}
@@ -16,7 +16,7 @@ namespace BassaltCompiler.Syntactic.Nodes
 	// 	None, C8, C, C32, SB, S, I, L, B, US, UI, UL, F, D, II, UII, III, UIII, R, T
 	// }
 
-	class Literal : IDebuggable
+	class ExprLiteral : Expr
 	{
 		private static readonly ReadOnlyDictionary<string, DatatypeLang> suffixDict = new Dictionary<string, DatatypeLang>
 		{
@@ -41,12 +41,12 @@ namespace BassaltCompiler.Syntactic.Nodes
 			{"uiii", Datatype.DtUint256}
 		}.AsReadOnly();
 
-		public LiteralType Type { get; }
+		public ExprLiteralType Type { get; }
 		public string Val { get; }
 		public bool IsNegative { get; }
 		public DatatypeLang Suffix { get; }
 
-		public Literal(LiteralType type, string val, bool isNegative = false, string suffixStr = null, DatatypeLang suffix = null)
+		public ExprLiteral(ExprLiteralType type, string val, bool isNegative = false, string suffixStr = null, DatatypeLang suffix = null)
 		{
 			Type = type;
 			Val = val;
@@ -65,12 +65,12 @@ namespace BassaltCompiler.Syntactic.Nodes
 			}
 		}
 
-		string IDebuggable.StringTreeName()
+		protected override string StringTreeName1()
 		{
 			return $"Literal({Type}, {(IsNegative ? "-" : "+")}, '{Val}', {(Suffix is null ? "None" : Suffix)})";
 		}
 
-		IReadOnlyList<IDebuggable> IDebuggable.StringTreeChildren()
+		protected override IReadOnlyList<IDebuggable> StringTreeChildren1()
 		{
 			return null;
 		}

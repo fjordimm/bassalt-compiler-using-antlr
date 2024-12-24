@@ -8,20 +8,20 @@ namespace BassaltCompiler.Syntactic
 {
 	static partial class Reparsing
 	{
-		public static Literal ReparseBool(string input, BassaltSyntaxErrorHandler errorHandler, int errorLine, int errorCharPos)
+		public static ExprLiteral ReparseBool(string input, BassaltSyntaxErrorHandler errorHandler, int errorLine, int errorCharPos)
 		{
 			if (input == "true")
-			{ return new Literal(LiteralType.Boolean, "true"); }
+			{ return new ExprLiteral(ExprLiteralType.Boolean, "true"); }
 			else if (input == "false")
-			{ return new Literal(LiteralType.Boolean, "false"); }
+			{ return new ExprLiteral(ExprLiteralType.Boolean, "false"); }
 			else
 			{ throw new ArgumentException("Input must be valid."); }
 		}
 
-		public static Literal ReparseNull(string input, BassaltSyntaxErrorHandler errorHandler, int errorLine, int errorCharPos)
+		public static ExprLiteral ReparseNull(string input, BassaltSyntaxErrorHandler errorHandler, int errorLine, int errorCharPos)
 		{
 			if (input == "null")
-			{ return new Literal(LiteralType.Null, "null"); }
+			{ return new ExprLiteral(ExprLiteralType.Null, "null"); }
 			else
 			{ throw new ArgumentException("Input must be valid."); }
 		}
@@ -29,7 +29,7 @@ namespace BassaltCompiler.Syntactic
 		[GeneratedRegex(@"([-+]?)([0-9]+)(?:_?([a-zA-Z0-9]+))?")]
 		private static partial Regex DecIntRegex();
 
-		public static Literal ReparseDecInt(string input, BassaltSyntaxErrorHandler errorHandler, int errorLine, int errorCharPos)
+		public static ExprLiteral ReparseDecInt(string input, BassaltSyntaxErrorHandler errorHandler, int errorLine, int errorCharPos)
 		{
 			Match match = DecIntRegex().Match(input);
 			if (!match.Success)
@@ -40,14 +40,14 @@ namespace BassaltCompiler.Syntactic
 				string value = match.Groups[2].Value;
 				string suffixStr = match.Groups[3].Value;
 
-				return new Literal(LiteralType.Integer, value, isNegative: isNegative, suffixStr: suffixStr);
+				return new ExprLiteral(ExprLiteralType.Integer, value, isNegative: isNegative, suffixStr: suffixStr);
 			}
 		}
 
 		[GeneratedRegex(@"([-+]?)0[xX]([0-9a-fA-F]+)(?:_?([a-zA-Z0-9]+))?")]
 		private static partial Regex HexIntRegex();
 
-		public static Literal ReparseHexInt(string input, BassaltSyntaxErrorHandler errorHandler, int errorLine, int errorCharPos)
+		public static ExprLiteral ReparseHexInt(string input, BassaltSyntaxErrorHandler errorHandler, int errorLine, int errorCharPos)
 		{
 			Match match = HexIntRegex().Match(input);
 			if (!match.Success)
@@ -58,14 +58,14 @@ namespace BassaltCompiler.Syntactic
 				string value = Convert.ToString(Convert.ToUInt64(match.Groups[2].Value, 16));
 				string suffixStr = match.Groups[3].Value;
 				
-				return new Literal(LiteralType.Integer, value, isNegative: isNegative, suffixStr: suffixStr);
+				return new ExprLiteral(ExprLiteralType.Integer, value, isNegative: isNegative, suffixStr: suffixStr);
 			}
 		}
 
 		[GeneratedRegex(@"([-+]?)0[oO]([0-7]+)(?:_?([a-zA-Z0-9]+))?")]
 		private static partial Regex OctalIntRegex();
 
-		public static Literal ReparseOctalInt(string input, BassaltSyntaxErrorHandler errorHandler, int errorLine, int errorCharPos)
+		public static ExprLiteral ReparseOctalInt(string input, BassaltSyntaxErrorHandler errorHandler, int errorLine, int errorCharPos)
 		{
 			Match match = OctalIntRegex().Match(input);
 			if (!match.Success)
@@ -76,14 +76,14 @@ namespace BassaltCompiler.Syntactic
 				string value = Convert.ToString(Convert.ToUInt64(match.Groups[2].Value, 8));
 				string suffixStr = match.Groups[3].Value;
 				
-				return new Literal(LiteralType.Integer, value, isNegative: isNegative, suffixStr: suffixStr);
+				return new ExprLiteral(ExprLiteralType.Integer, value, isNegative: isNegative, suffixStr: suffixStr);
 			}
 		}
 
 		[GeneratedRegex(@"([-+]?)0[bB]([0-1]+)(?:_?([a-zA-Z0-9]+))?")]
 		private static partial Regex BinaryIntRegex();
 
-		public static Literal ReparseBinaryInt(string input, BassaltSyntaxErrorHandler errorHandler, int errorLine, int errorCharPos)
+		public static ExprLiteral ReparseBinaryInt(string input, BassaltSyntaxErrorHandler errorHandler, int errorLine, int errorCharPos)
 		{
 			Match match = BinaryIntRegex().Match(input);
 			if (!match.Success)
@@ -94,14 +94,14 @@ namespace BassaltCompiler.Syntactic
 				string value = Convert.ToString(Convert.ToUInt64(match.Groups[2].Value, 2));
 				string suffixStr = match.Groups[3].Value;
 				
-				return new Literal(LiteralType.Integer, value, isNegative: isNegative, suffixStr: suffixStr);
+				return new ExprLiteral(ExprLiteralType.Integer, value, isNegative: isNegative, suffixStr: suffixStr);
 			}
 		}
 
 		[GeneratedRegex(@"([-+]?)([0-9]+\.[0-9]+)(?:_?([a-zA-Z0-9]+))?")]
 		private static partial Regex PlainFracRegex();
 
-		public static Literal ReparsePlainFrac(string input, BassaltSyntaxErrorHandler errorHandler, int errorLine, int errorCharPos)
+		public static ExprLiteral ReparsePlainFrac(string input, BassaltSyntaxErrorHandler errorHandler, int errorLine, int errorCharPos)
 		{
 			Match match = PlainFracRegex().Match(input);
 			if (!match.Success)
@@ -112,14 +112,14 @@ namespace BassaltCompiler.Syntactic
 				string value = match.Groups[2].Value;
 				string suffixStr = match.Groups[3].Value;
 				
-				return new Literal(LiteralType.Fractional, value, isNegative: isNegative, suffixStr: suffixStr);
+				return new ExprLiteral(ExprLiteralType.Fractional, value, isNegative: isNegative, suffixStr: suffixStr);
 			}
 		}
 
 		[GeneratedRegex(@"([-+]?)([0-9]+\.[0-9]+[eE][-+]?[0-9]+)(?:_?([a-zA-Z0-9]+))?")]
 		private static partial Regex ScientificFracRegex();
 
-		public static Literal ReparseScientificFrac(string input, BassaltSyntaxErrorHandler errorHandler, int errorLine, int errorCharPos)
+		public static ExprLiteral ReparseScientificFrac(string input, BassaltSyntaxErrorHandler errorHandler, int errorLine, int errorCharPos)
 		{
 			Match match = ScientificFracRegex().Match(input);
 			if (!match.Success)
@@ -130,14 +130,14 @@ namespace BassaltCompiler.Syntactic
 				string value = match.Groups[2].Value;
 				string suffixStr = match.Groups[3].Value;
 				
-				return new Literal(LiteralType.Fractional, value, isNegative: isNegative, suffixStr: suffixStr);
+				return new ExprLiteral(ExprLiteralType.Fractional, value, isNegative: isNegative, suffixStr: suffixStr);
 			}
 		}
 
 		[GeneratedRegex(@"([-+]?)([0-9]+[eE][-+]?[0-9]+)(?:_?([a-zA-Z0-9]+))?")]
 		private static partial Regex ScientificWholeNumRegex();
 
-		public static Literal ReparseScientificWholeNum(string input, BassaltSyntaxErrorHandler errorHandler, int errorLine, int errorCharPos)
+		public static ExprLiteral ReparseScientificWholeNum(string input, BassaltSyntaxErrorHandler errorHandler, int errorLine, int errorCharPos)
 		{
 			Match match = ScientificWholeNumRegex().Match(input);
 			if (!match.Success)
@@ -148,7 +148,7 @@ namespace BassaltCompiler.Syntactic
 				string value = match.Groups[2].Value;
 				string suffixStr = match.Groups[3].Value;
 				
-				return new Literal(LiteralType.Fractional, value, isNegative: isNegative, suffixStr: suffixStr);
+				return new ExprLiteral(ExprLiteralType.Fractional, value, isNegative: isNegative, suffixStr: suffixStr);
 			}
 		}
 
@@ -161,7 +161,7 @@ namespace BassaltCompiler.Syntactic
 		[GeneratedRegex(@"\\U([0-9a-fA-F]{8})")]
 		private static partial Regex CharUnicodeLargeRegex();
 
-		public static Literal ReparseChar(string input, BassaltSyntaxErrorHandler errorHandler, int errorLine, int errorCharPos)
+		public static ExprLiteral ReparseChar(string input, BassaltSyntaxErrorHandler errorHandler, int errorLine, int errorCharPos)
 		{
 			Match match = CharRegex().Match(input);
 			if (!match.Success)
@@ -225,14 +225,14 @@ namespace BassaltCompiler.Syntactic
 
 				string suffixStr = match.Groups[2].Value;
 
-				return new Literal(LiteralType.Integer, value, suffixStr: suffixStr);
+				return new ExprLiteral(ExprLiteralType.Integer, value, suffixStr: suffixStr);
 			}
 		}
 
 		[GeneratedRegex(@"""((?:[^""\\]|\\.)*)""")]
 		private static partial Regex StringRegex();
 
-		public static Literal ReparseString(string input, BassaltSyntaxErrorHandler errorHandler, int errorLine, int errorCharPos)
+		public static ExprLiteral ReparseString(string input, BassaltSyntaxErrorHandler errorHandler, int errorLine, int errorCharPos)
 		{
 			Match match = StringRegex().Match(input);
 			if (!match.Success)
@@ -241,7 +241,7 @@ namespace BassaltCompiler.Syntactic
 			{
 				string value = match.Groups[1].Value;
 				
-				return new Literal(LiteralType.String, value);
+				return new ExprLiteral(ExprLiteralType.String, value);
 			}
 		}
 	}

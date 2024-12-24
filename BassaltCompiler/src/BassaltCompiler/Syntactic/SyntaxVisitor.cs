@@ -190,16 +190,16 @@ namespace BassaltCompiler.Syntactic
 			return ret;
 		}
 
-		public override LangVar VisitLangVar([NotNull] BassaltParser.LangVarContext context)
+		public override ExprLangVar VisitLangVar([NotNull] BassaltParser.LangVarContext context)
 		{
-			LangVar ret = LangVar.Get(context.GetText());
+			ExprLangVar ret = ExprLangVar.Get(context.GetText());
 			base.VisitLangVar(context);
 			return ret;
 		}
 
-		public override Identifier VisitIdentifier([NotNull] BassaltParser.IdentifierContext context)
+		public override ExprIdentifier VisitIdentifier([NotNull] BassaltParser.IdentifierContext context)
 		{
-			Identifier ret = new Identifier(context.IdentifierTerminal().GetText());
+			ExprIdentifier ret = new ExprIdentifier(context.IdentifierTerminal().GetText());
 			base.VisitIdentifier(context);
 			return ret;
 		}
@@ -208,59 +208,59 @@ namespace BassaltCompiler.Syntactic
 
 		///// Literals /////
 
-		public override Literal VisitLiteral_boolean([NotNull] BassaltParser.Literal_booleanContext context)
+		public override ExprLiteral VisitLiteral_boolean([NotNull] BassaltParser.Literal_booleanContext context)
 		{
-			Literal ret = Reparsing.ReparseBool(context.literalBoolean().GetText(), bassaltSyntaxErrorHandler, context.Stop.Line, context.Stop.Column);
+			ExprLiteral ret = Reparsing.ReparseBool(context.literalBoolean().GetText(), bassaltSyntaxErrorHandler, context.Stop.Line, context.Stop.Column);
 			base.VisitLiteral_boolean(context);
 			return ret;
 		}
 
-		public override Literal VisitLiteral_null([NotNull] BassaltParser.Literal_nullContext context)
+		public override ExprLiteral VisitLiteral_null([NotNull] BassaltParser.Literal_nullContext context)
 		{
-			Literal ret = Reparsing.ReparseNull(context.literalNull().GetText(), bassaltSyntaxErrorHandler, context.Stop.Line, context.Stop.Column);
+			ExprLiteral ret = Reparsing.ReparseNull(context.literalNull().GetText(), bassaltSyntaxErrorHandler, context.Stop.Line, context.Stop.Column);
 			base.VisitLiteral_null(context);
 			return ret;
 		}
 
-		public override Literal VisitLiteral_integer([NotNull] BassaltParser.Literal_integerContext context)
+		public override ExprLiteral VisitLiteral_integer([NotNull] BassaltParser.Literal_integerContext context)
 		{
-			Literal ret = base.VisitLiteral_integer(context) as Literal;
+			ExprLiteral ret = base.VisitLiteral_integer(context) as ExprLiteral;
 			System.Diagnostics.Debug.Assert(ret is not null);
 
 			return ret;
 		}
 
-		public override Literal VisitLiteralInteger_decInt([NotNull] BassaltParser.LiteralInteger_decIntContext context)
+		public override ExprLiteral VisitLiteralInteger_decInt([NotNull] BassaltParser.LiteralInteger_decIntContext context)
 		{
-			Literal ret = Reparsing.ReparseDecInt(context.DecIntLiteral().GetText(), bassaltSyntaxErrorHandler, context.Stop.Line, context.Stop.Column);
+			ExprLiteral ret = Reparsing.ReparseDecInt(context.DecIntLiteral().GetText(), bassaltSyntaxErrorHandler, context.Stop.Line, context.Stop.Column);
 			base.VisitLiteralInteger_decInt(context);
 			return ret;
 		}
 
-		public override Literal VisitLiteralInteger_hexInt([NotNull] BassaltParser.LiteralInteger_hexIntContext context)
+		public override ExprLiteral VisitLiteralInteger_hexInt([NotNull] BassaltParser.LiteralInteger_hexIntContext context)
 		{
-			Literal ret = Reparsing.ReparseHexInt(context.HexIntLiteral().GetText(), bassaltSyntaxErrorHandler, context.Stop.Line, context.Stop.Column);
+			ExprLiteral ret = Reparsing.ReparseHexInt(context.HexIntLiteral().GetText(), bassaltSyntaxErrorHandler, context.Stop.Line, context.Stop.Column);
 			base.VisitLiteralInteger_hexInt(context);
 			return ret;
 		}
 
-		public override Literal VisitLiteralInteger_octalInt([NotNull] BassaltParser.LiteralInteger_octalIntContext context)
+		public override ExprLiteral VisitLiteralInteger_octalInt([NotNull] BassaltParser.LiteralInteger_octalIntContext context)
 		{
-			Literal ret = Reparsing.ReparseOctalInt(context.OctalIntLiteral().GetText(), bassaltSyntaxErrorHandler, context.Stop.Line, context.Stop.Column);
+			ExprLiteral ret = Reparsing.ReparseOctalInt(context.OctalIntLiteral().GetText(), bassaltSyntaxErrorHandler, context.Stop.Line, context.Stop.Column);
 			base.VisitLiteralInteger_octalInt(context);
 			return ret;
 		}
 
-		public override Literal VisitLiteralInteger_binaryInt([NotNull] BassaltParser.LiteralInteger_binaryIntContext context)
+		public override ExprLiteral VisitLiteralInteger_binaryInt([NotNull] BassaltParser.LiteralInteger_binaryIntContext context)
 		{
-			Literal ret = Reparsing.ReparseBinaryInt(context.BinaryIntLiteral().GetText(), bassaltSyntaxErrorHandler, context.Stop.Line, context.Stop.Column);
+			ExprLiteral ret = Reparsing.ReparseBinaryInt(context.BinaryIntLiteral().GetText(), bassaltSyntaxErrorHandler, context.Stop.Line, context.Stop.Column);
 			base.VisitLiteralInteger_binaryInt(context);
 			return ret;
 		}
 
-		public override Literal VisitLiteralInteger_char([NotNull] BassaltParser.LiteralInteger_charContext context)
+		public override ExprLiteral VisitLiteralInteger_char([NotNull] BassaltParser.LiteralInteger_charContext context)
 		{
-			Literal ret = Reparsing.ReparseChar(context.CharLiteral().GetText(), bassaltSyntaxErrorHandler, context.Stop.Line, context.Stop.Column);
+			ExprLiteral ret = Reparsing.ReparseChar(context.CharLiteral().GetText(), bassaltSyntaxErrorHandler, context.Stop.Line, context.Stop.Column);
 			base.VisitLiteralInteger_char(context);
 			return ret;
 		}
@@ -631,7 +631,7 @@ namespace BassaltCompiler.Syntactic
 			return base.VisitExprUnaryPrefix_other(context);
 		}
 
-		public override Namespaced VisitExprNamespaceRes_main([NotNull] BassaltParser.ExprNamespaceRes_mainContext context)
+		public override ExprNamespaced VisitExprNamespaceRes_main([NotNull] BassaltParser.ExprNamespaceRes_mainContext context)
 		{
 			object children = base.VisitExprNamespaceRes_main(context);
 			if (children is null)
@@ -650,7 +650,7 @@ namespace BassaltCompiler.Syntactic
 			IDebuggable inner = childrenR.Items[2];
 			System.Diagnostics.Debug.Assert(inner is not null);
 
-			return new Namespaced(namespacee, inner);
+			return new ExprNamespaced(namespacee, inner);
 		}
 
 		public override object VisitExprNamespaceRes_other([NotNull] BassaltParser.ExprNamespaceRes_otherContext context)
@@ -658,23 +658,23 @@ namespace BassaltCompiler.Syntactic
 			return base.VisitExprNamespaceRes_other(context);
 		}
 
-		public override LangVar VisitExprBase_langVar([NotNull] BassaltParser.ExprBase_langVarContext context)
+		public override ExprLangVar VisitExprBase_langVar([NotNull] BassaltParser.ExprBase_langVarContext context)
 		{
-			LangVar ret = base.VisitExprBase_langVar(context) as LangVar;
+			ExprLangVar ret = base.VisitExprBase_langVar(context) as ExprLangVar;
 			System.Diagnostics.Debug.Assert(ret is not null);
 			return ret;
 		}
 
-		public override Identifier VisitExprBase_identifier([NotNull] BassaltParser.ExprBase_identifierContext context)
+		public override ExprIdentifier VisitExprBase_identifier([NotNull] BassaltParser.ExprBase_identifierContext context)
 		{
-			Identifier ret = base.VisitExprBase_identifier(context) as Identifier;
+			ExprIdentifier ret = base.VisitExprBase_identifier(context) as ExprIdentifier;
 			System.Diagnostics.Debug.Assert(ret is not null);
 			return ret;
 		}
 
-		public override Literal VisitExprBase_literal([NotNull] BassaltParser.ExprBase_literalContext context)
+		public override ExprLiteral VisitExprBase_literal([NotNull] BassaltParser.ExprBase_literalContext context)
 		{
-			Literal ret = base.VisitExprBase_literal(context) as Literal;
+			ExprLiteral ret = base.VisitExprBase_literal(context) as ExprLiteral;
 			System.Diagnostics.Debug.Assert(ret is not null);
 			return ret;
 		}
@@ -730,7 +730,7 @@ namespace BassaltCompiler.Syntactic
 			AggregateObj childrenR = children as AggregateObj;
 			System.Diagnostics.Debug.Assert(childrenR is not null);
 			
-			Console.WriteLine("print thingy is...");
+			Console.WriteLine("----------- print statement -----------");
 			Console.WriteLine(IDebuggable.ToStringTree(childrenR));
 
 			return null;

@@ -5,21 +5,21 @@ using BassaltCompiler.Debug;
 
 namespace BassaltCompiler.Syntactic.Nodes
 {
-	class Identifier : IDebuggable
+	class ExprIdentifier : Expr
 	{
 		public string Name { get; }
 
-		public Identifier(string name)
+		public ExprIdentifier(string name)
 		{
 			Name = name;
 		}
 
-		string IDebuggable.StringTreeName()
+		protected override string StringTreeName1()
 		{
 			return $"Identifier('{Name}')";
 		}
 
-		IReadOnlyList<IDebuggable> IDebuggable.StringTreeChildren()
+		protected override IReadOnlyList<IDebuggable> StringTreeChildren1()
 		{
 			return null;
 		}
