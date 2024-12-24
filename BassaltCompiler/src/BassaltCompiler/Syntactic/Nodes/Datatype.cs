@@ -70,7 +70,7 @@ namespace BassaltCompiler.Syntactic.Nodes
 		}
 	}
 
-	class DatatypeLang : Datatype
+	sealed class DatatypeLang : Datatype
 	{
 		public static readonly DatatypeLang DtVoid_ = new DatatypeLang("void");
 		public static readonly DatatypeLang DtFunc_ = new DatatypeLang("func");
@@ -141,7 +141,7 @@ namespace BassaltCompiler.Syntactic.Nodes
 
 		public string Name { get; }
 
-		protected DatatypeLang(string name)
+		private DatatypeLang(string name)
 		{
 			Name = name;
 		}

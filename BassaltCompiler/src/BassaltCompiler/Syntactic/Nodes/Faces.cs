@@ -46,9 +46,19 @@ namespace BassaltCompiler.Syntactic.Nodes
 
 	sealed class FaceImmutable : Face
 	{
+		public static readonly FaceImmutable FcImmutable_ = new FaceImmutable();
+
+		private FaceImmutable()
+		{ }
+
 		protected override string ToString1()
 		{
 			return "!";
 		}
 	}
+
+	// sealed class FaceAccessModifier : Face
+	// {
+
+	// }
 }
