@@ -665,6 +665,14 @@ namespace BassaltCompiler.Syntactic
 			return ret;
 		}
 
+		public override ExprDriftingDatatype VisitExprBase_langtype([NotNull] BassaltParser.ExprBase_langtypeContext context)
+		{
+			DatatypeLang langtype = base.VisitExprBase_langtype(context) as DatatypeLang;
+			System.Diagnostics.Debug.Assert(langtype is not null);
+
+			return new ExprDriftingDatatype(langtype);
+		}
+
 		public override ExprIdentifier VisitExprBase_identifier([NotNull] BassaltParser.ExprBase_identifierContext context)
 		{
 			ExprIdentifier ret = base.VisitExprBase_identifier(context) as ExprIdentifier;

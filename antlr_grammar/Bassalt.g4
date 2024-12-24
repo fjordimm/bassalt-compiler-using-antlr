@@ -28,7 +28,7 @@ datatype
 
 datatypeNamespaced
 	: exprNamespaceRes '::' datatypeBase		#datatypeNamespaced_main
-	| datatypeBase					#datatypeNamespaced_other
+	| datatypeBase								#datatypeNamespaced_other
 	;
 
 datatypeBase
@@ -250,6 +250,7 @@ exprNamespaceRes
 
 exprBase
 	: langVar				#exprBase_langVar
+	| langType				#exprBase_langtype
 	| identifier			#exprBase_identifier
 	| literal				#exprBase_literal
 	| '(' expr ')'			#exprBase_parenthesis
