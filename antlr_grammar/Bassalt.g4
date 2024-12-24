@@ -173,19 +173,19 @@ exprEquality
 	;
 
 exprComparison
-	: exprComparison '<' exprBitshift
-	| exprComparison '>' exprBitshift
-	| exprComparison '<=' exprBitshift
-	| exprComparison '>=' exprBitshift
-	| exprBitshift
+	: exprComparison '<' exprBitshift		#exprComparison_main
+	| exprComparison '>' exprBitshift		#exprComparison_main
+	| exprComparison '<=' exprBitshift		#exprComparison_main
+	| exprComparison '>=' exprBitshift		#exprComparison_main
+	| exprBitshift							#exprComparison_other
 	;
 
 exprBitshift
-	: exprBitshift '<<' exprSum
-	| exprBitshift '>>' exprSum
-	| exprBitshift '<<<' exprSum
-	| exprBitshift '>>>' exprSum
-	| exprSum
+	: exprBitshift '<<' exprSum		#exprBitshift_main
+	| exprBitshift '>>' exprSum		#exprBitshift_main
+	| exprBitshift '<<<' exprSum	#exprBitshift_main
+	| exprBitshift '>>>' exprSum	#exprBitshift_main
+	| exprSum						#exprBitshift_other
 	;
 
 exprSum

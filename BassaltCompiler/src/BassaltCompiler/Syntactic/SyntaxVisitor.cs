@@ -245,6 +245,60 @@ namespace BassaltCompiler.Syntactic
 			return base.VisitExprLambda(context);
 		}
 
+		public override object VisitExprComparison_main([NotNull] BassaltParser.ExprComparison_mainContext context)
+		{
+			object children = base.VisitExprComparison_main(context);
+			if (children is null)
+			{
+				bassaltSyntaxErrorHandler.Add(context.Stop.Line, context.Stop.Column, "unkown error.");
+				return null;
+			}
+
+			AggregateObj childrenR = children as AggregateObj;
+			System.Diagnostics.Debug.Assert(childrenR is not null);
+
+			IDebuggable lhs = childrenR.Items[0];
+			System.Diagnostics.Debug.Assert(lhs is not null);
+			Terminal op = childrenR.Items[1] as Terminal;
+			System.Diagnostics.Debug.Assert(op is not null);
+			IDebuggable rhs = childrenR.Items[2];
+			System.Diagnostics.Debug.Assert(rhs is not null);
+
+			return new ExprBinaryOp(op, lhs, rhs);
+		}
+
+		public override object VisitExprComparison_other([NotNull] BassaltParser.ExprComparison_otherContext context)
+		{
+			return base.VisitExprComparison_other(context);
+		}
+
+		public override object VisitExprBitshift_main([NotNull] BassaltParser.ExprBitshift_mainContext context)
+		{
+			object children = base.VisitExprBitshift_main(context);
+			if (children is null)
+			{
+				bassaltSyntaxErrorHandler.Add(context.Stop.Line, context.Stop.Column, "unkown error.");
+				return null;
+			}
+
+			AggregateObj childrenR = children as AggregateObj;
+			System.Diagnostics.Debug.Assert(childrenR is not null);
+
+			IDebuggable lhs = childrenR.Items[0];
+			System.Diagnostics.Debug.Assert(lhs is not null);
+			Terminal op = childrenR.Items[1] as Terminal;
+			System.Diagnostics.Debug.Assert(op is not null);
+			IDebuggable rhs = childrenR.Items[2];
+			System.Diagnostics.Debug.Assert(rhs is not null);
+
+			return new ExprBinaryOp(op, lhs, rhs);
+		}
+
+		public override object VisitExprBitshift_other([NotNull] BassaltParser.ExprBitshift_otherContext context)
+		{
+			return base.VisitExprBitshift_other(context);
+		}
+
 		public override object VisitExprSum_main([NotNull] BassaltParser.ExprSum_mainContext context)
 		{
 			object children = base.VisitExprSum_main(context);
@@ -292,6 +346,11 @@ namespace BassaltCompiler.Syntactic
 			System.Diagnostics.Debug.Assert(rhs is not null);
 
 			return new ExprBinaryOp(op, lhs, rhs);
+		}
+
+		public override object VisitExprProduct_other([NotNull] BassaltParser.ExprProduct_otherContext context)
+		{
+			return base.VisitExprProduct_other(context);
 		}
 
 		public override object VisitExprNamespaceRes_langtype([NotNull] BassaltParser.ExprNamespaceRes_langtypeContext context)
