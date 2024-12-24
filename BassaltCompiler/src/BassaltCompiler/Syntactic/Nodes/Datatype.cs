@@ -8,7 +8,7 @@ namespace BassaltCompiler.Syntactic.Nodes
 {
 	abstract class Datatype : IDebuggable
 	{
-		public static DatatypeUnset DtUnset = new DatatypeUnset();
+		public static DatatypeUnset DtUnset = DatatypeUnset.DtUnset_;
 		
 		public static readonly DatatypeLang DtVoid = DatatypeLang.DtVoid_;
 		public static readonly DatatypeLang DtFunc = DatatypeLang.DtFunc_;
@@ -39,14 +39,17 @@ namespace BassaltCompiler.Syntactic.Nodes
 		public static readonly DatatypeLang DtFloat128 = DatatypeLang.DtFloat128_;
 		public static readonly DatatypeLang DtFloat256 = DatatypeLang.DtFloat256_;
 
-		// public static LangDatatypeTEMP LtLangtypeTEMP = new LangDatatypeTEMP();
+		public override string ToString()
+		{
+			return ToString1();
+		}
 
 		string IDebuggable.StringTreeName()
 		{
-			return StringTreeName1();
+			return ToString1();
 		}
 
-		protected abstract string StringTreeName1();
+		protected abstract string ToString1();
 
 		IReadOnlyList<IDebuggable> IDebuggable.StringTreeChildren()
 		{
@@ -56,7 +59,12 @@ namespace BassaltCompiler.Syntactic.Nodes
 
 	sealed class DatatypeUnset : Datatype
 	{
-		protected override string StringTreeName1()
+		public static readonly DatatypeUnset DtUnset_ = new DatatypeUnset();
+
+		private DatatypeUnset()
+		{ }
+
+		protected override string ToString1()
 		{
 			return "DatatypeUnset";
 		}
@@ -93,7 +101,7 @@ namespace BassaltCompiler.Syntactic.Nodes
 		public static readonly DatatypeLang DtFloat128_ = new DatatypeLang("float128");
 		public static readonly DatatypeLang DtFloat256_ = new DatatypeLang("float256");
 
-		protected static readonly ReadOnlyDictionary<string, DatatypeLang> DatatypeLangDict = new Dictionary<string, DatatypeLang>
+		private static readonly ReadOnlyDictionary<string, DatatypeLang> DatatypeLangDict = new Dictionary<string, DatatypeLang>
 		{
 			{"void", DtVoid_},
 			{"func", DtFunc_},
@@ -138,7 +146,7 @@ namespace BassaltCompiler.Syntactic.Nodes
 			Name = name;
 		}
 
-		protected override string StringTreeName1()
+		protected override string ToString1()
 		{
 			return $"DatatypeLang({Name})";
 		}

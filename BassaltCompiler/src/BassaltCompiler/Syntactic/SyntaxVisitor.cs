@@ -245,9 +245,36 @@ namespace BassaltCompiler.Syntactic
 			return base.VisitExprLambda(context);
 		}
 
-		public override object VisitExprSum_plus([NotNull] BassaltParser.ExprSum_plusContext context)
+		public override object VisitExprSum_main([NotNull] BassaltParser.ExprSum_mainContext context)
 		{
-			object children = base.VisitExprSum_plus(context);
+			object children = base.VisitExprSum_main(context);
+			if (children is null)
+			{
+				bassaltSyntaxErrorHandler.Add(context.Stop.Line, context.Stop.Column, "unkown error.");
+				return null;
+			}
+
+			AggregateObj childrenR = children as AggregateObj;
+			System.Diagnostics.Debug.Assert(childrenR is not null);
+
+			IDebuggable lhs = childrenR.Items[0];
+			System.Diagnostics.Debug.Assert(lhs is not null);
+			Terminal op = childrenR.Items[1] as Terminal;
+			System.Diagnostics.Debug.Assert(op is not null);
+			IDebuggable rhs = childrenR.Items[2];
+			System.Diagnostics.Debug.Assert(rhs is not null);
+
+			return new ExprBinaryOp(op, lhs, rhs);
+		}
+
+		public override object VisitExprSum_other([NotNull] BassaltParser.ExprSum_otherContext context)
+		{
+			return base.VisitExprSum_other(context);
+		}
+
+		public override object VisitExprProduct_main([NotNull] BassaltParser.ExprProduct_mainContext context)
+		{
+			object children = base.VisitExprProduct_main(context);
 			if (children is null)
 			{
 				bassaltSyntaxErrorHandler.Add(context.Stop.Line, context.Stop.Column, "unkown error.");

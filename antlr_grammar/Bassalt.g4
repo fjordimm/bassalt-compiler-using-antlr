@@ -189,16 +189,16 @@ exprBitshift
 	;
 
 exprSum
-	: exprSum '+' exprProduct	#exprSum_plus
-	| exprSum '-' exprProduct	#exprSum_minus
+	: exprSum '+' exprProduct	#exprSum_main
+	| exprSum '-' exprProduct	#exprSum_main
 	| exprProduct				#exprSum_other
 	;
 
 exprProduct
-	: exprProduct '*' exprUnaryPrefix
-	| exprProduct '/' exprUnaryPrefix
-	| exprProduct '%' exprUnaryPrefix
-	| exprUnaryPrefix
+	: exprProduct '*' exprUnaryPrefix	#exprProduct_main
+	| exprProduct '/' exprUnaryPrefix	#exprProduct_main
+	| exprProduct '%' exprUnaryPrefix	#exprProduct_main
+	| exprUnaryPrefix					#exprProduct_other
 	;
 
 exprUnaryPrefix
