@@ -246,11 +246,15 @@ exprDotAndVia
 	;
 
 exprNamespaceRes
-	: langType '::' exprNamespaceRes		#exprNamespaceRes_main
-	| langVar '::' exprNamespaceRes			#exprNamespaceRes_main
-	| identifier '::' exprNamespaceRes		#exprNamespaceRes_main
-	| exprBase								#exprNamespaceRes_other
+	: exprNamespaceRes '::' exprBase	#exprNamespaceRes_main
+	| exprBase							#exprNamespaceRes_other
 	;
+
+//	: langType '::' exprNamespaceRes		#exprNamespaceRes_main
+//	| langVar '::' exprNamespaceRes			#exprNamespaceRes_main
+//	| identifier '::' exprNamespaceRes		#exprNamespaceRes_main
+//	| exprBase								#exprNamespaceRes_other
+//	;
 
 exprBase
 	: langVar				#exprBase_langVar
