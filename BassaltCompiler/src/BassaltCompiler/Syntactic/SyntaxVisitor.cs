@@ -240,13 +240,17 @@ namespace BassaltCompiler.Syntactic
 			AggregateObj childrenR = children as AggregateObj;
 			System.Diagnostics.Debug.Assert(childrenR is not null);
 
+			Console.WriteLine("----------- datatypeList_multiple -----------");
+			Console.WriteLine(IDebuggable.ToStringTree(childrenR));
+			// System.Environment.Exit(1);
+
 			DebuggableList ret = new DebuggableList();
 
 			Datatype firstItem = childrenR.Items[0] as Datatype;
 			System.Diagnostics.Debug.Assert(firstItem is not null);
 			ret.Items.Add(firstItem);
 
-			for (int i = 1; i < childrenR.Items.Count; i++)
+			for (int i = 1; i < childrenR.Items.Count; i += 2)
 			{
 				Terminal comma = childrenR.Items[i] as Terminal;
 				System.Diagnostics.Debug.Assert(comma is not null);
