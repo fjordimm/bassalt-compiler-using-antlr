@@ -156,10 +156,26 @@ namespace BassaltCompiler.Syntactic
 			return ret;
 		}
 
-		public override object VisitFacenameNamespaced_main([NotNull] BassaltParser.FacenameNamespaced_mainContext context)
+		public override FaceNamespaced VisitFacenameNamespaced_main([NotNull] BassaltParser.FacenameNamespaced_mainContext context)
 		{
-			base.VisitFacenameNamespaced_main(context);
-			throw new NotImplementedException();
+			object children = base.VisitFacenameNamespaced_main(context);
+			if (children is null)
+			{
+				bassaltSyntaxErrorHandler.Add(context.Stop.Line, context.Stop.Column, "unkown error.");
+				return null;
+			}
+
+			AggregateObj childrenR = children as AggregateObj;
+			System.Diagnostics.Debug.Assert(childrenR is not null);
+
+			Expr namespacee = childrenR.Items[0] as Expr;
+			System.Diagnostics.Debug.Assert(namespacee is not null);
+			Terminal doubleColon = childrenR.Items[1] as Terminal;
+			System.Diagnostics.Debug.Assert(doubleColon is not null);
+			Face inner = childrenR.Items[2] as Face;
+			System.Diagnostics.Debug.Assert(inner is not null);
+
+			return new FaceNamespaced(namespacee, inner);
 		}
 
 		public override object VisitFacenameNamespaced_other([NotNull] BassaltParser.FacenameNamespaced_otherContext context)
