@@ -16,7 +16,7 @@ datatypeList
 
 datatype
 	: datatype '!'						#datatype_immutface
-	| datatype '~' faceName				#datatype_other
+	| datatype '~' facename				#datatype_facename
 	| '(' datatypeList ')'				#datatype_other
 	| datatype '<' datatypeList '>'		#datatype_other
 	| datatype '[' exprList ']'			#datatype_other
@@ -36,24 +36,25 @@ datatypeBase
 	| IdentifierTerminal	#datatypeBase_identifier
 	;
 
-faceName
-	: identifier
+facename
+	: facenameAccessModifier
+	| facenameNamespaced
 	;
 
-// faceName
-// 	: faceNameAccessModifier
-// 	| faceNameNamespaced
-// 	;
-// 
-// faceNameAccessModifier
-// 	: KPublic
-// 	| KPrivate
-// 	| KProtected
-// 	;
-// 
-// faceNameNamespaced
-// 	: exprNamespaceRes
-// 	;
+facenameAccessModifier
+	: KPublic
+	| KPrivate
+	| KProtected
+	;
+
+facenameNamespaced
+	: exprNamespaceRes '::' facenameBase		#facenameNamespaced_main
+	| facenameBase								#facenameNamespaced_other
+	;
+
+facenameBase
+	: identifier
+	;
 
 langType
 	: KVoid
@@ -251,7 +252,7 @@ exprNew
 
 exprDotAndVia
 	: exprDotAndVia '.' exprNamespaceRes
-	| exprDotAndVia '~' faceName
+	| exprDotAndVia '~' facename
 	| exprNamespaceRes
 	;
 

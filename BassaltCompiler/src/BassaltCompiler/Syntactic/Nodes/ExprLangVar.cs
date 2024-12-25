@@ -27,9 +27,9 @@ namespace BassaltCompiler.Syntactic.Nodes
 			{"placeholder", LvPlaceholder}
 		}.AsReadOnly();
 
-		public static ExprLangVar Get(string name)
+		public static ExprLangVar Get(string str)
 		{
-			if (langVarDict.TryGetValue(name, out ExprLangVar tryGetVal))
+			if (langVarDict.TryGetValue(str, out ExprLangVar tryGetVal))
 			{ return tryGetVal; }
 			else
 			{ throw new ArgumentException("argument was not valid."); }

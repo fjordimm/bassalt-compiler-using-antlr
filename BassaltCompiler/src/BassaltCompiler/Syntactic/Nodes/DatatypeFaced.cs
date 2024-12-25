@@ -34,12 +34,9 @@ namespace BassaltCompiler.Syntactic.Nodes
 	{
 		public static readonly FaceImmutable FcImmutable = FaceImmutable.FcImmutable_;
 
-		// public override string ToString()
-		// {
-		// 	return ToString1();
-		// }
-
-		// protected abstract string ToString1();
+		public static readonly FaceAccessModifier FcPublic = FaceAccessModifier.FcPublic_;
+		public static readonly FaceAccessModifier FcPrivate = FaceAccessModifier.FcPrivate_;
+		public static readonly FaceAccessModifier FcProtected = FaceAccessModifier.FcProtected_;
 
 		string IDebuggable.StringTreeName()
 		{
@@ -70,40 +67,49 @@ namespace BassaltCompiler.Syntactic.Nodes
 
 		protected override IReadOnlyList<IDebuggable> StringTreeChildren1()
 		{
-			throw new NotImplementedException();
+			return null;
 		}
 	}
 
-	// sealed class FaceNamespaced : Face
-	// {
-	// 	public IDebuggable Namespace { get; }
-	// 	public Datatype Inner { get; }
+	sealed class FaceAccessModifier : Face
+	{
+		public static readonly FaceAccessModifier FcPublic_ = new FaceAccessModifier(AccessModifier.Public);
+		public static readonly FaceAccessModifier FcPrivate_ = new FaceAccessModifier(AccessModifier.Private);
+		public static readonly FaceAccessModifier FcProtected_ = new FaceAccessModifier(AccessModifier.Protected);
 
-	// 	public FaceNamespaced(IDebuggable namespacee, Datatype inner)
-	// 	{
-	// 		Namespace = namespacee;
-	// 		Inner = inner;
-	// 	}
+		private static readonly ReadOnlyDictionary<string, FaceAccessModifier> accessModifierDict = new Dictionary<string, FaceAccessModifier>
+		{
+			{"public", FcPublic_},
+			{"private", FcPrivate_},
+			{"protected", FcProtected_}
+		}.AsReadOnly();
 
-	// 	protected override string StringTreeName1()
-	// 	{
-	// 		return "Namespaced";
-	// 	}
+		public static FaceAccessModifier Get(string str)
+		{
+			if (accessModifierDict.TryGetValue(str, out FaceAccessModifier tryGetVal))
+			{ return tryGetVal; }
+			else
+			{ throw new ArgumentException("argument was not valid."); }
+		}
 
-	// 	protected override IReadOnlyList<IDebuggable> StringTreeChildren1()
-	// 	{
-	// 		return new List<IDebuggable>{ Namespace, Inner };
-	// 	}
-	// }
+		public AccessModifier Modifier { get; }
 
-	// sealed class FaceAccessModifier : Face
-	// {
-	// 	protected override string ToString1()
-	// 	{
-	// 		throw new NotImplementedException();
-	// 	}
-	// }
+		private FaceAccessModifier(AccessModifier modifier)
+		{
+			Modifier = modifier;
+		}
 
+		protected override string StringTreeName1()
+		{
+			return $"AccessModifier({Modifier})";
+		}
+
+		protected override IReadOnlyList<IDebuggable> StringTreeChildren1()
+		{
+			return null;
+		}
+	}
+	
 	// sealed class FaceIdentifier : Face
 	// {
 	// 	protected override string ToString1()
@@ -111,4 +117,26 @@ namespace BassaltCompiler.Syntactic.Nodes
 	// 		throw new NotImplementedException();
 	// 	}
 	// }
+
+	sealed class FaceNamespaced : Face
+	{
+		public Expr Namespace { get; }
+		public Face Inner { get; }
+
+		public FaceNamespaced(Expr namespacee, Face inner)
+		{
+			Namespace = namespacee;
+			Inner = inner;
+		}
+
+		protected override string StringTreeName1()
+		{
+			return "Namespaced";
+		}
+
+		protected override IReadOnlyList<IDebuggable> StringTreeChildren1()
+		{
+			return new List<IDebuggable>{ Namespace, Inner };
+		}
+	}
 }

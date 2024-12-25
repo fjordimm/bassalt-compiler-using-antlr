@@ -142,6 +142,20 @@ namespace BassaltCompiler.Syntactic
 
 		///// Useful Things /////
 
+		// TODO: move the facename stuff to be right below the datatype stuff
+
+		public override object VisitFacename([NotNull] BassaltParser.FacenameContext context)
+		{
+			return base.VisitFacename(context);
+		}
+
+		public override FaceAccessModifier VisitFacenameAccessModifier([NotNull] BassaltParser.FacenameAccessModifierContext context)
+		{
+			FaceAccessModifier ret = FaceAccessModifier.Get(context.GetText());
+			base.VisitFacenameAccessModifier(context);
+			return ret;
+		}
+
 		public override DatatypeFaced VisitDatatype_immutface([NotNull] BassaltParser.Datatype_immutfaceContext context)
 		{
 			object children = base.VisitDatatype_immutface(context);
@@ -162,6 +176,28 @@ namespace BassaltCompiler.Syntactic
 			return new DatatypeFaced(Face.FcImmutable, inner);
 		}
 
+		public override object VisitDatatype_facename([NotNull] BassaltParser.Datatype_facenameContext context)
+		{
+			object children = base.VisitDatatype_facename(context);
+			if (children is null)
+			{
+				bassaltSyntaxErrorHandler.Add(context.Stop.Line, context.Stop.Column, "unkown error.");
+				return null;
+			}
+
+			AggregateObj childrenR = children as AggregateObj;
+			System.Diagnostics.Debug.Assert(childrenR is not null);
+
+			Datatype inner = childrenR.Items[0] as Datatype;
+			System.Diagnostics.Debug.Assert(inner is not null);
+			Terminal tilde = childrenR.Items[1] as Terminal;
+			System.Diagnostics.Debug.Assert(tilde is not null);
+			Face facename = childrenR.Items[2] as Face;
+			System.Diagnostics.Debug.Assert(facename is not null);
+
+			return new DatatypeFaced(facename, inner);
+		}
+
 		public override object VisitDatatype_other([NotNull] BassaltParser.Datatype_otherContext context)
 		{
 			return base.VisitDatatype_other(context);
@@ -179,7 +215,7 @@ namespace BassaltCompiler.Syntactic
 			AggregateObj childrenR = children as AggregateObj;
 			System.Diagnostics.Debug.Assert(childrenR is not null);
 
-			IDebuggable namespacee = childrenR.Items[0];
+			Expr namespacee = childrenR.Items[0] as Expr;
 			System.Diagnostics.Debug.Assert(namespacee is not null);
 			Terminal doubleColon = childrenR.Items[1] as Terminal;
 			System.Diagnostics.Debug.Assert(doubleColon is not null);

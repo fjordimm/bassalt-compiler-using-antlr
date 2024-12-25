@@ -113,9 +113,9 @@ namespace BassaltCompiler.Syntactic.Nodes
 			{"float256", DtFloat256_}
 		}.AsReadOnly();
 
-		public static DatatypeLang Get(string name)
+		public static DatatypeLang Get(string str)
 		{
-			if (datatypeLangDict.TryGetValue(name, out DatatypeLang tryGetVal))
+			if (datatypeLangDict.TryGetValue(str, out DatatypeLang tryGetVal))
 			{ return tryGetVal; }
 			else
 			{ throw new ArgumentException("argument was not valid."); }
@@ -159,34 +159,12 @@ namespace BassaltCompiler.Syntactic.Nodes
 		}
 	}
 
-	// sealed class DatatypeFaced : Datatype
-	// {
-	// 	public FaceList Faces { get; }
-	// 	public Datatype Inner { get; }
-
-	// 	public DatatypeFaced(FaceList faces, Datatype inner)
-	// 	{
-	// 		Faces = faces;
-	// 		Inner = inner;
-	// 	}
-
-	// 	protected override string StringTreeName1()
-	// 	{
-	// 		return "Faced";
-	// 	}
-
-	// 	protected override IReadOnlyList<IDebuggable> StringTreeChildren1()
-	// 	{
-	// 		return new List<IDebuggable>{ Faces, Inner };
-	// 	}
-	// }
-
 	sealed class DatatypeNamespaced : Datatype
 	{
-		public IDebuggable Namespace { get; }
+		public Expr Namespace { get; }
 		public Datatype Inner { get; }
 
-		public DatatypeNamespaced(IDebuggable namespacee, Datatype inner)
+		public DatatypeNamespaced(Expr namespacee, Datatype inner)
 		{
 			Namespace = namespacee;
 			Inner = inner;
