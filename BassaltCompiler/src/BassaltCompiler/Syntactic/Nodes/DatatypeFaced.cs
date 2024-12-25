@@ -21,25 +21,39 @@ namespace BassaltCompiler.Syntactic.Nodes
 
 		protected override string StringTreeName1()
 		{
-			return $"Faced({TheFace})";
+			return $"Faced";
 		}
 
 		protected override IReadOnlyList<IDebuggable> StringTreeChildren1()
 		{
-			return new List<IDebuggable>{ Inner };
+			return new List<IDebuggable>{ TheFace, Inner };
 		}
 	}
 
-	abstract class Face
+	abstract class Face : IDebuggable
 	{
 		public static readonly FaceImmutable FcImmutable = FaceImmutable.FcImmutable_;
 
-		public override string ToString()
+		// public override string ToString()
+		// {
+		// 	return ToString1();
+		// }
+
+		// protected abstract string ToString1();
+
+		string IDebuggable.StringTreeName()
 		{
-			return ToString1();
+			return $"Face.{StringTreeName1()}";
 		}
 
-		protected abstract string ToString1();
+		protected abstract string StringTreeName1();
+
+		IReadOnlyList<IDebuggable> IDebuggable.StringTreeChildren()
+		{
+			return StringTreeChildren1();
+		}
+
+		protected abstract IReadOnlyList<IDebuggable> StringTreeChildren1();
 	}
 
 	sealed class FaceImmutable : Face
@@ -49,55 +63,52 @@ namespace BassaltCompiler.Syntactic.Nodes
 		private FaceImmutable()
 		{ }
 
-		protected override string ToString1()
+		protected override string StringTreeName1()
 		{
 			return "Immutable";
 		}
-	}
 
-	sealed class FaceAccessModifier : Face
-	{
-		protected override string ToString1()
+		protected override IReadOnlyList<IDebuggable> StringTreeChildren1()
 		{
 			throw new NotImplementedException();
 		}
 	}
 
-	sealed class FaceIdentifier : Face
-	{
-		protected override string ToString1()
-		{
-			throw new NotImplementedException();
-		}
-	}
-
-	// abstract class Face
+	// sealed class FaceNamespaced : Face
 	// {
-	// 	public static readonly FaceImmutable FcImmutable = FaceImmutable.FcImmutable_;
+	// 	public IDebuggable Namespace { get; }
+	// 	public Datatype Inner { get; }
 
-	// 	public override string ToString()
+	// 	public FaceNamespaced(IDebuggable namespacee, Datatype inner)
 	// 	{
-	// 		return ToString1();
+	// 		Namespace = namespacee;
+	// 		Inner = inner;
 	// 	}
 
-	// 	protected abstract string ToString1();
-	// }
-
-	// sealed class FaceImmutable : Face
-	// {
-	// 	public static readonly FaceImmutable FcImmutable_ = new FaceImmutable();
-
-	// 	private FaceImmutable()
-	// 	{ }
-
-	// 	protected override string ToString1()
+	// 	protected override string StringTreeName1()
 	// 	{
-	// 		return "!";
+	// 		return "Namespaced";
+	// 	}
+
+	// 	protected override IReadOnlyList<IDebuggable> StringTreeChildren1()
+	// 	{
+	// 		return new List<IDebuggable>{ Namespace, Inner };
 	// 	}
 	// }
 
 	// sealed class FaceAccessModifier : Face
 	// {
+	// 	protected override string ToString1()
+	// 	{
+	// 		throw new NotImplementedException();
+	// 	}
+	// }
 
+	// sealed class FaceIdentifier : Face
+	// {
+	// 	protected override string ToString1()
+	// 	{
+	// 		throw new NotImplementedException();
+	// 	}
 	// }
 }
