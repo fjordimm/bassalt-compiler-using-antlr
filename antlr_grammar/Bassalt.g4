@@ -53,7 +53,7 @@ facenameNamespaced
 	;
 
 facenameBase
-	: identifier
+	: IdentifierTerminal
 	;
 
 langType

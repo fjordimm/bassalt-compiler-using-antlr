@@ -109,14 +109,26 @@ namespace BassaltCompiler.Syntactic.Nodes
 			return null;
 		}
 	}
-	
-	// sealed class FaceIdentifier : Face
-	// {
-	// 	protected override string ToString1()
-	// 	{
-	// 		throw new NotImplementedException();
-	// 	}
-	// }
+
+	sealed class FaceIdentifier : Face
+	{
+		public string Name { get; }
+
+		public FaceIdentifier(string name)
+		{
+			Name = name;
+		}
+
+		protected override string StringTreeName1()
+		{
+			return $"Identifier('{Name}')";
+		}
+
+		protected override IReadOnlyList<IDebuggable> StringTreeChildren1()
+		{
+			return null;
+		}
+	}
 
 	sealed class FaceNamespaced : Face
 	{

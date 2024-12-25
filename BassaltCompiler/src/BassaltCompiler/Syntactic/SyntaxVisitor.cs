@@ -156,6 +156,24 @@ namespace BassaltCompiler.Syntactic
 			return ret;
 		}
 
+		public override object VisitFacenameNamespaced_main([NotNull] BassaltParser.FacenameNamespaced_mainContext context)
+		{
+			base.VisitFacenameNamespaced_main(context);
+			throw new NotImplementedException();
+		}
+
+		public override object VisitFacenameNamespaced_other([NotNull] BassaltParser.FacenameNamespaced_otherContext context)
+		{
+			return base.VisitFacenameNamespaced_other(context);
+		}
+
+		public override FaceIdentifier VisitFacenameBase([NotNull] BassaltParser.FacenameBaseContext context)
+		{
+			FaceIdentifier ret = new FaceIdentifier(context.IdentifierTerminal().GetText());
+			base.VisitFacenameBase(context);
+			return ret;
+		}
+
 		public override DatatypeFaced VisitDatatype_immutface([NotNull] BassaltParser.Datatype_immutfaceContext context)
 		{
 			object children = base.VisitDatatype_immutface(context);
