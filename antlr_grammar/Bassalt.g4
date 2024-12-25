@@ -11,13 +11,15 @@ argumentList
 	;
 
 datatypeList
-	: datatype? (',' datatype)*
+	: datatype (',' datatype)+			#datatypeList_multiple
+	| datatype							#datatypeList_one
+	| nothing							#datatypeList_nothing
 	;
 
 datatype
 	: datatype '!'						#datatype_immutface
 	| datatype '~' facename				#datatype_facename
-	| '(' datatypeList ')'				#datatype_other
+	| '(' datatypeList ')'				#datatype_tuple
 	| datatype '<' datatypeList '>'		#datatype_other
 	| datatype '[' exprList ']'			#datatype_other
 	| datatype '*'						#datatype_other
@@ -97,6 +99,8 @@ langVar
 identifier
 	: IdentifierTerminal
 	;
+
+nothing : ;
 
 // Literals
 

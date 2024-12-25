@@ -1,5 +1,6 @@
 
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -68,6 +69,24 @@ namespace BassaltCompiler.Syntactic
 			}
 		}
 
+		// public class Nothing : IDebuggable
+		// {
+		// 	public static readonly Nothing Obj = new Nothing();
+
+		// 	private Nothing()
+		// 	{ }
+
+		// 	string IDebuggable.StringTreeName()
+		// 	{
+		// 		return "NOTHING";
+		// 	}
+
+		// 	IReadOnlyList<IDebuggable> IDebuggable.StringTreeChildren()
+		// 	{
+		// 		return null;
+		// 	}
+		// }
+
 		protected override object AggregateResult(object aggregate, object nextResult)
 		{
 			if (aggregate is null)
@@ -129,6 +148,31 @@ namespace BassaltCompiler.Syntactic
 			}
 		}
 
+		public class DebuggableList : IDebuggable
+		{
+			public List<IDebuggable> Items { get; }
+
+			public DebuggableList()
+			{
+				Items = new List<IDebuggable>();
+			}
+
+			public DebuggableList(IEnumerable<IDebuggable> collection)
+			{
+				Items = collection.ToList();
+			}
+
+			string IDebuggable.StringTreeName()
+			{
+				return "LIST";
+			}
+
+			IReadOnlyList<IDebuggable> IDebuggable.StringTreeChildren()
+			{
+				return Items;
+			}
+		}
+
 		////////////////////////////////////////////////////////////////////////
 		
 		///// Terminals /////
@@ -142,23 +186,51 @@ namespace BassaltCompiler.Syntactic
 
 		///// Useful Things /////
 
-		// TODO: move the facename stuff to be right below the datatype stuff
+		// public override object VisitDatatypeList_main([NotNull] BassaltParser.DatatypeList_mainContext context)
+		// {
+		// 	object children = base.VisitDatatypeList_main(context);
+		// 	if (children is null)
+		// 	{
+		// 		bassaltSyntaxErrorHandler.Add(context.Stop.Line, context.Stop.Column, "unkown error.");
+		// 		return null;
+		// 	}
 
-		public override object VisitFacename([NotNull] BassaltParser.FacenameContext context)
-		{
-			return base.VisitFacename(context);
-		}
+		// 	Console.WriteLine("----------- datatype list -----------");
+		// 	Console.WriteLine(children);
+		// 	// System.Environment.Exit(1);
 
-		public override FaceAccessModifier VisitFacenameAccessModifier([NotNull] BassaltParser.FacenameAccessModifierContext context)
-		{
-			FaceAccessModifier ret = FaceAccessModifier.Get(context.GetText());
-			base.VisitFacenameAccessModifier(context);
-			return ret;
-		}
+		// 	AggregateObj childrenR = children as AggregateObj;
+		// 	System.Diagnostics.Debug.Assert(childrenR is not null);
 
-		public override FaceNamespaced VisitFacenameNamespaced_main([NotNull] BassaltParser.FacenameNamespaced_mainContext context)
+		// 	if (childrenR.Items.Count == 0)
+		// 	{
+		// 		return new List<Datatype>();
+		// 	}
+		// 	else
+		// 	{
+		// 		List<Datatype> ret = new List<Datatype>();
+
+		// 		Datatype firstItem = childrenR.Items[0] as Datatype;
+		// 		System.Diagnostics.Debug.Assert(firstItem is not null);
+		// 		ret.Add(firstItem);
+
+		// 		for (int i = 1; i < childrenR.Items.Count; i++)
+		// 		{
+		// 			Terminal comma = childrenR.Items[i] as Terminal;
+		// 			System.Diagnostics.Debug.Assert(comma is not null);
+		// 			Datatype nextItem = childrenR.Items[i + 1] as Datatype;
+		// 			System.Diagnostics.Debug.Assert(nextItem is not null);
+		// 			ret.Add(nextItem);
+		// 		}
+
+		// 		return ret;
+		// 	}
+
+		// }
+
+		public override DebuggableList VisitDatatypeList_multiple([NotNull] BassaltParser.DatatypeList_multipleContext context)
 		{
-			object children = base.VisitFacenameNamespaced_main(context);
+			object children = base.VisitDatatypeList_multiple(context);
 			if (children is null)
 			{
 				bassaltSyntaxErrorHandler.Add(context.Stop.Line, context.Stop.Column, "unkown error.");
@@ -168,26 +240,35 @@ namespace BassaltCompiler.Syntactic
 			AggregateObj childrenR = children as AggregateObj;
 			System.Diagnostics.Debug.Assert(childrenR is not null);
 
-			Expr namespacee = childrenR.Items[0] as Expr;
-			System.Diagnostics.Debug.Assert(namespacee is not null);
-			Terminal doubleColon = childrenR.Items[1] as Terminal;
-			System.Diagnostics.Debug.Assert(doubleColon is not null);
-			Face inner = childrenR.Items[2] as Face;
-			System.Diagnostics.Debug.Assert(inner is not null);
+			DebuggableList ret = new DebuggableList();
 
-			return new FaceNamespaced(namespacee, inner);
-		}
+			Datatype firstItem = childrenR.Items[0] as Datatype;
+			System.Diagnostics.Debug.Assert(firstItem is not null);
+			ret.Items.Add(firstItem);
 
-		public override object VisitFacenameNamespaced_other([NotNull] BassaltParser.FacenameNamespaced_otherContext context)
-		{
-			return base.VisitFacenameNamespaced_other(context);
-		}
+			for (int i = 1; i < childrenR.Items.Count; i++)
+			{
+				Terminal comma = childrenR.Items[i] as Terminal;
+				System.Diagnostics.Debug.Assert(comma is not null);
+				Datatype nextItem = childrenR.Items[i + 1] as Datatype;
+				System.Diagnostics.Debug.Assert(nextItem is not null);
+				ret.Items.Add(nextItem);
+			}
 
-		public override FaceIdentifier VisitFacenameBase([NotNull] BassaltParser.FacenameBaseContext context)
-		{
-			FaceIdentifier ret = new FaceIdentifier(context.IdentifierTerminal().GetText());
-			base.VisitFacenameBase(context);
 			return ret;
+		}
+
+		public override DebuggableList VisitDatatypeList_one([NotNull] BassaltParser.DatatypeList_oneContext context)
+		{
+			Datatype datatype = base.VisitDatatypeList_one(context) as Datatype;
+			System.Diagnostics.Debug.Assert(datatype is not null);
+			return new DebuggableList(new List<IDebuggable>{ datatype });
+		}
+
+		public override DebuggableList VisitDatatypeList_nothing([NotNull] BassaltParser.DatatypeList_nothingContext context)
+		{
+			base.VisitDatatypeList_nothing(context);
+			return new DebuggableList();
 		}
 
 		public override DatatypeFaced VisitDatatype_immutface([NotNull] BassaltParser.Datatype_immutfaceContext context)
@@ -230,6 +311,28 @@ namespace BassaltCompiler.Syntactic
 			System.Diagnostics.Debug.Assert(facename is not null);
 
 			return new DatatypeFaced(facename, inner);
+		}
+
+		public override object VisitDatatype_tuple([NotNull] BassaltParser.Datatype_tupleContext context)
+		{
+			object children = base.VisitDatatype_tuple(context);
+			if (children is null)
+			{
+				bassaltSyntaxErrorHandler.Add(context.Stop.Line, context.Stop.Column, "unkown error.");
+				return null;
+			}
+
+			Console.WriteLine("----------- tuple pre -----------");
+			Console.WriteLine(children);
+
+			AggregateObj childrenR = children as AggregateObj;
+			System.Diagnostics.Debug.Assert(childrenR is not null);
+
+			Console.WriteLine("----------- tuple -----------");
+			Console.WriteLine(IDebuggable.ToStringTree(childrenR));
+			System.Environment.Exit(1);
+
+			return null;
 		}
 
 		public override object VisitDatatype_other([NotNull] BassaltParser.Datatype_otherContext context)
@@ -278,6 +381,52 @@ namespace BassaltCompiler.Syntactic
 			return ret;
 		}
 
+		public override object VisitFacename([NotNull] BassaltParser.FacenameContext context)
+		{
+			return base.VisitFacename(context);
+		}
+
+		public override FaceAccessModifier VisitFacenameAccessModifier([NotNull] BassaltParser.FacenameAccessModifierContext context)
+		{
+			FaceAccessModifier ret = FaceAccessModifier.Get(context.GetText());
+			base.VisitFacenameAccessModifier(context);
+			return ret;
+		}
+
+		public override FaceNamespaced VisitFacenameNamespaced_main([NotNull] BassaltParser.FacenameNamespaced_mainContext context)
+		{
+			object children = base.VisitFacenameNamespaced_main(context);
+			if (children is null)
+			{
+				bassaltSyntaxErrorHandler.Add(context.Stop.Line, context.Stop.Column, "unkown error.");
+				return null;
+			}
+
+			AggregateObj childrenR = children as AggregateObj;
+			System.Diagnostics.Debug.Assert(childrenR is not null);
+
+			Expr namespacee = childrenR.Items[0] as Expr;
+			System.Diagnostics.Debug.Assert(namespacee is not null);
+			Terminal doubleColon = childrenR.Items[1] as Terminal;
+			System.Diagnostics.Debug.Assert(doubleColon is not null);
+			Face inner = childrenR.Items[2] as Face;
+			System.Diagnostics.Debug.Assert(inner is not null);
+
+			return new FaceNamespaced(namespacee, inner);
+		}
+
+		public override object VisitFacenameNamespaced_other([NotNull] BassaltParser.FacenameNamespaced_otherContext context)
+		{
+			return base.VisitFacenameNamespaced_other(context);
+		}
+
+		public override FaceIdentifier VisitFacenameBase([NotNull] BassaltParser.FacenameBaseContext context)
+		{
+			FaceIdentifier ret = new FaceIdentifier(context.IdentifierTerminal().GetText());
+			base.VisitFacenameBase(context);
+			return ret;
+		}
+
 		public override DatatypeLang VisitLangType([NotNull] BassaltParser.LangTypeContext context)
 		{
 			DatatypeLang ret = DatatypeLang.Get(context.GetText());
@@ -297,6 +446,11 @@ namespace BassaltCompiler.Syntactic
 			ExprIdentifier ret = new ExprIdentifier(context.IdentifierTerminal().GetText());
 			base.VisitIdentifier(context);
 			return ret;
+		}
+
+		public override object VisitNothing([NotNull] BassaltParser.NothingContext context)
+		{
+			return base.VisitNothing(context);
 		}
 
 		////////////////////////////////////////////////////////////////////////
