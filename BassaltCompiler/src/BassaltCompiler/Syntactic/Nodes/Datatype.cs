@@ -1,6 +1,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Collections.ObjectModel;
 using BassaltCompiler.Debug;
 
@@ -156,6 +157,26 @@ namespace BassaltCompiler.Syntactic.Nodes
 		protected override IReadOnlyList<IDebuggable> StringTreeChildren1()
 		{
 			return null;
+		}
+	}
+
+	sealed class DatatypeTuple : Datatype
+	{
+		public ImmutableList<Datatype> Items { get; }
+
+		public DatatypeTuple(IEnumerable<Datatype> items)
+		{
+			Items = items.ToImmutableList();
+		}
+
+		protected override string StringTreeName1()
+		{
+			return "Tuple";
+		}
+
+		protected override IReadOnlyList<IDebuggable> StringTreeChildren1()
+		{
+			return Items;
 		}
 	}
 

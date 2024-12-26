@@ -12,7 +12,7 @@ namespace BassaltCompiler.Syntactic.Nodes
 		public IDebuggable Lhs { get; }
 		public IDebuggable Rhs { get; }
 
-		public ExprBinaryOp(SyntaxVisitor.Terminal op, IDebuggable lhs, IDebuggable rhs)
+		public ExprBinaryOp(SyntaxVisitor.DebuggableTerminal op, IDebuggable lhs, IDebuggable rhs)
 		{
 			Op = op.Text;
 			Lhs = lhs;

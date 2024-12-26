@@ -11,7 +11,7 @@ namespace BassaltCompiler.Syntactic.Nodes
 		public string Op { get; }
 		public IDebuggable Inner { get; }
 
-		public ExprUnaryOp(SyntaxVisitor.Terminal op, IDebuggable inner)
+		public ExprUnaryOp(SyntaxVisitor.DebuggableTerminal op, IDebuggable inner)
 		{
 			Op = op.Text;
 			Inner = inner;

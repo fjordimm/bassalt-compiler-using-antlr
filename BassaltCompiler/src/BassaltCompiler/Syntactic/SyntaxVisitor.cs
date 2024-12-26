@@ -38,12 +38,12 @@ namespace BassaltCompiler.Syntactic
 			return syntaxTree;
 		}
 
-		public class Terminal : IDebuggable
+		public class DebuggableTerminal : IDebuggable
 		{
 			public string Type { get; }
 			public string Text { get; }
 
-			public Terminal(ITerminalNode node, IVocabulary vocab)
+			public DebuggableTerminal(ITerminalNode node, IVocabulary vocab)
 			{
 				Type = vocab.GetSymbolicName(node.Symbol.Type);
 				if (Type is null)
@@ -52,7 +52,7 @@ namespace BassaltCompiler.Syntactic
 				Text = node.GetText();
 			}
 
-			public Terminal(string type, string text)
+			public DebuggableTerminal(string type, string text)
 			{
 				Type = type;
 				Text = text;
@@ -95,7 +95,7 @@ namespace BassaltCompiler.Syntactic
 			}
 			else
 			{
-				AggregateObj aggregateR = aggregate as AggregateObj;
+				DebuggableAggregate aggregateR = aggregate as DebuggableAggregate;
 
 				if (aggregateR is not null)
 				{
@@ -119,7 +119,7 @@ namespace BassaltCompiler.Syntactic
 					IDebuggable nextResultS = nextResult as IDebuggable;
 					System.Diagnostics.Debug.Assert(nextResultS is not null);
 
-					AggregateObj ret = new AggregateObj();
+					DebuggableAggregate ret = new DebuggableAggregate();
 					ret.Items.Add(aggregateS);
 					ret.Items.Add(nextResultS);
 
@@ -128,11 +128,11 @@ namespace BassaltCompiler.Syntactic
 			}
 		}
 
-		public class AggregateObj : IDebuggable
+		public class DebuggableAggregate : IDebuggable
 		{
 			public List<IDebuggable> Items { get; }
 
-			public AggregateObj()
+			public DebuggableAggregate()
 			{
 				Items = new List<IDebuggable>();
 			}
@@ -148,16 +148,17 @@ namespace BassaltCompiler.Syntactic
 			}
 		}
 
-		public class DebuggableList : IDebuggable
+		public class DebuggableList<T> : IDebuggable
+			where T : IDebuggable
 		{
-			public List<IDebuggable> Items { get; }
+			public List<T> Items { get; }
 
 			public DebuggableList()
 			{
-				Items = new List<IDebuggable>();
+				Items = new List<T>();
 			}
 
-			public DebuggableList(IEnumerable<IDebuggable> collection)
+			public DebuggableList(IEnumerable<T> collection)
 			{
 				Items = collection.ToList();
 			}
@@ -169,7 +170,9 @@ namespace BassaltCompiler.Syntactic
 
 			IReadOnlyList<IDebuggable> IDebuggable.StringTreeChildren()
 			{
-				return Items;
+				List<IDebuggable> ret = Items as List<IDebuggable>;
+				System.Diagnostics.Debug.Assert(ret is not null);
+				return ret;
 			}
 		}
 
@@ -177,9 +180,9 @@ namespace BassaltCompiler.Syntactic
 		
 		///// Terminals /////
 
-		public override Terminal VisitTerminal(ITerminalNode node)
+		public override DebuggableTerminal VisitTerminal(ITerminalNode node)
 		{
-			return new Terminal(node, lexerVocab);
+			return new DebuggableTerminal(node, lexerVocab);
 		}
 
 		////////////////////////////////////////////////////////////////////////
@@ -228,7 +231,7 @@ namespace BassaltCompiler.Syntactic
 
 		// }
 
-		public override DebuggableList VisitDatatypeList_multiple([NotNull] BassaltParser.DatatypeList_multipleContext context)
+		public override DebuggableList<Datatype> VisitDatatypeList_multiple([NotNull] BassaltParser.DatatypeList_multipleContext context)
 		{
 			object children = base.VisitDatatypeList_multiple(context);
 			if (children is null)
@@ -237,14 +240,14 @@ namespace BassaltCompiler.Syntactic
 				return null;
 			}
 
-			AggregateObj childrenR = children as AggregateObj;
+			DebuggableAggregate childrenR = children as DebuggableAggregate;
 			System.Diagnostics.Debug.Assert(childrenR is not null);
 
-			Console.WriteLine("----------- datatypeList_multiple -----------");
-			Console.WriteLine(IDebuggable.ToStringTree(childrenR));
+			// Console.WriteLine("----------- datatypeList_multiple -----------");
+			// Console.WriteLine(IDebuggable.ToStringTree(childrenR));
 			// System.Environment.Exit(1);
 
-			DebuggableList ret = new DebuggableList();
+			DebuggableList<Datatype> ret = new DebuggableList<Datatype>();
 
 			Datatype firstItem = childrenR.Items[0] as Datatype;
 			System.Diagnostics.Debug.Assert(firstItem is not null);
@@ -252,7 +255,7 @@ namespace BassaltCompiler.Syntactic
 
 			for (int i = 1; i < childrenR.Items.Count; i += 2)
 			{
-				Terminal comma = childrenR.Items[i] as Terminal;
+				DebuggableTerminal comma = childrenR.Items[i] as DebuggableTerminal;
 				System.Diagnostics.Debug.Assert(comma is not null);
 				Datatype nextItem = childrenR.Items[i + 1] as Datatype;
 				System.Diagnostics.Debug.Assert(nextItem is not null);
@@ -262,17 +265,17 @@ namespace BassaltCompiler.Syntactic
 			return ret;
 		}
 
-		public override DebuggableList VisitDatatypeList_one([NotNull] BassaltParser.DatatypeList_oneContext context)
+		public override DebuggableList<Datatype> VisitDatatypeList_one([NotNull] BassaltParser.DatatypeList_oneContext context)
 		{
 			Datatype datatype = base.VisitDatatypeList_one(context) as Datatype;
 			System.Diagnostics.Debug.Assert(datatype is not null);
-			return new DebuggableList(new List<IDebuggable>{ datatype });
+			return new DebuggableList<Datatype>(new List<Datatype>{ datatype });
 		}
 
-		public override DebuggableList VisitDatatypeList_nothing([NotNull] BassaltParser.DatatypeList_nothingContext context)
+		public override DebuggableList<Datatype> VisitDatatypeList_nothing([NotNull] BassaltParser.DatatypeList_nothingContext context)
 		{
 			base.VisitDatatypeList_nothing(context);
-			return new DebuggableList();
+			return new DebuggableList<Datatype>();
 		}
 
 		public override DatatypeFaced VisitDatatype_immutface([NotNull] BassaltParser.Datatype_immutfaceContext context)
@@ -284,12 +287,12 @@ namespace BassaltCompiler.Syntactic
 				return null;
 			}
 
-			AggregateObj childrenR = children as AggregateObj;
+			DebuggableAggregate childrenR = children as DebuggableAggregate;
 			System.Diagnostics.Debug.Assert(childrenR is not null);
 
 			Datatype inner = childrenR.Items[0] as Datatype;
 			System.Diagnostics.Debug.Assert(inner is not null);
-			Terminal exclam = childrenR.Items[1] as Terminal;
+			DebuggableTerminal exclam = childrenR.Items[1] as DebuggableTerminal;
 			System.Diagnostics.Debug.Assert(exclam is not null);
 
 			return new DatatypeFaced(Face.FcImmutable, inner);
@@ -304,12 +307,12 @@ namespace BassaltCompiler.Syntactic
 				return null;
 			}
 
-			AggregateObj childrenR = children as AggregateObj;
+			DebuggableAggregate childrenR = children as DebuggableAggregate;
 			System.Diagnostics.Debug.Assert(childrenR is not null);
 
 			Datatype inner = childrenR.Items[0] as Datatype;
 			System.Diagnostics.Debug.Assert(inner is not null);
-			Terminal tilde = childrenR.Items[1] as Terminal;
+			DebuggableTerminal tilde = childrenR.Items[1] as DebuggableTerminal;
 			System.Diagnostics.Debug.Assert(tilde is not null);
 			Face facename = childrenR.Items[2] as Face;
 			System.Diagnostics.Debug.Assert(facename is not null);
@@ -317,7 +320,7 @@ namespace BassaltCompiler.Syntactic
 			return new DatatypeFaced(facename, inner);
 		}
 
-		public override object VisitDatatype_tuple([NotNull] BassaltParser.Datatype_tupleContext context)
+		public override DatatypeTuple VisitDatatype_tuple([NotNull] BassaltParser.Datatype_tupleContext context)
 		{
 			object children = base.VisitDatatype_tuple(context);
 			if (children is null)
@@ -326,17 +329,24 @@ namespace BassaltCompiler.Syntactic
 				return null;
 			}
 
-			Console.WriteLine("----------- tuple pre -----------");
-			Console.WriteLine(children);
+			// Console.WriteLine("----------- tuple pre -----------");
+			// Console.WriteLine(children);
 
-			AggregateObj childrenR = children as AggregateObj;
+			DebuggableAggregate childrenR = children as DebuggableAggregate;
 			System.Diagnostics.Debug.Assert(childrenR is not null);
 
-			Console.WriteLine("----------- tuple -----------");
-			Console.WriteLine(IDebuggable.ToStringTree(childrenR));
-			System.Environment.Exit(1);
+			DebuggableTerminal openParen = childrenR.Items[0] as DebuggableTerminal;
+			System.Diagnostics.Debug.Assert(openParen is not null);
+			DebuggableList<Datatype> items = childrenR.Items[1] as DebuggableList<Datatype>;
+			System.Diagnostics.Debug.Assert(items is not null);
+			DebuggableTerminal closeParen = childrenR.Items[2] as DebuggableTerminal;
+			System.Diagnostics.Debug.Assert(closeParen is not null);
 
-			return null;
+			// Console.WriteLine("----------- tuple -----------");
+			// Console.WriteLine(IDebuggable.ToStringTree(childrenR));
+			// System.Environment.Exit(1);
+
+			return new DatatypeTuple(items.Items);
 		}
 
 		public override object VisitDatatype_other([NotNull] BassaltParser.Datatype_otherContext context)
@@ -353,12 +363,12 @@ namespace BassaltCompiler.Syntactic
 				return null;
 			}
 
-			AggregateObj childrenR = children as AggregateObj;
+			DebuggableAggregate childrenR = children as DebuggableAggregate;
 			System.Diagnostics.Debug.Assert(childrenR is not null);
 
 			Expr namespacee = childrenR.Items[0] as Expr;
 			System.Diagnostics.Debug.Assert(namespacee is not null);
-			Terminal doubleColon = childrenR.Items[1] as Terminal;
+			DebuggableTerminal doubleColon = childrenR.Items[1] as DebuggableTerminal;
 			System.Diagnostics.Debug.Assert(doubleColon is not null);
 			Datatype inner = childrenR.Items[2] as Datatype;
 			System.Diagnostics.Debug.Assert(inner is not null);
@@ -406,12 +416,12 @@ namespace BassaltCompiler.Syntactic
 				return null;
 			}
 
-			AggregateObj childrenR = children as AggregateObj;
+			DebuggableAggregate childrenR = children as DebuggableAggregate;
 			System.Diagnostics.Debug.Assert(childrenR is not null);
 
 			Expr namespacee = childrenR.Items[0] as Expr;
 			System.Diagnostics.Debug.Assert(namespacee is not null);
-			Terminal doubleColon = childrenR.Items[1] as Terminal;
+			DebuggableTerminal doubleColon = childrenR.Items[1] as DebuggableTerminal;
 			System.Diagnostics.Debug.Assert(doubleColon is not null);
 			Face inner = childrenR.Items[2] as Face;
 			System.Diagnostics.Debug.Assert(inner is not null);
@@ -541,16 +551,16 @@ namespace BassaltCompiler.Syntactic
 				return null;
 			}
 
-			AggregateObj childrenR = children as AggregateObj;
+			DebuggableAggregate childrenR = children as DebuggableAggregate;
 			System.Diagnostics.Debug.Assert(childrenR is not null);
 
 			IDebuggable condition = childrenR.Items[0];
 			System.Diagnostics.Debug.Assert(condition is not null);
-			Terminal questionMark = childrenR.Items[1] as Terminal;
+			DebuggableTerminal questionMark = childrenR.Items[1] as DebuggableTerminal;
 			System.Diagnostics.Debug.Assert(questionMark is not null);
 			IDebuggable expressionA = childrenR.Items[2];
 			System.Diagnostics.Debug.Assert(expressionA is not null);
-			Terminal colon = childrenR.Items[3] as Terminal;
+			DebuggableTerminal colon = childrenR.Items[3] as DebuggableTerminal;
 			System.Diagnostics.Debug.Assert(colon is not null);
 			IDebuggable expressionB = childrenR.Items[4];
 			System.Diagnostics.Debug.Assert(expressionB is not null);
@@ -572,12 +582,12 @@ namespace BassaltCompiler.Syntactic
 				return null;
 			}
 
-			AggregateObj childrenR = children as AggregateObj;
+			DebuggableAggregate childrenR = children as DebuggableAggregate;
 			System.Diagnostics.Debug.Assert(childrenR is not null);
 
 			IDebuggable lhs = childrenR.Items[0];
 			System.Diagnostics.Debug.Assert(lhs is not null);
-			Terminal op = childrenR.Items[1] as Terminal;
+			DebuggableTerminal op = childrenR.Items[1] as DebuggableTerminal;
 			System.Diagnostics.Debug.Assert(op is not null);
 			IDebuggable rhs = childrenR.Items[2];
 			System.Diagnostics.Debug.Assert(rhs is not null);
@@ -599,12 +609,12 @@ namespace BassaltCompiler.Syntactic
 				return null;
 			}
 
-			AggregateObj childrenR = children as AggregateObj;
+			DebuggableAggregate childrenR = children as DebuggableAggregate;
 			System.Diagnostics.Debug.Assert(childrenR is not null);
 
 			IDebuggable lhs = childrenR.Items[0];
 			System.Diagnostics.Debug.Assert(lhs is not null);
-			Terminal op = childrenR.Items[1] as Terminal;
+			DebuggableTerminal op = childrenR.Items[1] as DebuggableTerminal;
 			System.Diagnostics.Debug.Assert(op is not null);
 			IDebuggable rhs = childrenR.Items[2];
 			System.Diagnostics.Debug.Assert(rhs is not null);
@@ -626,12 +636,12 @@ namespace BassaltCompiler.Syntactic
 				return null;
 			}
 
-			AggregateObj childrenR = children as AggregateObj;
+			DebuggableAggregate childrenR = children as DebuggableAggregate;
 			System.Diagnostics.Debug.Assert(childrenR is not null);
 
 			IDebuggable lhs = childrenR.Items[0];
 			System.Diagnostics.Debug.Assert(lhs is not null);
-			Terminal op = childrenR.Items[1] as Terminal;
+			DebuggableTerminal op = childrenR.Items[1] as DebuggableTerminal;
 			System.Diagnostics.Debug.Assert(op is not null);
 			IDebuggable rhs = childrenR.Items[2];
 			System.Diagnostics.Debug.Assert(rhs is not null);
@@ -653,12 +663,12 @@ namespace BassaltCompiler.Syntactic
 				return null;
 			}
 
-			AggregateObj childrenR = children as AggregateObj;
+			DebuggableAggregate childrenR = children as DebuggableAggregate;
 			System.Diagnostics.Debug.Assert(childrenR is not null);
 
 			IDebuggable lhs = childrenR.Items[0];
 			System.Diagnostics.Debug.Assert(lhs is not null);
-			Terminal op = childrenR.Items[1] as Terminal;
+			DebuggableTerminal op = childrenR.Items[1] as DebuggableTerminal;
 			System.Diagnostics.Debug.Assert(op is not null);
 			IDebuggable rhs = childrenR.Items[2];
 			System.Diagnostics.Debug.Assert(rhs is not null);
@@ -680,12 +690,12 @@ namespace BassaltCompiler.Syntactic
 				return null;
 			}
 
-			AggregateObj childrenR = children as AggregateObj;
+			DebuggableAggregate childrenR = children as DebuggableAggregate;
 			System.Diagnostics.Debug.Assert(childrenR is not null);
 
 			IDebuggable lhs = childrenR.Items[0];
 			System.Diagnostics.Debug.Assert(lhs is not null);
-			Terminal op = childrenR.Items[1] as Terminal;
+			DebuggableTerminal op = childrenR.Items[1] as DebuggableTerminal;
 			System.Diagnostics.Debug.Assert(op is not null);
 			IDebuggable rhs = childrenR.Items[2];
 			System.Diagnostics.Debug.Assert(rhs is not null);
@@ -707,12 +717,12 @@ namespace BassaltCompiler.Syntactic
 				return null;
 			}
 
-			AggregateObj childrenR = children as AggregateObj;
+			DebuggableAggregate childrenR = children as DebuggableAggregate;
 			System.Diagnostics.Debug.Assert(childrenR is not null);
 
 			IDebuggable lhs = childrenR.Items[0];
 			System.Diagnostics.Debug.Assert(lhs is not null);
-			Terminal op = childrenR.Items[1] as Terminal;
+			DebuggableTerminal op = childrenR.Items[1] as DebuggableTerminal;
 			System.Diagnostics.Debug.Assert(op is not null);
 			IDebuggable rhs = childrenR.Items[2];
 			System.Diagnostics.Debug.Assert(rhs is not null);
@@ -734,12 +744,12 @@ namespace BassaltCompiler.Syntactic
 				return null;
 			}
 
-			AggregateObj childrenR = children as AggregateObj;
+			DebuggableAggregate childrenR = children as DebuggableAggregate;
 			System.Diagnostics.Debug.Assert(childrenR is not null);
 
 			IDebuggable lhs = childrenR.Items[0];
 			System.Diagnostics.Debug.Assert(lhs is not null);
-			Terminal op = childrenR.Items[1] as Terminal;
+			DebuggableTerminal op = childrenR.Items[1] as DebuggableTerminal;
 			System.Diagnostics.Debug.Assert(op is not null);
 			IDebuggable rhs = childrenR.Items[2];
 			System.Diagnostics.Debug.Assert(rhs is not null);
@@ -761,12 +771,12 @@ namespace BassaltCompiler.Syntactic
 				return null;
 			}
 
-			AggregateObj childrenR = children as AggregateObj;
+			DebuggableAggregate childrenR = children as DebuggableAggregate;
 			System.Diagnostics.Debug.Assert(childrenR is not null);
 
 			IDebuggable lhs = childrenR.Items[0];
 			System.Diagnostics.Debug.Assert(lhs is not null);
-			Terminal op = childrenR.Items[1] as Terminal;
+			DebuggableTerminal op = childrenR.Items[1] as DebuggableTerminal;
 			System.Diagnostics.Debug.Assert(op is not null);
 			IDebuggable rhs = childrenR.Items[2];
 			System.Diagnostics.Debug.Assert(rhs is not null);
@@ -788,12 +798,12 @@ namespace BassaltCompiler.Syntactic
 				return null;
 			}
 
-			AggregateObj childrenR = children as AggregateObj;
+			DebuggableAggregate childrenR = children as DebuggableAggregate;
 			System.Diagnostics.Debug.Assert(childrenR is not null);
 
 			IDebuggable lhs = childrenR.Items[0];
 			System.Diagnostics.Debug.Assert(lhs is not null);
-			Terminal op = childrenR.Items[1] as Terminal;
+			DebuggableTerminal op = childrenR.Items[1] as DebuggableTerminal;
 			System.Diagnostics.Debug.Assert(op is not null);
 			IDebuggable rhs = childrenR.Items[2];
 			System.Diagnostics.Debug.Assert(rhs is not null);
@@ -815,12 +825,12 @@ namespace BassaltCompiler.Syntactic
 				return null;
 			}
 
-			AggregateObj childrenR = children as AggregateObj;
+			DebuggableAggregate childrenR = children as DebuggableAggregate;
 			System.Diagnostics.Debug.Assert(childrenR is not null);
 
 			IDebuggable lhs = childrenR.Items[0];
 			System.Diagnostics.Debug.Assert(lhs is not null);
-			Terminal op = childrenR.Items[1] as Terminal;
+			DebuggableTerminal op = childrenR.Items[1] as DebuggableTerminal;
 			System.Diagnostics.Debug.Assert(op is not null);
 			IDebuggable rhs = childrenR.Items[2];
 			System.Diagnostics.Debug.Assert(rhs is not null);
@@ -842,10 +852,10 @@ namespace BassaltCompiler.Syntactic
 				return null;
 			}
 
-			AggregateObj childrenR = children as AggregateObj;
+			DebuggableAggregate childrenR = children as DebuggableAggregate;
 			System.Diagnostics.Debug.Assert(childrenR is not null);
 
-			Terminal op = childrenR.Items[0] as Terminal;
+			DebuggableTerminal op = childrenR.Items[0] as DebuggableTerminal;
 			System.Diagnostics.Debug.Assert(op is not null);
 			IDebuggable inner = childrenR.Items[1];
 			System.Diagnostics.Debug.Assert(inner is not null);
@@ -862,16 +872,16 @@ namespace BassaltCompiler.Syntactic
 				return null;
 			}
 
-			AggregateObj childrenR = children as AggregateObj;
+			DebuggableAggregate childrenR = children as DebuggableAggregate;
 			System.Diagnostics.Debug.Assert(childrenR is not null);
 
-			Terminal percentSign = childrenR.Items[0] as Terminal;
+			DebuggableTerminal percentSign = childrenR.Items[0] as DebuggableTerminal;
 			System.Diagnostics.Debug.Assert(percentSign is not null);
-			Terminal openAngleBracket = childrenR.Items[1] as Terminal;
+			DebuggableTerminal openAngleBracket = childrenR.Items[1] as DebuggableTerminal;
 			System.Diagnostics.Debug.Assert(openAngleBracket is not null);
 			Datatype targetType = childrenR.Items[2] as Datatype;
 			System.Diagnostics.Debug.Assert(targetType is not null);
-			Terminal closeAngleBracket = childrenR.Items[3] as Terminal;
+			DebuggableTerminal closeAngleBracket = childrenR.Items[3] as DebuggableTerminal;
 			System.Diagnostics.Debug.Assert(closeAngleBracket is not null);
 			IDebuggable inner = childrenR.Items[4];
 			System.Diagnostics.Debug.Assert(inner is not null);
@@ -893,12 +903,12 @@ namespace BassaltCompiler.Syntactic
 				return null;
 			}
 
-			AggregateObj childrenR = children as AggregateObj;
+			DebuggableAggregate childrenR = children as DebuggableAggregate;
 			System.Diagnostics.Debug.Assert(childrenR is not null);
 
 			IDebuggable namespacee = childrenR.Items[0];
 			System.Diagnostics.Debug.Assert(namespacee is not null);
-			Terminal doubleColon = childrenR.Items[1] as Terminal;
+			DebuggableTerminal doubleColon = childrenR.Items[1] as DebuggableTerminal;
 			System.Diagnostics.Debug.Assert(doubleColon is not null);
 			IDebuggable inner = childrenR.Items[2];
 			System.Diagnostics.Debug.Assert(inner is not null);
@@ -949,14 +959,14 @@ namespace BassaltCompiler.Syntactic
 				return null;
 			}
 
-			AggregateObj childrenR = children as AggregateObj;
+			DebuggableAggregate childrenR = children as DebuggableAggregate;
 			System.Diagnostics.Debug.Assert(childrenR is not null);
 
-			Terminal openParen = childrenR.Items[0] as Terminal;
+			DebuggableTerminal openParen = childrenR.Items[0] as DebuggableTerminal;
 			System.Diagnostics.Debug.Assert(openParen is not null);
 			IDebuggable innerExpr = childrenR.Items[1] as IDebuggable;
 			System.Diagnostics.Debug.Assert(innerExpr is not null);
-			Terminal closeParen = childrenR.Items[2] as Terminal;
+			DebuggableTerminal closeParen = childrenR.Items[2] as DebuggableTerminal;
 			System.Diagnostics.Debug.Assert(closeParen is not null);
 
 			return innerExpr;
@@ -988,7 +998,7 @@ namespace BassaltCompiler.Syntactic
 				return null;
 			}
 
-			AggregateObj childrenR = children as AggregateObj;
+			DebuggableAggregate childrenR = children as DebuggableAggregate;
 			System.Diagnostics.Debug.Assert(childrenR is not null);
 			
 			Console.WriteLine("----------- print statement -----------");
