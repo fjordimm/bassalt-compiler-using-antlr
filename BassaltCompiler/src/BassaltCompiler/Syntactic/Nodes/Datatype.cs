@@ -180,6 +180,32 @@ namespace BassaltCompiler.Syntactic.Nodes
 		}
 	}
 
+	sealed class DatatypeGenericed : Datatype
+	{
+		public Datatype MainType { get; }
+		public ImmutableList<Datatype> Generics { get; }
+
+		public DatatypeGenericed(Datatype mainType, IEnumerable<Datatype> generics)
+		{
+			MainType = mainType;
+			Generics = generics.ToImmutableList();
+		}
+
+		protected override string StringTreeName1()
+		{
+			return "Genericed";
+		}
+
+		protected override IReadOnlyList<IDebuggable> StringTreeChildren1()
+		{
+			List<IDebuggable> ret = new List<IDebuggable>{ MainType };
+			foreach (IDebuggable item in Generics)
+			{ ret.Add(item); }
+			
+			return ret;
+		}
+	}
+
 	sealed class DatatypeNamespaced : Datatype
 	{
 		public Expr Namespace { get; }

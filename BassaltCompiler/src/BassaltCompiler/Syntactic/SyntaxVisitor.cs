@@ -189,48 +189,6 @@ namespace BassaltCompiler.Syntactic
 
 		///// Useful Things /////
 
-		// public override object VisitDatatypeList_main([NotNull] BassaltParser.DatatypeList_mainContext context)
-		// {
-		// 	object children = base.VisitDatatypeList_main(context);
-		// 	if (children is null)
-		// 	{
-		// 		bassaltSyntaxErrorHandler.Add(context.Stop.Line, context.Stop.Column, "unkown error.");
-		// 		return null;
-		// 	}
-
-		// 	Console.WriteLine("----------- datatype list -----------");
-		// 	Console.WriteLine(children);
-		// 	// System.Environment.Exit(1);
-
-		// 	AggregateObj childrenR = children as AggregateObj;
-		// 	System.Diagnostics.Debug.Assert(childrenR is not null);
-
-		// 	if (childrenR.Items.Count == 0)
-		// 	{
-		// 		return new List<Datatype>();
-		// 	}
-		// 	else
-		// 	{
-		// 		List<Datatype> ret = new List<Datatype>();
-
-		// 		Datatype firstItem = childrenR.Items[0] as Datatype;
-		// 		System.Diagnostics.Debug.Assert(firstItem is not null);
-		// 		ret.Add(firstItem);
-
-		// 		for (int i = 1; i < childrenR.Items.Count; i++)
-		// 		{
-		// 			Terminal comma = childrenR.Items[i] as Terminal;
-		// 			System.Diagnostics.Debug.Assert(comma is not null);
-		// 			Datatype nextItem = childrenR.Items[i + 1] as Datatype;
-		// 			System.Diagnostics.Debug.Assert(nextItem is not null);
-		// 			ret.Add(nextItem);
-		// 		}
-
-		// 		return ret;
-		// 	}
-
-		// }
-
 		public override DebuggableList<Datatype> VisitDatatypeList_multiple([NotNull] BassaltParser.DatatypeList_multipleContext context)
 		{
 			object children = base.VisitDatatypeList_multiple(context);
@@ -242,10 +200,6 @@ namespace BassaltCompiler.Syntactic
 
 			DebuggableAggregate childrenR = children as DebuggableAggregate;
 			System.Diagnostics.Debug.Assert(childrenR is not null);
-
-			// Console.WriteLine("----------- datatypeList_multiple -----------");
-			// Console.WriteLine(IDebuggable.ToStringTree(childrenR));
-			// System.Environment.Exit(1);
 
 			DebuggableList<Datatype> ret = new DebuggableList<Datatype>();
 
@@ -329,9 +283,6 @@ namespace BassaltCompiler.Syntactic
 				return null;
 			}
 
-			// Console.WriteLine("----------- tuple pre -----------");
-			// Console.WriteLine(children);
-
 			DebuggableAggregate childrenR = children as DebuggableAggregate;
 			System.Diagnostics.Debug.Assert(childrenR is not null);
 
@@ -342,11 +293,31 @@ namespace BassaltCompiler.Syntactic
 			DebuggableTerminal closeParen = childrenR.Items[2] as DebuggableTerminal;
 			System.Diagnostics.Debug.Assert(closeParen is not null);
 
-			// Console.WriteLine("----------- tuple -----------");
-			// Console.WriteLine(IDebuggable.ToStringTree(childrenR));
-			// System.Environment.Exit(1);
-
 			return new DatatypeTuple(items.Items);
+		}
+
+		public override DatatypeGenericed VisitDatatype_genericed([NotNull] BassaltParser.Datatype_genericedContext context)
+		{
+			object children = base.VisitDatatype_genericed(context);
+			if (children is null)
+			{
+				bassaltSyntaxErrorHandler.Add(context.Stop.Line, context.Stop.Column, "unkown error.");
+				return null;
+			}
+
+			DebuggableAggregate childrenR = children as DebuggableAggregate;
+			System.Diagnostics.Debug.Assert(childrenR is not null);
+
+			Datatype mainType = childrenR.Items[0] as Datatype;
+			System.Diagnostics.Debug.Assert(mainType is not null);
+			DebuggableTerminal openAngleBracket = childrenR.Items[1] as DebuggableTerminal;
+			System.Diagnostics.Debug.Assert(openAngleBracket is not null);
+			DebuggableList<Datatype> generics = childrenR.Items[2] as DebuggableList<Datatype>;
+			System.Diagnostics.Debug.Assert(generics is not null);
+			DebuggableTerminal closeAngleBracket = childrenR.Items[3] as DebuggableTerminal;
+			System.Diagnostics.Debug.Assert(closeAngleBracket is not null);
+
+			return new DatatypeGenericed(mainType, generics.Items);
 		}
 
 		public override object VisitDatatype_other([NotNull] BassaltParser.Datatype_otherContext context)

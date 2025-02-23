@@ -20,7 +20,7 @@ datatype
 	: datatype '!'						#datatype_immutface
 	| datatype '~' facename				#datatype_facename
 	| '(' datatypeList ')'				#datatype_tuple
-	| datatype '<' datatypeList '>'		#datatype_other
+	| datatype '<' datatypeList '>'		#datatype_genericed
 	| datatype '[' exprList ']'			#datatype_other
 	| datatype '*'						#datatype_other
 	| datatype '&'						#datatype_other
@@ -199,10 +199,14 @@ exprComparison
 
 exprBitshift
 	: exprBitshift '<<' exprSum		#exprBitshift_main
-	| exprBitshift '>>' exprSum		#exprBitshift_main
+	| exprBitshift Bruh exprSum		#exprBitshift_main
 	| exprBitshift '<<<' exprSum	#exprBitshift_main
 	| exprBitshift '>>>' exprSum	#exprBitshift_main
 	| exprSum						#exprBitshift_other
+	;
+
+fragment Bruh
+	: '>>'
 	;
 
 exprSum
